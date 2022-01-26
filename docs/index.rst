@@ -1,9 +1,8 @@
-Solidity
+솔리디티
 ========
 
-Solidity is an object-oriented, high-level language for implementing smart
-contracts. Smart contracts are programs which govern the behaviour of accounts
-within the Ethereum state.
+솔리디티는 스마트 컨트랙트를 시도하기 위한 객체지향적인 고급 프로그래밍 언어입니다. 
+여기서 스마트 컨트랙트란 이더리움 상태 내부에 있는 여러 계정들의 행동들을 통제할 수 있는 프로그램을 의미합니다.
 
 Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_.
 It is influenced by C++, Python and JavaScript, and is designed to target the Ethereum Virtual Machine (EVM).
