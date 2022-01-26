@@ -4,49 +4,40 @@
 솔리디티는 스마트 컨트랙트를 시도하기 위한 객체지향적인 고급 프로그래밍 언어입니다. 
 여기서 스마트 컨트랙트란 이더리움 상태 내부에 있는 여러 계정들의 행동들을 통제할 수 있는 프로그램을 의미합니다.
 
-Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_.
-It is influenced by C++, Python and JavaScript, and is designed to target the Ethereum Virtual Machine (EVM).
-You can find more details about which languages Solidity has been inspired by in
-the :doc:`language influences <language-influences>` section.
+솔리디티는 `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_.
+C++, 파이썬 및 자바스크립트의 영향을 받았으며 이더리움 가상 머신(EVM)을 공략하기 위해 고안되었습니다.
+솔리디티가 어떤 언어로부터 영감을 받았는지에 대한 자세한 설명은 :doc:`언어의 영향 <language-influences>` 섹션에서 확인하실 수 있습니다.
 
-Solidity is statically typed, supports inheritance, libraries and complex
-user-defined types among other features.
+솔리디티는 정적 타입 언어로서 다른 특징 중에서도 상속, 라이브러리 그리고 유저가 스스로 정의한 복잡한 타입에 대한 정의 등을 지원합니다. 
 
-With Solidity you can create contracts for uses such as voting, crowdfunding, blind auctions,
-and multi-signature wallets.
+솔리디티로 투표, 크라우드펀딩, 익명 경매 그리고 다중 서명 지갑에 사용되는 컨트랙트들을 만들 수 있습니다. 
 
-When deploying contracts, you should use the latest released
-version of Solidity. Apart from exceptional cases, only the latest version receives
-`security fixes <https://github.com/ethereum/solidity/security/policy#supported-versions>`_.
-Furthermore, breaking changes as well as
-new features are introduced regularly. We currently use
-a 0.y.z version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+컨트랙트를 배포할 시, 반드시 최신 버전의 솔리디티를 사용하시기 바랍니다. 예외적인 경우를 제외하곤 오로지 최신 버전만이 `보안 사항 픽스 <https://github.com/ethereum/solidity/security/policy#supported-versions>`_를 인정받기 때문입니다.
+또한, 주기적으로 새로운 기능들이나 확연히 달라진 점들 소개될 예정입니다.  `빠르게 업데이트 되고 있음을 명시 <https://semver.org/#spec-item-4>`_하기 위하여 현재 저희 솔리디티 팀은 0.y.z 형식의 버전 넘버링 규칙을 사용하고 있습니다.
 
-.. warning::
+.. 주의::
 
-  Solidity recently released the 0.8.x version that introduced a lot of breaking
-  changes. Make sure you read :doc:`the full list <080-breaking-changes>`.
+  최근 솔리디티는 0.8.x 버전을 출시하면서 굉장히 많은 변동이 있었습니다. 
+  반드시 :doc:`전체 리스트 <080-breaking-changes>`를 확인하시기 바랍니다.
 
-Ideas for improving Solidity or this documentation are always welcome,
-read our :doc:`contributors guide <contributing>` for more details.
+솔리디티 혹은 공식 문서의 보다 나은 발전은 언제든지 환영합니다. 
+자세한 사항은 :doc:`기여자 가이드 <contributing>`를 확인해 주십시오.
 
-.. Hint::
+.. 힌트::
 
-  You can download this documentation as PDF, HTML or Epub by clicking on the versions
-  flyout menu in the bottom-left corner and selecting the preferred download format.
+  해당 공식 문서는 좌측 하단에 있는 버전 드롭다운 메뉴를 클릭하여 PDF, HTML 혹은 Epub와 같이 원하는 다운로드 형식으로 다운로드 하실 수 있습니다. 
 
 
-Getting Started
+시작하기
 ---------------
 
-**1. Understand the Smart Contract Basics**
+**1. 스마트 컨트랙트의 기초 이해하기**
 
-If you are new to the concept of smart contracts we recommend you to get started by digging
-into the "Introduction to Smart Contracts" section, which covers:
+만약 여러분이 스마트 컨트랙트가 처음이라면 "스마트 컨트랙트 개요" 섹션부터 시작하는 것을 추천드립니다. 해당 섹션은 다음 파트들을 다루고 있습니다. 
 
-* :ref:`A simple example smart contract <simple-smart-contract>` written in Solidity.
-* :ref:`Blockchain Basics <blockchain-basics>`.
-* :ref:`The Ethereum Virtual Machine <the-ethereum-virtual-machine>`.
+* 솔리디티로 구성된 :ref:`간단한 스마트 컨트랙트의 예시 <simple-smart-contract>`
+* :ref:`블록체인의 기초 <blockchain-basics>`.
+* :ref:`이더리움 가상 머신 <the-ethereum-virtual-machine>`.
 
 **2. Get to Know Solidity**
 
