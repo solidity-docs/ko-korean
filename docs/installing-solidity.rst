@@ -3,14 +3,15 @@
 .. _installing-solidity:
 
 ################################
-Installing the Solidity Compiler
+Solidity 컴파일러 설치하기
 ################################
 
-Versioning
+버저닝
 ==========
 
-Solidity versions follow `semantic versioning <https://semver.org>`_ and in addition to
-releases, **nightly development builds** are also made available.  The nightly builds
+Solidity 버전들은 `semantic versioning <https://semver.org>`_ 방식을 따르며 **nightly 빌드** 또한 가능합니다. 
+nightly 빌드는 항상 동작한다고 보기에는 힘들며,  
+The nightly builds
 are not guaranteed to be working and despite best efforts they might contain undocumented
 and/or broken changes. We recommend using the latest release. Package installers below
 will use the latest release.
@@ -18,84 +19,76 @@ will use the latest release.
 Remix
 =====
 
-*We recommend Remix for small contracts and for quickly learning Solidity.*
+*규모가 작은 컨트랙트를 작성하거나 Solidity를 보다 빠르게 배우기 위해 Remix를 사용할 것을 추천드립니다.*
 
-`Access Remix online <https://remix.ethereum.org/>`_, you do not need to install anything.
-If you want to use it without connection to the Internet, go to
-https://github.com/ethereum/remix-live/tree/gh-pages and download the ``.zip`` file as
-explained on that page. Remix is also a convenient option for testing nightly builds
-without installing multiple Solidity versions.
+`Remix online에 접속하면 <https://remix.ethereum.org/>`_, 어떤 것도 설치하실 필요가 없어집니다.
+인터넷 연결 없이 사용하고 싶으시다면, https://github.com/ethereum/remix-live/tree/gh-pages 페이지에 접속하신 후 ``.zip`` 파일을 다운로드 하십시오.
+Remix는 여러 버전의 Solidity를 설치하지 않고도 nightly 빌드를 테스트해볼 수 있는 편리한 옵션이기도 합니다. 
 
-Further options on this page detail installing commandline Solidity compiler software
-on your computer. Choose a commandline compiler if you are working on a larger contract
-or if you require more compilation options.
+이 페이지에선 여러분의 컴퓨터에 Solidity 컴파일러 소프트웨어 커맨드라인을 설치하기 위한 자세한 옵션들을 다뤄볼 예정입니다. 
+규모가 큰 컨트랙트나 더 많은 컴파일 옵션이 필요하실 경우 커맨드라인 컴파일러를 사용해 보십시오. 
 
 .. _solcjs:
 
 npm / Node.js
 =============
 
-Use ``npm`` for a convenient and portable way to install ``solcjs``, a Solidity compiler. The
-`solcjs` program has fewer features than the ways to access the compiler described
-further down this page. The
-:ref:`commandline-compiler` documentation assumes you are using
-the full-featured compiler, ``solc``. The usage of ``solcjs`` is documented inside its own
-`repository <https://github.com/ethereum/solc-js>`_.
+``npm`` 을 통해 Solidity 컴파일러인 ``solcjs`` 를 보다 편리하게 설치해보세요.
+`solcjs` 프로그램은 이 페이지 하단 부분에 소개된 컴파일러로 접근하는 것보다는 기능들이 적습니다. 
+:ref:`commandline-compiler` 문서는 여러분들이 모든 기능을 포함하고 있는 컴파일러인 ``solc``를 사용하고 있다고 가정합니다. 
+이 `레포지토리 <https://github.com/ethereum/solc-js>`_ 안에 ``solcjs`` 에 대한 자세한 설명이 있습니다. 
 
-Note: The solc-js project is derived from the C++
-`solc` by using Emscripten which means that both use the same compiler source code.
-`solc-js` can be used in JavaScript projects directly (such as Remix).
-Please refer to the solc-js repository for instructions.
+참고: solc-js 프로젝트는 Emscripten, 즉 같은 컴파일러 소스 코드를 사용하는 C++ `solc` 에서 유래됐습니다. 
+`solc-js` 는 Remix처럼 JavaScript 프로젝트에 사용될 수 있습니다. 
+자세한 사항은 solc-js 레포지토리를 참고해주십시오.
 
 .. code-block:: bash
 
     npm install -g solc
 
-.. note::
+.. 참고::
 
-    The commandline executable is named ``solcjs``.
+    commandline executable은 ``solcjs`` 라 불립니다.
 
-    The commandline options of ``solcjs`` are not compatible with ``solc`` and tools (such as ``geth``)
-    expecting the behaviour of ``solc`` will not work with ``solcjs``.
+    ``solcjs`` 커맨드라인 옵션은 ``solc`` 및 툴들(예: ``geth``)과 호환되지 않습니다. 
+    따라서 ``solc`` 에서의 행동은 ``solcjs`` 에선 작동되지 않습니다. 
 
 Docker
 ======
 
-Docker images of Solidity builds are available using the ``solc`` image from the ``ethereum`` organisation.
-Use the ``stable`` tag for the latest released version, and ``nightly`` for potentially unstable changes in the develop branch.
+Solidity 빌드의 Docker 이미지들은 ``ethereum`` 단체의 ``solc`` 이미지를 통해 가능합니다.
+가장 최신 버전은 ``stable`` 태그를, 잠재적으로 불안정한 변동은 develop 브랜치에 있는 ``nightly`` 를 사용하십시오.
 
-The Docker image runs the compiler executable, so you can pass all compiler arguments to it.
-For example, the command below pulls the stable version of the ``solc`` image (if you do not have it already),
-and runs it in a new container, passing the ``--help`` argument.
+Docker 이미지는 compiler executable를 실행하기 때문에 모든 컴파일러 인수를 전달할 수 있습니다. 
+예를 들어, (만약 여러분이 가지고 있지 않다면) 아래 명령어가 안정된 버전의 ``solc`` 이미지를 ``--help`` 인수를 전달한 후 pull하여 새로운 컨테이너에서 작동시키게 합니다.
 
 .. code-block:: bash
 
     docker run ethereum/solc:stable --help
 
-You can also specify release build versions in the tag, for example, for the 0.5.4 release.
+0.5.4 버전처럼 여러분들이 원하는 빌드 버전을 태그를 명시할 수도 있습니다.
 
 .. code-block:: bash
 
     docker run ethereum/solc:0.5.4 --help
 
-To use the Docker image to compile Solidity files on the host machine mount a
-local folder for input and output, and specify the contract to compile. For example.
+Docker 이미지를 호스트 머신에서 Solidity 파일들을 컴파일하려면 입력과 출력을 위한 로컬 폴더를 불러온 뒤 컴파일 하고자 하는 컨트랙트를 지정합니다. 예를 들자면,
 
 .. code-block:: bash
 
     docker run -v /local/path:/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/Contract.sol
 
-You can also use the standard JSON interface (which is recommended when using the compiler with tooling).
-When using this interface it is not necessary to mount any directories as long as the JSON input is
-self-contained (i.e. it does not refer to any external files that would have to be
-:ref:`loaded by the import callback <initial-vfs-content-standard-json-with-import-callback>`).
+툴링과 함께 컴파일러를 사용할 때 추천드리는 표준 JSON 인터페이스를 사용하실 수도 있습니다. 
+이 인터페이스를 사용할 땐 JSON 입력이 self-contained되어 있을 경우 어떤 경로도 불러오실 필요가 없습니다.
+:ref:`import callback에 의해 로드되어야 하는 <initial-vfs-content-standard-json-with-import-callback>` 어떠한 외부 파일을 참조할 필요가 없습니다.
 
 .. code-block:: bash
 
     docker run ethereum/solc:stable --standard-json < input.json > output.json
 
-Linux Packages
+리눅스 패키지
 ==============
+
 
 Binary packages of Solidity are available at
 `solidity/releases <https://github.com/ethereum/solidity/releases>`_.
@@ -551,10 +544,10 @@ of the current nightly build, but without the ``prerelease`` specifier.
 
 Example:
 
-0. The 0.4.0 release is made.
-1. The nightly build has a version of 0.4.1 from now on.
-2. Non-breaking changes are introduced --> no change in version.
-3. A breaking change is introduced --> version is bumped to 0.5.0.
-4. The 0.5.0 release is made.
+1. The 0.4.0 release is made.
+2. The nightly build has a version of 0.4.1 from now on.
+3. Non-breaking changes are introduced --> no change in version.
+4. A breaking change is introduced --> version is bumped to 0.5.0.
+5. The 0.5.0 release is made.
 
 This behaviour works well with the  :ref:`version pragma <version_pragma>`.
