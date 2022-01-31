@@ -1,18 +1,17 @@
 ###############################
-Introduction to Smart Contracts
+스마트 컨트랙트의 기초
 ###############################
 
 .. _simple-smart-contract:
 
 ***********************
-A Simple Smart Contract
+간단한 스마트 컨트랙트
 ***********************
 
-Let us begin with a basic example that sets the value of a variable and exposes
-it for other contracts to access. It is fine if you do not understand
-everything right now, we will go into more detail later.
+변수값을 설정하고 다른 컨트랙트에서 접근 가능하도록 노출시켜보는 간단한 예제를 만드는 것부터 시작해보겠습니다.
+지금 당장 이해가 안되더라도 걱정 마십시오. 앞으로 더 자세한 내용을 다룰 예정입니다.
 
-Storage Example
+Storage 예제
 ===============
 
 .. code-block:: solidity
@@ -32,49 +31,36 @@ Storage Example
         }
     }
 
-The first line tells you that the source code is licensed under the
-GPL version 3.0. Machine-readable license specifiers are important
-in a setting where publishing the source code is the default.
+첫번째 줄은 해당 소스 코드가 GPL 3.0 버전 라이센스 기준으로 작성되었음을 알립니다.
+기계가 읽을 수 있는 라이센스 표시자는 소스 코드를 기본값인 설정에서 중요한 역할을 합니다.
 
-The next line specifies that the source code is written for
-Solidity version 0.4.16, or a newer version of the language up to, but not including version 0.9.0.
-This is to ensure that the contract is not compilable with a new (breaking) compiler version, where it could behave differently.
-:ref:`Pragmas<pragma>` are common instructions for compilers about how to treat the
-source code (e.g. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
+다음 줄은 Solidity 0.4.16 버전으로 작성되었거나 0.9.0 버전은 포함되지 않은 새 버전의 언어로 작성되었음을 표시합니다.
+이는 해당 컨트랙트가 새 (오류가 날 수 있는) 컴파일러 버전에서는 호환이 되지 않아 다르게 동작할 수 있음을 명시하는 역할을 합니다.
+:ref:`Pragmas<pragma>` 는 컴파일러에게 어떻게 소스 코드를 다뤄야 하는지 알려주는 일반적인 설명서를 의미합니다 (예: `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_)
 
-A contract in the sense of Solidity is a collection of code (its *functions*) and
-data (its *state*) that resides at a specific address on the Ethereum
-blockchain. The line ``uint storedData;`` declares a state variable called ``storedData`` of
-type ``uint`` (*u*\nsigned *int*\eger of *256* bits). You can think of it as a single slot
-in a database that you can query and alter by calling functions of the
-code that manages the database. In this example, the contract defines the
-functions ``set`` and ``get`` that can be used to modify
-or retrieve the value of the variable.
+Solidity 내에서의 컨트랙트는 Ethereum 블록체인 상의 특정 주소에 있는 코드(*함수*)와 데이터(*상태*)의 집합체라 볼 수 있습니다.
+코드 ``uint storedData;``는 ``uint``(256비트의 무부호 정수) 타입의 ``storedData``라는 상태 변수를 선언하고 있습니다.
+데이터베이스를 다루는 함수 코드들을 조회 및 수정할 수 있는 일종의 데이터베이스 내부의 단일 슬롯이라 생각하시면 됩니다.
+예제에선 컨트랙트가 변수의 값을 바꾸거나 조회해올 수 있는 ``set``과 ``get`` 함수를 정의하고 있습니다. 
 
-To access a member (like a state variable) of the current contract, you do not typically add the ``this.`` prefix,
-you just access it directly via its name.
-Unlike in some other languages, omitting it is not just a matter of style,
-it results in a completely different way to access the member, but more on this later.
+현재 컨트랙트에서 (상태 변수와 같은) 멤버에 접근하기 위해서 굳이 ``this.`` 접두어를 쓸 필요 없이 이름에 직접 접근하실 수 있습니다.
+다른 언어와는 다르게 이를 생략하는 것은 스타일적인 것 뿐만이 아니라 멤버에 접근하는 완전히 다른 방식이기도 하지만 이는 추후에 살펴보도록 하겠습니다.
 
-This contract does not do much yet apart from (due to the infrastructure
-built by Ethereum) allowing anyone to store a single number that is accessible by
-anyone in the world without a (feasible) way to prevent you from publishing
-this number. Anyone could call ``set`` again with a different value
-and overwrite your number, but the number is still stored in the history
-of the blockchain. Later, you will see how you can impose access restrictions
-so that only you can alter the number.
+이 컨트랙트는 (Ethereum에 기반해 있기 때문에) 전 세계의 누구나 접근할 수 있는 단순 숫자를 여러분이 배포하는 것을 박는 (실질적인) 방법 없이 모두가 저장할 수 있도록 해주는 것 이외에 별다른 역할을 하고 있진 않습니다.
+누구든지 다른 값을 ``set``을 호출함으로서 여러분의 숫자를 덮어씌울 수 있지만, 해당 숫자는 여전히 블록체인의 히스토리에 저장되어 있습니다.
+추후에 어떻게 하면 여러분만이 숫자를 변경할 수 있도록 제한을 걸 수 있는지에 대해 알아보도록 하겠습니다.
 
-.. warning::
-    Be careful with using Unicode text, as similar looking (or even identical) characters can
-    have different code points and as such are encoded as a different byte array.
+.. 경고::
+    유니코드 텍스트를 사용하실 땐 주의하십시오.
+    비슷하거나 똑같은 철자라도 엄연히 다른 코드 포인트를 가지고 있어 다른 바이트 배열로 인코딩될 수 있습니다.
 
-.. note::
-    All identifiers (contract names, function names and variable names) are restricted to
-    the ASCII character set. It is possible to store UTF-8 encoded data in string variables.
+.. 참조::
+    모든 식별자(컨트랙트 이름, 함수 이름 및 변수 이름)는 ASCII 캐릭터 세트를 엄수합니다.
+    UTF-8 인코딩 데이터는 문자열 변수로 저장이 가능합니다.
 
 .. index:: ! subcurrency
 
-Subcurrency Example
+Subcurrency 예제 
 ===================
 
 The following contract implements the simplest form of a
