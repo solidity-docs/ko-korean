@@ -208,78 +208,61 @@ revert statement는 무조건적으로 종료하고 ``require`` 함수와 비슷
 블록체인의 기초
 *****************
 
-Blockchains as a concept are not too hard to understand for programmers. The reason is that
-most of the complications (mining, `hashing <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_,
-`elliptic-curve cryptography <https://en.wikipedia.org/wiki/Elliptic_curve_cryptography>`_,
-`peer-to-peer networks <https://en.wikipedia.org/wiki/Peer-to-peer>`_, etc.)
-are just there to provide a certain set of features and promises for the platform. Once you accept these
-features as given, you do not have to worry about the underlying technology - or do you have
-to know how Amazon's AWS works internally in order to use it?
+프로그래머에겐 블록체인의 개념이 아주 어렵게 다가오진 않을겁니다. 
+이유는 대부분의 복잡한 개념들 (채굴, `해싱 <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_, `타원곡선 암호 <https://en.wikipedia.org/wiki/Elliptic_curve_cryptography>`_, `동등 계층 통신망 <https://en.wikipedia.org/wiki/Peer-to-peer>`_ 등)
+은 단순히 플랫폼을 위한 특징과 약속을 설명하기 위한 도구일 뿐, 여러분들이 해당 특징들만 이해하게 된다면 그 밑바닥의 기술에 대해서는 걱정하지 않으셔도 됩니다. 
+마치 아마존의 AWS를 쓰기 위해 내부까지 전부 알아야 될 필요가 없듯이요. 
 
 .. index:: transaction
 
 Transactions
 ============
 
-A blockchain is a globally shared, transactional database.
-This means that everyone can read entries in the database just by participating in the network.
-If you want to change something in the database, you have to create a so-called transaction
-which has to be accepted by all others.
-The word transaction implies that the change you want to make (assume you want to change
-two values at the same time) is either not done at all or completely applied. Furthermore,
-while your transaction is being applied to the database, no other transaction can alter it.
+블록체인은 전 세계적으로 공유되는 거래 기반의 데이터베이스입니다.
+이는 네트워크에만 접속하기만 하면 누구든지 데이터베이스 엔트리를 읽을 수 있다는 의미입니다. 
+만일 데이터베이스에 무언가를 바꾸고 싶다면, 여러분은 타인도 인정할 수 있는 소위 트랜잭션이라는 것을 생성해야 합니다. 
+트랜잭션이란 용어는 여러분이 바꾸려는 사항(예컨대 두 값을 동시에 바꾼다는 등)은 아예 이루어지지 않거나 혹은 완전히 적용될 수 있음을 암시합니다. 
+나아가, 여러분의 트랜잭션이 데이터베이스에 적용되게 되면, 어떤 다른 트랜잭션도 그것을 변경할 수 없습니다. 
 
-As an example, imagine a table that lists the balances of all accounts in an
-electronic currency. If a transfer from one account to another is requested,
-the transactional nature of the database ensures that if the amount is
-subtracted from one account, it is always added to the other account. If due
-to whatever reason, adding the amount to the target account is not possible,
-the source account is also not modified.
+예를 들어, 전자 통화로 표시된 모든 계좌의 잔액 리스트를 보여주는 표가 있다고 가정해 보겠습니다. 
+한 계좌에서 다른 계좌로의 이체 요청이 발생하면, 데이터베이스의 기본적인 거래 성질에 따라 한 계좌에서 특정 양이 감소가 되면 다른 한 쪽은 항상 그마만큼 추가가 된다는 것을 의미합니다. 
+어떠한 이유든지 간에 만일 상대방 계좌 상에서 해당 양만큼 증가가 이루어지지 않는다면 이는 원래 계좌에서 또한 감소가 이루어지지 않게 됩니다. 
 
-Furthermore, a transaction is always cryptographically signed by the sender (creator).
-This makes it straightforward to guard access to specific modifications of the
-database. In the example of the electronic currency, a simple check ensures that
-only the person holding the keys to the account can transfer money from it.
+또한, 트랜잭션은 항상 전송자(생성자)에 의해 암호화된 서명을 받게 됩니다. 
+이렇게 함으로서 데이터베이스의 특정 변경에 대한 접근을 직접적으로 보호할 수 있게 됩니다. 
+전자 통화 예제에서 볼 수 있듯이, 계좌의 키를 가지고 있는 오직 한 사람만이 돈을 이체할 수 있습니다. 
 
 .. index:: ! block
 
-Blocks
+블록
 ======
 
-One major obstacle to overcome is what (in Bitcoin terms) is called a "double-spend attack":
-What happens if two transactions exist in the network that both want to empty an account?
-Only one of the transactions can be valid, typically the one that is accepted first.
-The problem is that "first" is not an objective term in a peer-to-peer network.
+(Bitcoin 용어로) "double-spend attack"라 하는 큰 문제점이 있습니다. 
+만일 한 네트워크 안에 계좌를 동시에 비우고 싶어하는 두 개의 서로 다른 트랜잭션이 발생한다면 어떻게 될까요? 
+평상적으로 맨 첫번째로 인정되는 트랜잭션만이 유효하게 될겁니다. 문제는 peer-to-peer network 상에서 "첫번째"라는 단어가 그리 객관적인 용어가 아니라는 점에 있습니다.  
 
-The abstract answer to this is that you do not have to care. A globally accepted order of the transactions
-will be selected for you, solving the conflict. The transactions will be bundled into what is called a "block"
-and then they will be executed and distributed among all participating nodes.
-If two transactions contradict each other, the one that ends up being second will
-be rejected and not become part of the block.
+간단히 말씀드리자면 이 부분에 대해 크게 신경쓰실 필요가 없습니다. 여러분들께 널리 통용되는 트랜잭션의 순서가 주어져서 문제를 해결하기 때문입니다.
+트랜잭션은 "블록"이라는 것으로 묶여지며 참가하는 모든 노드에게 전파되고 실행됩니다. 
+만일 두 개의 서로 다른 트랜잭션이 충돌을 일으킬 경우, 두 번째로 오는 트랜잭션은 거절되며 블록의 한 부분이 되지 못합니다. 
 
-These blocks form a linear sequence in time and that is where the word "blockchain"
-derives from. Blocks are added to the chain in rather regular intervals - for
-Ethereum this is roughly every 17 seconds.
+이 블록들은 시간의 선형 시퀀스를 형성하며, 이것이 바로 "블록체인"이라는 용어가 탄생하게 된 계기입니다. 
+블록들은 일정한 간격으로 체인에 추가가되며, Ethereum의 경우 대략 매 17초가 걸립니다. 
 
-As part of the "order selection mechanism" (which is called "mining") it may happen that
-blocks are reverted from time to time, but only at the "tip" of the chain. The more
-blocks are added on top of a particular block, the less likely this block will be reverted. So it might be that your transactions
-are reverted and even removed from the blockchain, but the longer you wait, the less
-likely it will be.
+순서 선택 메카니즘("채굴"이라고도 부릅니다)의 한 부분으로써 블록들은 시간에 따라 회귀하지만 오직 체인의 끝부분에서만 일어납니다. 
+특정 블록의 상단에 블록들이 추가되면 될수록 회귀되는 확률은 적어집니다. 따라서, 여러분의 트랜잭션들이 회귀될 수 있으며 블록체인에서 제거된다 하더라도 더욱 오래 기다릴수록 그럴 확률이 적어지게 됩니다.
 
-.. note::
-    Transactions are not guaranteed to be included in the next block or any specific future block,
-    since it is not up to the submitter of a transaction, but up to the miners to determine in which block the transaction is included.
+.. 참고::
+    트랜잭션들이 다음 블록이나 혹은 미래의 어떠한 블록에 항상 추가가 된다고 보장될 순 없습니다. 
+    왜냐하면 이는 트랜잭션의 제출자가 아닌 어떤 블록에 트랜잭션을 포함시킬지 결정하는 채굴자에 달려 있기 때문입니다.
 
-    If you want to schedule future calls of your contract, you can use
-    a smart contract automation tool or an oracle service.
+    만일 여러분이 만드신 컨트랙트의 미래 호출을 스케쥴링하고 싶으시다면, 스마트 컨트랙트 자동화 툴이나 오라클 서비스를 이용하실 수 있습니다.
 
 .. _the-ethereum-virtual-machine:
 
 .. index:: !evm, ! ethereum virtual machine
 
 ****************************
-The Ethereum Virtual Machine
+Ethereum 가상 머신
 ****************************
 
 Overview
