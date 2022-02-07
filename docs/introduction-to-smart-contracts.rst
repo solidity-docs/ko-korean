@@ -265,148 +265,103 @@ Transactions
 Ethereum 가상 머신
 ****************************
 
-Overview
+개요
 ========
 
-The Ethereum Virtual Machine or EVM is the runtime environment
-for smart contracts in Ethereum. It is not only sandboxed but
-actually completely isolated, which means that code running
-inside the EVM has no access to network, filesystem or other processes.
-Smart contracts even have limited access to other smart contracts.
+Ethereum 가상 머신 (혹은 EVM)은 Ethereum 내의 스마트 컨트랙트를 위한 런타임 환경입니다. 
+보호된 영역에서 실행될 뿐만 아니라 완전히 독립적이기 때문에 EVM 내부에서 동작하는 코드들은 네트워크, 파일 시스템 혹은 기타 프로세스에 접근할 수 없습니다. 
+스마트 컨트랙트는 심지어 다른 스마트 컨트랙트에 제한적으로 접근할 수 밖에 없습니다.
 
 .. index:: ! account, address, storage, balance
 
 .. _accounts:
 
-Accounts
+계정
 ========
 
-There are two kinds of accounts in Ethereum which share the same
-address space: **External accounts** that are controlled by
-public-private key pairs (i.e. humans) and **contract accounts** which are
-controlled by the code stored together with the account.
+Ethereum에는 동일한 주소를 공유하고 있는 두 가지 종류의 계정이 있습니다. 
+그 중 하나는 개인-공개 키쌍(즉, 인간)에 의해 관리되는 **외부 계정**이며, 다른 하나는 계정과 함께 코드에 의해 관리되는 **컨트랙트 계정**입니다.
 
-The address of an external account is determined from
-the public key while the address of a contract is
-determined at the time the contract is created
-(it is derived from the creator address and the number
-of transactions sent from that address, the so-called "nonce").
+외부 계정의 주소는 공개키에 의해 결정되며, 컨트랙트의 주소는 컨트랙트가 생성되는 시점에서 결정됩니다. 
+이는 생성자의 주소와 소위 "nonce"라 하는 해당 주소로부터 전송된 트랜잭션의 수에서 비롯됩니다.
 
-Regardless of whether or not the account stores code, the two types are
-treated equally by the EVM.
+게정이 코드를 저장하는지의 유무와는 상관없이, 두 가지 계정 모두 EVM에 의해 동등하게 취급됩니다.
 
-Every account has a persistent key-value store mapping 256-bit words to 256-bit
-words called **storage**.
+모든 계정은 **storage**라 불리는 256 비트의 글자에서 256 비트의 글자로 매핑하는 일관된 키-값 저장된 값을 가지고 있습니다.
 
-Furthermore, every account has a **balance** in
-Ether (in "Wei" to be exact, ``1 ether`` is ``10**18 wei``) which can be modified by sending transactions that
-include Ether.
+또한, 모든 계정은 Ehter(``1 ether`` 는 ``10**18 wei`` 입니다) 단위로 표시된 **balance**가 있으며 이는 Ether를 포함하는 트랜잭션을 전송함으로서 바뀝니다.
 
 .. index:: ! transaction
 
-Transactions
+트랜잭션
 ============
 
-A transaction is a message that is sent from one account to another
-account (which might be the same or empty, see below).
-It can include binary data (which is called "payload") and Ether.
+트랜잭션이란 한 계정에서 다른 계정으로 전송되는 메세지(같거나 혹은 빈 형태일 수도 있습니다. 아래를 참조해주세요)입니다.
+트랜잭션은 binary 데이터("payload"라 불립니다) 및 Ether를 포함할 수 있습니다.
 
-If the target account contains code, that code is executed and
-the payload is provided as input data.
+타겟 계정이 코드를 포함하고 있으면, 해당 코드가 실행되며 payload는 입력 데이터로써 제공됩니다.
 
-If the target account is not set (the transaction does not have
-a recipient or the recipient is set to ``null``), the transaction
-creates a **new contract**.
-As already mentioned, the address of that contract is not
-the zero address but an address derived from the sender and
-its number of transactions sent (the "nonce"). The payload
-of such a contract creation transaction is taken to be
-EVM bytecode and executed. The output data of this execution is
-permanently stored as the code of the contract.
-This means that in order to create a contract, you do not
-send the actual code of the contract, but in fact code that
-returns that code when executed.
+만일 타겟 게정이 설정되어 있지 않다면 (트랜잭션이 수취인이 없거나 수취인이 ``null`` 로 설정되어 있다면), 트랜잭션은 **새로운 컨트랙트**를 생성합니다.
+이미 언급 드렸다시피, 컨트랙트의 주소는 zero 주소가 아니라 전송자와 ("nonce"를 보낸) 트랜잭션의 수로부터 비롯된 주소입니다. 
+컨트랙트를 생성하는 이러한 트랜잭션의 payload는 EVM의 바이트 코드로 전송되어 실행됩니다. 
+이 실행에 따른 출력 데이터는 컨트랙트의 코드로써 영구히 저장됩니다. 
+이는 컨트랙트를 생성하기 위해선 컨트랙트의 실제 코드를 전송하는 것이 아니라 실제로는 실행될 때 해당 코드를 반환하는 코드를 전송하는 것을 의미합니다.
 
-.. note::
-  While a contract is being created, its code is still empty.
-  Because of that, you should not call back into the
-  contract under construction until its constructor has
-  finished executing.
+.. 참조::
+    컨트랙트가 생성되는 동안 여전히 해당 코드는 비어 있습니다. 
+    따라서, 여러분은 constructor가 실행을 끝날 때까지 제작되고 있는 컨트랙트를 콜백해서는 안 됩니다. 
 
 .. index:: ! gas, ! gas price
 
-Gas
+가스
 ===
 
-Upon creation, each transaction is charged with a certain amount of **gas**,
-whose purpose is to limit the amount of work that is needed to execute
-the transaction and to pay for this execution at the same time. While the EVM executes the
-transaction, the gas is gradually depleted according to specific rules.
+생성이 되고 난 후, 각 트랜잭션은 일정량의 **가스**를 지불하게 됩니다. 
+이는 트랜잭션을 실행하기 위해 필요한 작업량을 제한함과 동시에 작업을 수행하기 위하여 지불하기 위함입니다. 
+EVM이 트랜잭션을 실행하는 동안, 가스는 특정 규칙에 따라 점차적으로 고갈됩니다.
 
-The **gas price** is a value set by the creator of the transaction, who
-has to pay ``gas_price * gas`` up front from the sending account.
-If some gas is left after the execution, it is refunded to the creator in the same way.
+**가스 가격**은 전송 계좌로부터 미리 ``gas_price * gas`` 양만큼 지불해야 하는 트랜잭션 생성자가 설정한 값입니다. 
+만일 실행 이후 약간의 가스가 남게 된다면, 그 가스는 똑같이 생성자에게 환불됩니다.
 
-If the gas is used up at any point (i.e. it would be negative),
-an out-of-gas exception is triggered, which reverts all modifications
-made to the state in the current call frame.
+만일 가스가 일정 수준까지 사용하게 될 경우 (즉 음수가 될 경우), out-of-gas 예외가 발생되며 현재 프레임의 상태에 맞춰 모든 변경 사항이 취소가 됩니다. 
 
 .. index:: ! storage, ! memory, ! stack
 
-Storage, Memory and the Stack
+스토리지, 메모리 및 스택
 =============================
 
-The Ethereum Virtual Machine has three areas where it can store data-
-storage, memory and the stack, which are explained in the following
-paragraphs.
+Ethereum 가상 머신은 데이터를 저장할 수 있는 세 가지 공간이 있는데, 바로 스토리지, 메모리 그리고 스택입니다.
+다음 단락에서 바로 설명드리도록 하겠습니다.
 
-Each account has a data area called **storage**, which is persistent between function calls
-and transactions.
-Storage is a key-value store that maps 256-bit words to 256-bit words.
-It is not possible to enumerate storage from within a contract, it is
-comparatively costly to read, and even more to initialise and modify storage. Because of this cost,
-you should minimize what you store in persistent storage to what the contract needs to run.
-Store data like derived calculations, caching, and aggregates outside of the contract.
-A contract can neither read nor write to any storage apart from its own.
+각 계정은 **스토리지**라는 데이터 공간이 있는데 함수의 호출과 트랜잭션 사이에서 지속적으로 존재합니다. 
+스토리지는 256 비트 단어를 256 비트의 단어로 매핑해주는 키-값 저장소입니다. 
+컨트랙트로부터 스토리지를 열거하는 것은 불가능합니다. 스토리지를 읽는 것은 상대적으로 값비싸며 초기화하거나 변경을 할 경우 더욱 비싸집니다. 
+이러한 비용 때문에 여러분들은 지속적 스토리지 안에 저장할 것부터 컨트랙트를 실행시키기 위해 필요한 것까지를 최소화해야 합니다. 
+도출된 계산, 캐싱 그리고 aggregate 같은 데이터들은 컨트랙트 외부에 저장하십시오. 
+컨트랙트는 자기 자신 이외에 어떠한 스토리지에 읽거나 쓸 수 없습니다. 
 
-The second data area is called **memory**, of which a contract obtains
-a freshly cleared instance for each message call. Memory is linear and can be
-addressed at byte level, but reads are limited to a width of 256 bits, while writes
-can be either 8 bits or 256 bits wide. Memory is expanded by a word (256-bit), when
-accessing (either reading or writing) a previously untouched memory word (i.e. any offset
-within a word). At the time of expansion, the cost in gas must be paid. Memory is more
-costly the larger it grows (it scales quadratically).
+두번째 데이터 영역은 새롭게 정리된 각 메세지 콜에 대한 인스턴스를 가지는 컨트랙트인 **메모리**입니다. 
+메모리는 선형적이며 바이트 레벨로 주소화되지만 읽기에는 256비트까지만 허용되며 쓰기에는 8비트에서 256비트 사이에서 가능합니다. 
+메모리는 (읽거나 쓰기를 통해) 이전에 접촉되지 않은 메모리 글자(예를 들어 글자 안의 모든 상쇄)에 접근할 때 워드에 의해 확장됩니다. 
+확장 시, 반드시 가스가 지불됩니다. 메모리는 크기가 커질수록 비용 또한 증가합니다 (2차식으로 증가합니다).
 
-The EVM is not a register machine but a stack machine, so all
-computations are performed on a data area called the **stack**. It has a maximum size of
-1024 elements and contains words of 256 bits. Access to the stack is
-limited to the top end in the following way:
-It is possible to copy one of
-the topmost 16 elements to the top of the stack or swap the
-topmost element with one of the 16 elements below it.
-All other operations take the topmost two (or one, or more, depending on
-the operation) elements from the stack and push the result onto the stack.
-Of course it is possible to move stack elements to storage or memory
-in order to get deeper access to the stack,
-but it is not possible to just access arbitrary elements deeper in the stack
-without first removing the top of the stack.
+EVM은 register machine이 아닌 stack machine으로써, 모든 계산은 **스택**이라 불리는 데이터 영역에서 행해집니다. 
+스택은 최대 1024개의 요소들과 256비트의 단어들로 구성됩니다. 스택에 접근하는 것은 최상단부터만 가능하며 다음과 같은 방법으로 진행됩니다:
+최상단의 16개 요소들 중 하나를 스택의 상단에 복사를 하거나 혹은 최상단의 요소를 16개 요소들 중 하나의 밑으로 바꿉니다. 
+다른 모든 처리들은 스택의 최상단에서 두 개 (혹은 처리에 따라 한 개 혹은 그 이상도 됩니다)의 요소들을 소비하며, 그 결과를 스택에 옮깁니다. 
+물론, 스택에 좀 더 깊이 접근하기 위해 스택의 요소들을 스토리지로 옮길 수도 있으나, 스택의 첫 상단의 요소를 제거하지 않고 스택의 더 깊은 곳에 있는 임의의 요소에 접근하는 것은 불가능합니다.
 
 .. index:: ! instruction
 
-Instruction Set
+명령어 집합
 ===============
 
-The instruction set of the EVM is kept minimal in order to avoid
-incorrect or inconsistent implementations which could cause consensus problems.
-All instructions operate on the basic data type, 256-bit words or on slices of memory
-(or other byte arrays).
-The usual arithmetic, bit, logical and comparison operations are present.
-Conditional and unconditional jumps are possible. Furthermore,
-contracts can access relevant properties of the current block
-like its number and timestamp.
+EVM의 명령어 집합은 합의 문제를 야기시킬 소지가 있는 부정확하거나 불규칙적인 시행을 최소화하기 위해 존재합니다. 
+모든 명령어들은 기초 데이터 타입, 256비트의 단어 혹은 메모리의 일부분 (혹은 다른 바이트 배열들) 상에서 동작합니다. 
+일반 기하학, 비트, 논리 연산자 및 비교 연산자도 있습니다. 조건부 혹은 비조건부 건너뛰기 또한 가능합니다. 
+더불어, 컨트랙트들은 숫자, 타임 스탬프와 같이 현재 블록의 관련있는 프로프티들에게 접근 가능합니다. 
 
-For a complete list, please see the :ref:`list of opcodes <opcodes>` as part of the inline
-assembly documentation.
+전체 리스트를 보시려면 inline assembly 문서 중 하나인  :ref:`list of opcodes <opcodes>` 를 참고하시기 바랍니다. 
 
 .. index:: ! message call, function;call
 
