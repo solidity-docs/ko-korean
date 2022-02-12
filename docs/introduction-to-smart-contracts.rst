@@ -390,18 +390,15 @@ call payload에 접근할 수 있게 되는데, 이는 **calldata**라 하는 �
 Delegatecall / Callcode and Libraries
 =====================================
 
-There exists a special variant of a message call, named **delegatecall**
-which is identical to a message call apart from the fact that
-the code at the target address is executed in the context of the calling
-contract and ``msg.sender`` and ``msg.value`` do not change their values.
+**deleegatecall**이라 하는 message call의 특수 변형 형태가 있습니다. 
+message call과 동일하지만 호출 중인 컨트랙트의 컨텍스트 내에서 실행되는 타겟 주소의 코드와 
+``msg.sender`` 및 ``msg.value``가 그 값들을 변경하지 않는다는 점만 다릅니다. 
 
-This means that a contract can dynamically load code from a different
-address at runtime. Storage, current address and balance still
-refer to the calling contract, only the code is taken from the called address.
+이는 컨트랙트가 런타임에서 다른 주소로부터 코드를 동적으로 로드할 수 있음을 의미합니다. 
+스토리지, 현 주소 그리고 잔고는 여전히 호출 중인 컨트랙트를 참조하며 오직 코드만이 호출된 주소로부터 가져와집니다.
 
-This makes it possible to implement the "library" feature in Solidity:
-Reusable library code that can be applied to a contract's storage, e.g. in
-order to implement a complex data structure.
+이렇게 함으로서 Solidity 내에 있는 "라이브러리" 특성(예를 들어 복잡한 데이터 구조를 시행하기 위한 컨트랙트 스토리지에 적용될 수 있는
+재사용 가능한 라이브러리 코드)을 시행할 수 있게 만듭니다.
 
 .. index:: log
 
