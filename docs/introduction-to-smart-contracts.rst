@@ -405,51 +405,42 @@ message call과 동일하지만 호출 중인 컨트랙트의 컨텍스트 내�
 Logs
 ====
 
-It is possible to store data in a specially indexed data structure
-that maps all the way up to the block level. This feature called **logs**
-is used by Solidity in order to implement :ref:`events <events>`.
-Contracts cannot access log data after it has been created, but they
-can be efficiently accessed from outside the blockchain.
-Since some part of the log data is stored in `bloom filters <https://en.wikipedia.org/wiki/Bloom_filter>`_, it is
-possible to search for this data in an efficient and cryptographically
-secure way, so network peers that do not download the whole blockchain
-(so-called "light clients") can still find these logs.
+상위 블록 레벨을 매핑하는 특정 인덱스의 데이터 구조에 데이터를 저장하는 것이 가능합니다. 
+이러한 특성을 **logs**라 불리며 :ref:`events <events>` 를 시행하기 위해 Solidity 내에서 사용됩니다.
+컨트랙트는 생성되고 나면 log 데이터에 접근할 순 없지만 블록체인의 바깥쪽에서 효율적으로 접근할 수 있습니다.
+특정 log 데이터는 `bloom filters <https://en.wikipedia.org/wiki/Bloom_filter>`_ 에 저장되기 때문에,
+효율적이고 암호화적으로 안전한 방식으로 데이터를 탐색할 수 있으며 모든 블록체인을 다운로드하지 않은 network peer(이른바 "light client"라고도 합니다) 또한 이 log를 찾을 수 있습니다.
 
 .. index:: contract creation
 
 Create
 ======
 
-Contracts can even create other contracts using a special opcode (i.e.
-they do not simply call the zero address as a transaction would). The only difference between
-these **create calls** and normal message calls is that the payload data is
-executed and the result stored as code and the caller / creator
-receives the address of the new contract on the stack.
+컨트랙트는 심지어 특별한 연산 부호를 통해 다른 컨트랙트를 생성할 수도 있습니다.
+즉, 트랜잭션과 같이 단순히 제로 주소를 호출하는 것에만 그치지 않습니다. 
+이렇게 **create call**과 일반 message call 간의 유일한 차이는 payload 데이터가 실행되고 코드로 결과가 저장되며 
+호출자 혹은 생성자가 스택 상에 새로운 컨트랙트의 주소를 받는다는 점입니다.
 
 .. index:: selfdestruct, self-destruct, deactivate
 
 Deactivate and Self-destruct
 ============================
 
-The only way to remove code from the blockchain is when a contract at that
-address performs the ``selfdestruct`` operation. The remaining Ether stored
-at that address is sent to a designated target and then the storage and code
-is removed from the state. Removing the contract in theory sounds like a good
-idea, but it is potentially dangerous, as if someone sends Ether to removed
-contracts, the Ether is forever lost.
+블록체인에서 코드를 제거하는 유일한 방법은 해당 주소의 컨트랙트가 ``selfdestruct`` 작업을 실행하는 경우입니다.
+해당 주소에 저장된 남아있는 Ether는 지정된 타겟으로 전송되며 이에 따라 스토리지와 코드는 상태에서 제거됩니다.
+이론적으로 봤을 때 컨트랙트를 제거하는 것은 좋은 아이디어처럼 들릴 수도 있지만, 누군가가 제거된 컨트랙트에 Ether를 전송하고 Ether가 영원히 없어질 수 있는
+것처럼 잠재적으로는 위험합니다.
 
-.. warning::
-    Even if a contract is removed by ``selfdestruct``, it is still part of the
-    history of the blockchain and probably retained by most Ethereum nodes.
-    So using ``selfdestruct`` is not the same as deleting data from a hard disk.
+.. 경고::
+    ``selfdestruct`` 로 인해 컨트랙트가 제거가 되었어도 여전히 블록체인의 히스토리의 한 부분이며
+    대부분의 Ethereum 노드에 의해 아마도 보유되고 있을 수 있습니다.
+    따라서, ``selfdestruct`` 방식을 사용하는 것은 하드디스크에서 데이터를 지우는 것과는 다릅니다.
 
-.. note::
-    Even if a contract's code does not contain a call to ``selfdestruct``,
-    it can still perform that operation using ``delegatecall`` or ``callcode``.
+.. 참고::
+    컨트랙트의 코드에서 ``selfdestruct`` 로의 호출 부분이 없다 하더라도 ``delegatecall`` 혹은 ``callcode`` 를 통해 해당 작업을 실행할 수 있습니다.
 
-If you want to deactivate your contracts, you should instead **disable** them
-by changing some internal state which causes all functions to revert. This
-makes it impossible to use the contract, as it returns Ether immediately.
+만일 여러분의 컨트랙트를 비활성화시키고 싶으시다면, 모든 함수를 되돌리게 하는 내부 상태값을 변경함으로서 컨트랙트를 **비활성화**시키십시오.
+이렇게 하면 Ether를 즉시 반환받을 수 있어 컨트랙트를 사용 불가능하게 만들기 때문입니다.
 
 
 .. index:: ! precompiled contracts, ! precompiles, ! contract;precompiled
@@ -459,15 +450,11 @@ makes it impossible to use the contract, as it returns Ether immediately.
 Precompiled Contracts
 =====================
 
-There is a small set of contract addresses that are special:
-The address range between ``1`` and (including) ``8`` contains
-"precompiled contracts" that can be called as any other contract
-but their behaviour (and their gas consumption) is not defined
-by EVM code stored at that address (they do not contain code)
-but instead is implemented in the EVM execution environment itself.
+"precompiled contracts"라 하는 특별한 작은 세트의 컨트랙트 주소가 있습니다.
+이 주소는 ``1`` 에서 ``8`` (포함)까지의 범위를 가지고 있으며 기타 컨트랙트처럼 호출될 수 있지만
+행동과 가스 소비는 특정 주소에 저장되는 EVM 코드에 의해 정의되지 않습니다 (코드를 포함하고 있지 않습니다).
+다만, EVM의 실행 환경 자체에서 시행될 뿐입니다.
 
-Different EVM-compatible chains might use a different set of
-precompiled contracts. It might also be possible that new
-precompiled contracts are added to the Ethereum main chain in the future,
-but you can reasonably expect them to always be in the range between
-``1`` and ``0xffff`` (inclusive).
+다양한 EVM 호환적인 체인들은 다른 세트의 precompiled contract를 사용할 수 있습니다. 
+새 precompiled contracts가 미래에 Ethereum의 메인 체인에 추가될 수도 있지만 
+항상 ``1`` 과 ``0xffff`` (포함) 범위 내에 존재한다는 것을 여러분은 합리적으로 기대해볼 수 있습니다.
