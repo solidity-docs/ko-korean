@@ -368,31 +368,22 @@ EVM의 명령어 집합은 합의 문제를 야기시킬 소지가 있는 부정
 Message Calls
 =============
 
-Contracts can call other contracts or send Ether to non-contract
-accounts by the means of message calls. Message calls are similar
-to transactions, in that they have a source, a target, data payload,
-Ether, gas and return data. In fact, every transaction consists of
-a top-level message call which in turn can create further message calls.
+컨트랙트는 message call을 통하여 다른 컨트랙트를 호출하거나 컨트랙트와 연결되어 있지 않은 계정으로 Ether를 보낼 수 있습니다.
+Message call은 소스, 타겟, 데이터 페이로드, Ether, 가스 그리고 데이터 반환이 있다는 점에서 트랜잭션과 비슷합니다.
+사실상 모든 트랜잭션은 더 많은 mesage call들을 생성할 수 있는 상위 message call로 구성되어 있습니다.
 
-A contract can decide how much of its remaining **gas** should be sent
-with the inner message call and how much it wants to retain.
-If an out-of-gas exception happens in the inner call (or any
-other exception), this will be signaled by an error value put onto the stack.
-In this case, only the gas sent together with the call is used up.
-In Solidity, the calling contract causes a manual exception by default in
-such situations, so that exceptions "bubble up" the call stack.
+컨트랙트는 내부 message call에게 남아있는 **가스**를 얼마만큼 보낼지, 그리고 얼마만큼 보존할지를 결정합니다.
+만일 가스 부족 예외(혹은 기타 예외)가 내부 call에서 발생될 경우, 스택에 에러값으로 신호가 보내집니다.
+이 경우, call과 함께 보내진 가스만이 사용됩니다. 
+Solidity에선, 컨트랙트를 호출하는 것은 이러한 상황에서 기본적으로 수동적인 예외를 야기시켜서 콜 스택에 예외들이 많이 발생합니다.
 
-As already said, the called contract (which can be the same as the caller)
-will receive a freshly cleared instance of memory and has access to the
-call payload - which will be provided in a separate area called the **calldata**.
-After it has finished execution, it can return data which will be stored at
-a location in the caller's memory preallocated by the caller.
-All such calls are fully synchronous.
+이미 언급드렸다시피, 호출된 컨트랙트(호출자와 동일할 수도 있습니다)는 새롭게 정리된 메모리 인스턴스를 받게 되며
+call payload에 접근할 수 있게 되는데, 이는 **calldata**라 하는 독립된 공간에서 제공됩니다.
+해당 처리 건을 완료한 후, 호출자에 의해 미리 정해진 호출자의 메모리 장소에 저장될 데이터를 반환합니다.
+이러한 모든 호출들은 전부 동기적입니다. 
 
-Calls are **limited** to a depth of 1024, which means that for more complex
-operations, loops should be preferred over recursive calls. Furthermore,
-only 63/64th of the gas can be forwarded in a message call, which causes a
-depth limit of a little less than 1000 in practice.
+콜들은 1024만큼의 depth로 **한정되어 있는데**, 이는 더욱 복잡한 작업의 경우 재귀 호출보다는 루프가 더 선호된다는 의미입니다.
+또한, 63 혹은 64번째의 가스만 message call에 전달될 수 있으며 이는 실제론 1000보다 작은 depth limit이 걸리게 됩니다.
 
 .. index:: delegatecall, callcode, library
 
