@@ -1,5 +1,5 @@
 ###################
-Solidity by Example
+예제로 살펴보는 Solidity
 ###################
 
 .. include:: examples/voting.rst
