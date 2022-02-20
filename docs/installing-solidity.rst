@@ -138,12 +138,11 @@ solc의 가장 최신 안정화 버전을 설치하시려면,
     파일들만 접근하는 등의 제한이 걸리게 됩니다.
     자세한 사항은 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ 부분을 확인해주십시오.
 
-macOS Packages
+macOS 패키지
 ==============
 
-We distribute the Solidity compiler through Homebrew
-as a build-from-source version. Pre-built bottles are
-currently not supported.
+Solidity 컴파일러는 build-from-source 버전으로 Homebrew를 통해 제공됩니다.
+Pre-built bottle는 현재 제공되고 있지 않습니다.
 
 .. code-block:: bash
 
@@ -152,16 +151,13 @@ currently not supported.
     brew tap ethereum/ethereum
     brew install solidity
 
-To install the most recent 0.4.x / 0.5.x version of Solidity you can also use ``brew install solidity@4``
-and ``brew install solidity@5``, respectively.
+Solidity 0.4.x / 0.5.x의 가장 최신 버전을 다운로드하기 위하여 ``brew install solidity@4`` 및 ``brew install solidity@5`` 를 사용하실 수 있습니다,
 
-If you need a specific version of Solidity you can install a
-Homebrew formula directly from Github.
+만일 특정 버전의 Solidity를 원하실 경우 Github에서 직접 Homebrew formula를 설치하실 수 있습니다.
 
-View
-`solidity.rb commits on Github <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
+`solidity.rb commits on Github <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_ 를 참조해주십시오.
 
-Copy the commit hash of the version you want and check it out on your machine.
+여러분들께서 원하는 버전의 해시 커밋을 복사하신 후 컴퓨터에서 확인해보시길 바랍니다.
 
 .. code-block:: bash
 
@@ -169,7 +165,7 @@ Copy the commit hash of the version you want and check it out on your machine.
     cd homebrew-ethereum
     git checkout <your-hash-goes-here>
 
-Install it using ``brew``:
+``brew`` 를 이용하여 설치합니다.
 
 .. code-block:: bash
 
