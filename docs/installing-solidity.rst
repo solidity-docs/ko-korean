@@ -89,12 +89,9 @@ Docker 이미지를 호스트 머신에서 Solidity 파일들을 컴파일하려
 리눅스 패키지
 ==============
 
+Solidity의 Binary 패키지들은 `solidity/releases <https://github.com/ethereum/solidity/releases>`_ 에서 확인 가능합니다.
 
-Binary packages of Solidity are available at
-`solidity/releases <https://github.com/ethereum/solidity/releases>`_.
-
-We also have PPAs for Ubuntu, you can get the latest stable
-version using the following commands:
+Ubuntu를 위한 PPA 또한 있지만 다음 명령어를 통해서 최신의 안정화 버전을 받으실 수 있습니다.
 
 .. code-block:: bash
 
@@ -102,7 +99,7 @@ version using the following commands:
     sudo apt-get update
     sudo apt-get install solc
 
-The nightly version can be installed using these commands:
+Nightly 버전의 경우 다음 명령어를 통해 설치됩니다.
 
 .. code-block:: bash
 
@@ -111,36 +108,35 @@ The nightly version can be installed using these commands:
     sudo apt-get update
     sudo apt-get install solc
 
-Furthermore, some Linux distributions provide their own packages. These packages are not directly
-maintained by us, but usually kept up-to-date by the respective package maintainers.
+또한, 몇몇 리눅스 버전은 독자적인 패키지를 제공합니다. 이러한 패키지들은 저희가 직접 유지 보수를 하고 있진 않습니다만,
+패키지를 유지 보수하는 사람들에 의해 계속해서 업데이트 되고 있습니다.
 
-For example, Arch Linux has packages for the latest development version:
+예를 들어, Arch 리눅스는 최신 개발 버전의 패키지를 가지고 있습니다.
 
 .. code-block:: bash
 
     pacman -S solidity
 
-There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
-It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_. To
-install the latest stable version of solc:
+`snap package <https://snapcraft.io/solc>`_ 라는 것도 있지만 **현재는 유지 보수가 되고 있지 않습니다**.
+모든 `supported Linux distros <https://snapcraft.io/docs/core/install>`_ 내에서 설치가 가능합니다. 
+solc의 가장 최신 안정화 버전을 설치하시려면, 
 
 .. code-block:: bash
 
     sudo snap install solc
 
-If you want to help testing the latest development version of Solidity
-with the most recent changes, please use the following:
+만일 여러분들께서 Solidity의 최신 개발 버전을 테스팅하는데 도움을 주시고 싶으시다면
+다음을 시도해보십시오.
 
 .. code-block:: bash
 
     sudo snap install solc --edge
 
-.. note::
+.. 참고::
 
-    The ``solc`` snap uses strict confinement. This is the most secure mode for snap packages
-    but it comes with limitations, like accessing only the files in your ``/home`` and ``/media`` directories.
-    For more information, go to `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_.
-
+    ``solc`` 스냅은 엄격히 통제됩니다. 스냅 패키지에게 가장 보안이 뛰어난 모드로 제공되지만 ``/home`` 혹은 ``/media`` 와 같은 경로 안의 
+    파일들만 접근하는 등의 제한이 걸리게 됩니다.
+    자세한 사항은 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ 부분을 확인해주십시오.
 
 macOS Packages
 ==============
