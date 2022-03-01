@@ -176,34 +176,26 @@ Solidity 0.4.x / 0.5.x의 가장 최신 버전을 다운로드하기 위하여 `
 Static Binaries
 ===============
 
-We maintain a repository containing static builds of past and current compiler versions for all
-supported platforms at `solc-bin`_. This is also the location where you can find the nightly builds.
+저희는 `solc-bin`_ 지원되는 모든 플랫폼을 위한 지난 혹은 현 컴파일러 버전의 스태틱 빌드를 포함하는 레포지토리를 운영하고 있습니다. 
+여러분은 여기서 nightly 빌드 또한 찾아보실 수 있습니다.
 
-The repository is not only a quick and easy way for end users to get binaries ready to be used
-out-of-the-box but it is also meant to be friendly to third-party tools:
+이 레포지토리는 사용자들이 사용할 수 있는 바이너리들을 찾는 쉽고 빠른 방법일 뿐만이 아니라 다른 3자 툴과도 호환이 가능합니다. 
 
-- The content is mirrored to https://binaries.soliditylang.org where it can be easily downloaded over
-  HTTPS without any authentication, rate limiting or the need to use git.
-- Content is served with correct `Content-Type` headers and lenient CORS configuration so that it
-  can be directly loaded by tools running in the browser.
-- Binaries do not require installation or unpacking (with the exception of older Windows builds
-  bundled with necessary DLLs).
-- We strive for a high level of backwards-compatibility. Files, once added, are not removed or moved
-  without providing a symlink/redirect at the old location. They are also never modified
-  in place and should always match the original checksum. The only exception would be broken or
-  unusable files with a potential to cause more harm than good if left as is.
-- Files are served over both HTTP and HTTPS. As long as you obtain the file list in a secure way
-  (via git, HTTPS, IPFS or just have it cached locally) and verify hashes of the binaries
-  after downloading them, you do not have to use HTTPS for the binaries themselves.
+- 해당 콘텐츠는 https://binaries.soliditylang.org에 미러링되어 있으며 HTTPS, 인증, rate limiting 혹은 git을 사용하지 않고도 쉽게 다운로드 가능합니다.
+- 콘텐트는 올바른 `Content-Type` 헤더를 통해 제공되며 CORS 설정에 비교적 업격하지 않아 브라우저에서 작동되는 툴에 의해 바로 로드될 수 있습니다.
+- 바이너리들은 (필수 DLL과 함께 번들링된 오래된 Windows 빌드의 예외와 함께) 설치나 언팩킹이 필요 없습니다.
+- 저희는 최고의 호환성을 유지하기 위해 노력하고 있습니다. 파일들은 한 번 추가되면 예전 위치에서 symlink나 redirect를 제공해주지 않으면 제거되거나 이동되지 않습니다. 
+  파일들은 또한 절대 변경되지 않으며 반드시 원본 검사합과 항상 합치해야 합니다. 발생될 수 있는 유일한 예외는 깨졌거나 사용 불가능한 파일들이 가져올 수 있는 잠정적인 해입니다. 
+- 파일들은 HTTP와 HTTPS를 통해 서브가 됩니다. 여러분들께서 파일 리스트를 (git, HTTPS, IPFS 혹은 로컬에서 캐싱함으로서) 안전한 방법으로 보관하고 
+  파일 다운로드 후 바이너리들의 해시를 인증하실 수만 있다면, HTTPS를 사용하실 필요가 없습니다.
 
-The same binaries are in most cases available on the `Solidity release page on Github`_. The
-difference is that we do not generally update old releases on the Github release page. This means
-that we do not rename them if the naming convention changes and we do not add builds for platforms
-that were not supported at the time of release. This only happens in ``solc-bin``.
+동일한 바이너리들은 대부분 `Solidity release page on Github`_ 상에서 가능합니다. 차이점은 저희가 Github 배포 페이지에서는 오래된 버전이 릴리즈에 대해서 업데이트를 하지 않는다는 점입니다.
+이는 네이밍 컨벤션이 바뀔 경우 재명명하지 않고 릴리즈 당시 호환되지 않는 플랫폼들에 대한 빌드를 추가하지 않는다는 뜻입니다. 
+이는 오직 ``solc-bin`` 에서만 이루어집니다.
 
-The ``solc-bin`` repository contains several top-level directories, each representing a single platform.
-Each one contains a ``list.json`` file listing the available binaries. For example in
-``emscripten-wasm32/list.json`` you will find the following information about version 0.7.4:
+``solc-bin`` 레포지토리는 몇 가지 상위 디렉토리를 가지고 있으며 각각의 디렉토리는 단일 플랫폼을 대표하고 있습니다. 
+각각의 디렉토리들은 사용 가능한 바이너리들의 리스트인 ``list.json`` 파일을 가지고 있습니다. 
+예를 들어 ``emscripten-wasm32/list.json`` 파일의 경우 버전 0.7.4에서 다음과 같은 정보를 확인하실 수 있습니다.
 
 .. code-block:: json
 
@@ -220,25 +212,19 @@ Each one contains a ``list.json`` file listing the available binaries. For examp
       ]
     }
 
-This means that:
+이는 다음을 의미합니다.
 
-- You can find the binary in the same directory under the name
-  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_.
-  Note that the file might be a symlink, and you will need to resolve it yourself if you are not using
-  git to download it or your file system does not support symlinks.
-- The binary is also mirrored at https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js.
-  In this case git is not necessary and symlinks are resolved transparently, either by serving a copy
-  of the file or returning a HTTP redirect.
-- The file is also available on IPFS at `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_.
-- The file might in future be available on Swarm at `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_.
-- You can verify the integrity of the binary by comparing its keccak256 hash to
-  ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``.  The hash can be computed
-  on the command line using ``keccak256sum`` utility provided by `sha3sum`_ or `keccak256() function
-  from ethereumjs-util`_ in JavaScript.
-- You can also verify the integrity of the binary by comparing its sha256 hash to
-  ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2``.
+- `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_ 에서 여러분은 동일한 디렉토리에 있는 바이너리를 찾아보실 수 있습니다.
+  파일은 symlink일 수 있기 때문에 git을 통해 다운로드하지 않을 경우 스스로 해결하셔야 하며 그렇지 않을 경우 파일은 symlink와 호환되지 않습니다.
+- 바이너리는 또한 https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js에 미러링되어 있습니다.
+  이 경우는 파일의 복사본을 제공하거나 HTTP redirect를 반환하여 git이 필요하지 않고 symlink가 투명하게 해결될 경우를 의미합니다.
+- 파일은 IPFS의 `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_ 상에서 가능합니다. 
+- 파일은 추후 Swarm의 `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_ 에서도 가능해질 수 있습니다.
+- 바이너리 무결성을 keccak256 해시와 ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3`` 와의 대조를 통해 인증할 수 있습니다.
+  해시는 커맨드 라인에서 `sha3sum`_ 혹은 자바스크립트의 `keccak256() function from ethereumjs-util`_ 에 의해 제공되는 ``keccak256sum`` 유틸리티를 통해 연산될 수 있습니다.
+- 바이너리 무결성을 sha256 해시와 ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2`` 를 통해서도 인증할 수 있습니다. 
 
-.. warning::
+.. 주의::
 
    Due to the strong backwards compatibility requirement the repository contains some legacy elements
    but you should avoid using them when writing new tools:
