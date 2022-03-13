@@ -119,7 +119,7 @@ Nightly 버전의 경우 다음 명령어를 통해 설치됩니다.
 
 `snap package <https://snapcraft.io/solc>`_ 라는 것도 있지만 **현재는 유지 보수가 되고 있지 않습니다**.
 모든 `supported Linux distros <https://snapcraft.io/docs/core/install>`_ 내에서 설치가 가능합니다. 
-solc의 가장 최신 안정화 버전을 설치하시려면, 
+solc의 가장 최신 안정화 버전을 설치하시려면 다음 명령어를 실행하십시오. 
 
 .. code-block:: bash
 
@@ -262,27 +262,27 @@ Static Binaries
 
 .. _building-from-source:
 
-Building from Source
+소스에서 빌드해보기
 ====================
 
-Prerequisites - All Operating Systems
+전제 조건 - 모든 운영체제
 -------------------------------------
 
-The following are dependencies for all builds of Solidity:
+다음은 Solidity의 모든 빌드에 대한 의존성들을 보여줍니다.
 
 +-----------------------------------+-------------------------------------------------------+
-| Software                          | Notes                                                 |
+| 소프트웨어                           | 비고                                                   |
 +===================================+=======================================================+
-| `CMake`_ (version 3.13+)          | Cross-platform build file generator.                  |
+| `CMake`_ (version 3.13+)          | 크로스플랫폼 빌드 파일 생성기                                |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (version 1.77+ on        | C++ libraries.                                        |
+| `Boost`_ (version 1.77+ on        | C++ 라이브러리  .                                        |
 | Windows, 1.65+ otherwise)         |                                                       |
 +-----------------------------------+-------------------------------------------------------+
-| `Git`_                            | Command-line tool for retrieving source code.         |
+| `Git`_                            | 소스 코드를 불러오기 위한 커맨드 라인 툴                       |
 +-----------------------------------+-------------------------------------------------------+
-| `z3`_ (version 4.8+, Optional)    | For use with SMT checker.                             |
+| `z3`_ (version 4.8+, Optional)    | SMT checker와의 사용을 위함                               |
 +-----------------------------------+-------------------------------------------------------+
-| `cvc4`_ (Optional)                | For use with SMT checker.                             |
+| `cvc4`_ (Optional)                | SMT checker와의 사용을 위함                               |
 +-----------------------------------+-------------------------------------------------------+
 
 .. _cvc4: https://cvc4.cs.stanford.edu/web/
@@ -291,22 +291,19 @@ The following are dependencies for all builds of Solidity:
 .. _CMake: https://cmake.org/download/
 .. _z3: https://github.com/Z3Prover/z3
 
-.. note::
-    Solidity versions prior to 0.5.10 can fail to correctly link against Boost versions 1.70+.
-    A possible workaround is to temporarily rename ``<Boost install path>/lib/cmake/Boost-1.70.0``
-    prior to running the cmake command to configure solidity.
+.. 참고::
+    0.5.10 버전 이전의 Solidity의 경우 Boost 버전 1.70+과 올바르게 연결하는데 실패할 수 있습니다. 
+    해결책으로는 Solidity를 설정하기 위해 cmake 커맨드를 실행하기 전에 ``<Boost install path>/lib/cmake/Boost-1.70.0`` 를 임시로 이름을 바꾸는 것입니다.
 
-    Starting from 0.5.10 linking against Boost 1.70+ should work without manual intervention.
+    0.5.10 버전 이후부터는 Boost 1.70+와의 연결은 수동적인 간섭 없이도 잘 동작합니다.
 
-.. note::
-    The default build configuration requires a specific Z3 version (the latest one at the time the
-    code was last updated). Changes introduced between Z3 releases often result in slightly different
-    (but still valid) results being returned. Our SMT tests do not account for these differences and
-    will likely fail with a different version than the one they were written for. This does not mean
-    that a build using a different version is faulty. If you pass ``-DSTRICT_Z3_VERSION=OFF`` option
-    to CMake, you can build with any version that satisfies the requirement given in the table above.
-    If you do this, however, please remember to pass the ``--no-smt`` option to ``scripts/tests.sh``
-    to skip the SMT tests.
+.. 침조::
+    기본 빌드 설정은 특정 Z3 버전 (코드가 가장 최근에 업데이트된 시점에서의 최근 버전)을 필요로 합니다. 
+    Z3 릴리즈 사이에 알려진 변화점들은 (여전히 유효하지만) 가끔 약간 다른 결과를 반환하곤 합니다. 
+    저희 SMT 테스트는 이러한 변화점에 대하여 설명하지 않으며 그것이 작성된 버전 이외에 다른 버전과는 실패할 수 있씁니다. 
+    이는 다른 버전을 사용하여 빌드하는 것이 잘못되었다는 것은 아닙니다. 
+    만일 여러분께서 CMake에 ``-DSTRICT_Z3_VERSION=OFF`` 옵션을 추가해주신다면 상기 표에 있는 요구 사항을 충족하는 모든 버전을 통해 빌드하실 수 있습니다.
+    그러나 이 경우 SMT 테스트를 건너뛰기 위해 ``scripts/tests.sh`` 에 ``--no-smt`` 옵션을 추가해주시기 바랍니다.
 
 Minimum Compiler Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
