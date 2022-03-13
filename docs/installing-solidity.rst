@@ -226,35 +226,29 @@ Static Binaries
 
 .. 주의::
 
-   Due to the strong backwards compatibility requirement the repository contains some legacy elements
-   but you should avoid using them when writing new tools:
+   하위 호환성으로 인해 이 레포지토리에는 몇몇 오래된 요소들을 포함하고 있어 새로운 툴들을 작성할 시 가급적 사용을 피해주시기 바랍니다.
 
-   - Use ``emscripten-wasm32/`` (with a fallback to ``emscripten-asmjs/``) instead of ``bin/`` if
-     you want the best performance. Until version 0.6.1 we only provided asm.js binaries.
-     Starting with 0.6.2 we switched to `WebAssembly builds`_ with much better performance. We have
-     rebuilt the older versions for wasm but the original asm.js files remain in ``bin/``.
-     The new ones had to be placed in a separate directory to avoid name clashes.
-   - Use ``emscripten-asmjs/`` and ``emscripten-wasm32/`` instead of ``bin/`` and ``wasm/`` directories
-     if you want to be sure whether you are downloading a wasm or an asm.js binary.
-   - Use ``list.json`` instead of ``list.js`` and ``list.txt``. The JSON list format contains all
-     the information from the old ones and more.
-   - Use https://binaries.soliditylang.org instead of https://solc-bin.ethereum.org. To keep things
-     simple we moved almost everything related to the compiler under the new ``soliditylang.org``
-     domain and this applies to ``solc-bin`` too. While the new domain is recommended, the old one
-     is still fully supported and guaranteed to point at the same location.
+   - 최고 성능을 원하신다면 ``bin/`` 대신 ``emscripten-wasm32/``(fallback ``emscripten-asmjs/``)을 사용하시기 바랍니다.
+     0.6.1 버전 전까지 오로지 asm.js 바이너리들만 제공이 됩니다.
+     0.6.2 버전 이후부터 더욱 개선된 성능과 함께 `WebAssembly builds`_ 로 전환하였습니다. 
+     저희는 wasm을 위해 오래된 버전을 다시 재구성하였지만 원본 asm.js 파일들은 여전히 ``bin/`` 에 있습니다.
+     새로운 파일들은 이름 충돌을 피하기 위해 별도의 디렉토리에 자리잡고 있습니다.
+   - wasm 혹은 asm.js 바이너리를 받고 있는지 확실히 하기 위해선 
+     ``bin/`` 와 ``wasm/`` 디렉토리 대신 ``emscripten-asmjs/`` 와 ``emscripten-wasm32/`` 디렉토리를 사용하시기 바랍니다.
+   - Use  instead of ``list.js`` 와 ``list.txt`` 대신 ``list.json`` 을 사용하시기 바랍니다.
+     JSON 리스트 형태는 오래된 정보와 함께 더 많은 것을 포함하고 있습니다.
+   - https://solc-bin.ethereum.org 대신 https://binaries.soliditylang.org 를 사용하시기 바랍니다. 
+     조금 더 간단하게 만들기 위해 새로운 ``soliditylang.org`` 도메인에 있는 컴파일러와 관련된 모든 것들을 옮겼으며, 이는 ``solc-bin`` 에도 적용이 됩니다.
+     새로운 도메인을 사용하시는 것을 추천드리지만, 기존의 것 또한 여전히 지원이 되며 똑같은 위치에서 동작됨을 보장합니다.
 
-.. warning::
+.. 주의::
 
-    The binaries are also available at https://ethereum.github.io/solc-bin/ but this page
-    stopped being updated just after the release of version 0.7.2, will not receive any new releases
-    or nightly builds for any platform and does not serve the new directory structure, including
-    non-emscripten builds.
+    바이너리들은 https://ethereum.github.io/solc-bin/ 에서도 확인이 가능하지만 0.7.2 버전 릴리즈 이후 더 이상 업데이트 되지 않습니다.
+    이에 따라 어떠한 새로운 릴리즈나 nightly 빌드를 받아보실 수 없으며 non-emscripten 빌드를 포함한 새로운 디렉토리 구조를 제공받으실 수 없습니다.
 
-    If you are using it, please switch to https://binaries.soliditylang.org, which is a drop-in
-    replacement. This allows us to make changes to the underlying hosting in a transparent way and
-    minimize disruption. Unlike the ``ethereum.github.io`` domain, which we do not have any control
-    over, ``binaries.soliditylang.org`` is guaranteed to work and maintain the same URL structure
-    in the long-term.
+    만일 이를 사용하고 계시다면 drop-in replacement인 https://binaries.soliditylang.org 로 전환하시기 바랍니다.
+    이는 보다 투명한 방법으로 기존의 호스팅을 변화시켜주며 충돌을 최소화합니다. 
+    저희가 더 이상 관리하지 않는 ``ethereum.github.io`` 도메인과는 다르게, ``binaries.soliditylang.org`` 는 장기적으로 동일한 URL 구조를 유지할 수 있도록 해줍니다.
 
 .. _IPFS: https://ipfs.io
 .. _Swarm: https://swarm-gateways.net/bzz:/swarm.eth
