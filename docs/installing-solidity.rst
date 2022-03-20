@@ -305,38 +305,32 @@ Static Binaries
     만일 여러분께서 CMake에 ``-DSTRICT_Z3_VERSION=OFF`` 옵션을 추가해주신다면 상기 표에 있는 요구 사항을 충족하는 모든 버전을 통해 빌드하실 수 있습니다.
     그러나 이 경우 SMT 테스트를 건너뛰기 위해 ``scripts/tests.sh`` 에 ``--no-smt`` 옵션을 추가해주시기 바랍니다.
 
-Minimum Compiler Versions
+컴파일러 최소 사양
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following C++ compilers and their minimum versions can build the Solidity codebase:
+다음 C++ 컴파일러와 최소 사양들은 Solidity codebase를 빌드할 수 있습니다.
 
 - `GCC <https://gcc.gnu.org>`_, version 8+
 - `Clang <https://clang.llvm.org/>`_, version 7+
 - `MSVC <https://visualstudio.microsoft.com/vs/>`_, version 2019+
 
-Prerequisites - macOS
+선결 조건 - macOS
 ---------------------
 
-For macOS builds, ensure that you have the latest version of
-`Xcode installed <https://developer.apple.com/xcode/download/>`_.
-This contains the `Clang C++ compiler <https://en.wikipedia.org/wiki/Clang>`_, the
-`Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_ and other Apple development
-tools that are required for building C++ applications on OS X.
-If you are installing Xcode for the first time, or have just installed a new
-version then you will need to agree to the license before you can do
-command-line builds:
+macOS 빌드의 경우, 최신 버전의 `Xcode를 설치하십시오 <https://developer.apple.com/xcode/download/>`_ . 
+이는 OS X 상의 C++ 어플리케이션을 빌드하기 위해 필요한 `Clang C++ 컴파일러 <https://en.wikipedia.org/wiki/Clang>`_ , `Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_
+그리고 기타 Apple 개발툴들을 포함하고 있습니다.
+만일 Xcode를 처음으로 설치하시거나 새로운 버전을 막 설치하셨을 경우, 커맨드 라인 빌드를 하시기 전에 라이선스에 동의하셔야 합니다.
 
 .. code-block:: bash
 
     sudo xcodebuild -license accept
 
-Our OS X build script uses `the Homebrew <https://brew.sh>`_
-package manager for installing external dependencies.
-Here's how to `uninstall Homebrew
-<https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew>`_,
-if you ever want to start again from scratch.
+저희 OS X 빌드 스크립트는 외부 의존성을 설치하기 위해 `the Homebrew <https://brew.sh>`_ 패키지 매니저를 사용합니다.
+처음부터 다시 시작을 원하실 경우, `Homebrew를 삭제
+<https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew>`_ 하는 법을 참조해주시기 바랍니다.
 
-Prerequisites - Windows
+선결 조건 - Windows
 -----------------------
 
 You need to install the following dependencies for Windows builds of Solidity:
