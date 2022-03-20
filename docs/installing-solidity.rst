@@ -379,22 +379,19 @@ Visual Studio 2019는 IDE와 필요한 컴파일러 및 라이브러리들을 �
     git clone --recursive https://github.com/ethereum/solidity.git
     cd solidity
 
-If you want to help developing Solidity,
-you should fork Solidity and add your personal fork as a second remote:
+저희 Solidity 개발에 도움을 주고 싶으실 경우, Solidity를 fork한 후 두번째 remote로서 개인 fork를 추가하시기 바랍니다.
 
 .. code-block:: bash
 
     git remote add personal git@github.com:[username]/solidity.git
 
-.. note::
-    This method will result in a prerelease build leading to e.g. a flag
-    being set in each bytecode produced by such a compiler.
-    If you want to re-build a released Solidity compiler, then
-    please use the source tarball on the github release page:
+.. 참고::
+    이 방법은 컴파일러에 의해 만들어진 각각의 바이트코드에 설정된 flag를 야기하는 릴리즈 전 빌드를 생성합니다.
+    릴리즈된 Solidity 컴파일러를 재빌드하고 싶으실 경우, github 릴리즈 페이지에 있는 소스 코드를 사용하십시오.
 
     https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
-    (not the "Source code" provided by github).
+    (이는 github에서 제공되는 "Source code"가 아닙니다.)
 
 Command-Line Build
 ------------------
