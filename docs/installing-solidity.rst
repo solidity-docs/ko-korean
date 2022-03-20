@@ -333,27 +333,24 @@ macOS 빌드의 경우, 최신 버전의 `Xcode를 설치하십시오 <https://d
 선결 조건 - Windows
 -----------------------
 
-You need to install the following dependencies for Windows builds of Solidity:
+Solidity의 Windows용 빌드를 위해 다음 의존성들을 설치하셔야 합니다.
 
 +-----------------------------------+-------------------------------------------------------+
-| Software                          | Notes                                                 |
+| 소프트웨어                           | 비고                                                   |
 +===================================+=======================================================+
-| `Visual Studio 2019 Build Tools`_ | C++ compiler                                          |
+| `Visual Studio 2019 Build Tools`_ | C++ 컴파일러                                            |
 +-----------------------------------+-------------------------------------------------------+
-| `Visual Studio 2019`_  (Optional) | C++ compiler and dev environment.                     |
+| `Visual Studio 2019`_  (Optional) | C++ 컴파일러 및 개발 환경                                  |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (version 1.77+)          | C++ libraries.                                        |
+| `Boost`_ (version 1.77+)          | C++ 라이브러리                                           |
 +-----------------------------------+-------------------------------------------------------+
 
-If you already have one IDE and only need the compiler and libraries,
-you could install Visual Studio 2019 Build Tools.
+만일 이미 IDE가 있고 단순히 컴파일러 및 라이브러리들만 필요하실 경우 Visual Studio 2019 Build Tools만 설치하시면 됩니다.
 
-Visual Studio 2019 provides both IDE and necessary compiler and libraries.
-So if you have not got an IDE and prefer to develop Solidity, Visual Studio 2019
-may be a choice for you to get everything setup easily.
+Visual Studio 2019는 IDE와 필요한 컴파일러 및 라이브러리들을 제공합니다.
+따라서 만일 IDE가 따로 없는 상태에서 Solidity를 개발하길 희망하실 경우, 모든 설정을 쉽게 하기 위해서 Visual Studio 2019가 좋은 선택지가 될 것입니다.
 
-Here is the list of components that should be installed
-in Visual Studio 2019 Build Tools or Visual Studio 2019:
+다음은 Visual Studio 2019 Build Tools 혹은 Visual Studio 2019 상에 반드시 설치되어야 할 요소들입니다.
 
 * Visual Studio C++ core features
 * VC++ 2019 v141 toolset (x86,x64)
@@ -364,18 +361,18 @@ in Visual Studio 2019 Build Tools or Visual Studio 2019:
 .. _Visual Studio 2019: https://www.visualstudio.com/vs/
 .. _Visual Studio 2019 Build Tools: https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2019
 
-We have a helper script which you can use to install all required external dependencies:
+모든 필수 외부 의존성을 설치하기 위한 도우미 스크립트 또한 사용하실 수 있습니다.
 
 .. code-block:: bat
 
     scripts\install_deps.ps1
 
-This will install ``boost`` and ``cmake`` to the ``deps`` subdirectory.
+이는 ``deps`` 하위 디렉토리 ``boost`` 및 ``cmake`` 를 설치하게 됩니다.
 
-Clone the Repository
+레포지토리 복제 
 --------------------
 
-To clone the source code, execute the following command:
+소스 코드를 복제하실 경우, 다음 명령어를 실행하십시오.
 
 .. code-block:: bash
 
