@@ -393,15 +393,15 @@ Visual Studio 2019는 IDE와 필요한 컴파일러 및 라이브러리들을 �
 
     (이는 github에서 제공되는 "Source code"가 아닙니다.)
 
-Command-Line Build
+커맨드 라인 빌드
 ------------------
 
-**Be sure to install External Dependencies (see above) before build.**
+**빌드 전 반드시 (상기) 외부 의존성들을 설치하시기 바랍니다.**
 
-Solidity project uses CMake to configure the build.
-You might want to install `ccache`_ to speed up repeated builds.
-CMake will pick it up automatically.
-Building Solidity is quite similar on Linux, macOS and other Unices:
+Solidity 프로젝트는 빌드 설정을 위해 CMake를 이용합니다. 
+반복적인 빌드의 속도를 높이기 위하여 `ccache`_ 를 설치하실 수도 있습니다.
+CMake가 이를 자동적으로 선택해줍니다. 
+Solidity를 빌드하는 것은 리눅스, macOS 그리고 다른 Unices처럼 동일합니다.
 
 .. _ccache: https://ccache.dev/
 
@@ -411,16 +411,16 @@ Building Solidity is quite similar on Linux, macOS and other Unices:
     cd build
     cmake .. && make
 
-or even easier on Linux and macOS, you can run:
+혹은 리눅스와 macOS에서는 더욱 간단합니다.
 
 .. code-block:: bash
 
     #note: this will install binaries solc and soltest at usr/local/bin
     ./scripts/build.sh
 
-.. warning::
+.. 주의::
 
-    BSD builds should work, but are untested by the Solidity team.
+    BSD 빌드는 작동은 하지만 Solidity 팀에서 아직 테스트 되지 않았습니다.
 
 And for Windows:
 
@@ -430,15 +430,13 @@ And for Windows:
     cd build
     cmake -G "Visual Studio 16 2019" ..
 
-In case you want to use the version of boost installed by ``scripts\install_deps.ps1``, you will
-additionally need to pass ``-DBoost_DIR="deps\boost\lib\cmake\Boost-*"`` and ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded``
-as arguments to the call to ``cmake``.
+``scripts\install_deps.ps1`` 에 의해 설치된 부스트 버전을 사용하시길 원하실 경우, ``-DBoost_DIR="deps\boost\lib\cmake\Boost-*"`` 와 ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded`` 를
+``cmake`` 를 호출하기 위한 인수로써 집어넣어 줘야 합니다.
 
-This should result in the creation of **solidity.sln** in that build directory.
-Double-clicking on that file should result in Visual Studio firing up.  We suggest building
-**Release** configuration, but all others work.
+이는 빌드 디렉토리 상에 **solidity.sln** 를 생성하게 됩니다.
+파일을 더블클릭할 경우 Visual Studio가 실행이 됩니다. **Release** 설정을 빌드하기를 권장해드리지만 다른 것들도 잘 작동합니다.
 
-Alternatively, you can build for Windows on the command-line, like so:
+혹은, 윈도우 상에서 다음과 같이 빌드를 할 수도 있습니다.
 
 .. code-block:: bash
 
