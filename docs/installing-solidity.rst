@@ -442,67 +442,66 @@ And for Windows:
 
     cmake --build . --config Release
 
-CMake Options
+CMake 옵션 
 =============
 
-If you are interested what CMake options are available run ``cmake .. -LH``.
+가능한 CMake 옵션들이 무엇이 있는지 알아보시길 원하신다면 ``cmake .. -LH`` 명령어를 실행시키십시오.
 
 .. _smt_solvers_build:
 
 SMT Solvers
 -----------
-Solidity can be built against SMT solvers and will do so by default if
-they are found in the system. Each solver can be disabled by a `cmake` option.
+Solidity는 (시스템 상에 존재할 경우) SMT solver에 의해 기본적으로 빌드됩니다. 
+각각의 solver는 `cmake` 옵션에 의해 비활성화 시킬 수 있습니다.
 
-*Note: In some cases, this can also be a potential workaround for build failures.*
+*참고: 몇몇의 케이스들의 경우 빌드하는데 실패할 수도 있습니다.*
 
-
-Inside the build folder you can disable them, since they are enabled by default:
+빌드 폴더 안에서 여러분들은 비활성화시킬 수 있으며 이들은 기본적으로 활성화되어 있습니다.
 
 .. code-block:: bash
 
-    # disables only Z3 SMT Solver.
+    # Z3 SMT Solver만 비활성화합니다.
     cmake .. -DUSE_Z3=OFF
 
-    # disables only CVC4 SMT Solver.
+    # CVC4 SMT Solver만 비활성화합니다.
     cmake .. -DUSE_CVC4=OFF
 
-    # disables both Z3 and CVC4
+    # Z3 및 CVC4 모두 비활성화합니다.
     cmake .. -DUSE_CVC4=OFF -DUSE_Z3=OFF
 
-The Version String in Detail
+Version String에 대한 상세 설명
 ============================
 
-The Solidity version string contains four parts:
+Solidity version string은 다음 네 가지 부분으로 구성되어 있습니다.
 
-- the version number
-- pre-release tag, usually set to ``develop.YYYY.MM.DD`` or ``nightly.YYYY.MM.DD``
-- commit in the format of ``commit.GITHASH``
-- platform, which has an arbitrary number of items, containing details about the platform and compiler
+- 버전 번호
+- 선 릴리즈 태그. 보통 ``develop.YYYY.MM.DD`` 혹은 ``nightly.YYYY.MM.DD`` 로 되어 있습니다.
+- ``commit.GITHASH`` 포맷 형태의 커밋 
+- 임의의 개수의 아이템, 플랫폼/컴파일러에 대한 세부 정보가 담긴 플랫폼
 
-If there are local modifications, the commit will be postfixed with ``.mod``.
+만일 로컬 부분에서 변경이 있다면 커밋은 ``.mod`` 로 연산자가 바뀝니다.
 
-These parts are combined as required by SemVer, where the Solidity pre-release tag equals to the SemVer pre-release
-and the Solidity commit and platform combined make up the SemVer build metadata.
+이러한 부분들은 SemVer에 의해 필수 사항으로써 조합됩니다. 이는 Solidity의 선 릴리즈 태그가 SemVer의 선 릴리즈 태그와 같아지며
+Solidity 커밋과 결합된 플랫폼이 SemVer 빌드의 메타데이터를 만드는 것을 의미합니다.
 
-A release example: ``0.4.8+commit.60cc1668.Emscripten.clang``.
+릴리즈 예시: ``0.4.8+commit.60cc1668.Emscripten.clang``.
 
-A pre-release example: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``
+선 릴리즈 예시: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``
 
-Important Information About Versioning
+버저닝에 대한 중요 정보
 ======================================
 
-After a release is made, the patch version level is bumped, because we assume that only
-patch level changes follow. When changes are merged, the version should be bumped according
-to SemVer and the severity of the change. Finally, a release is always made with the version
-of the current nightly build, but without the ``prerelease`` specifier.
+릴리즈가 되고 나서, 패치 버전 레벨에선 충돌이 일어나게 됩니다. 
+왜냐하면 오로지 패치 레벨에서 발생된 변경점만 따르는 것을 암시하기 때문입니다. 
+변경점들이 병합될 경우, 버전은 SemVer 및 변경점의 엄격함 정도에 따라 충돌이 일어나게 됩니다. 
+마지막으로, 릴리즈는 항상 ``prerelease`` 표시자가 없이 현재 nightly 빌드의 버전에 의해 만들어지게 됩니다.
 
-Example:
+예시:
 
-1. The 0.4.0 release is made.
-2. The nightly build has a version of 0.4.1 from now on.
-3. Non-breaking changes are introduced --> no change in version.
-4. A breaking change is introduced --> version is bumped to 0.5.0.
-5. The 0.5.0 release is made.
+1. 0.4.0 버전이 만들어집니다.
+2. nightly 빌드는 현 시점부터 0.4.1의 버전을 가지게 됩니다.
+3. 충돌이 없는 변경점이 새로 발견되었습니다 --> 현 버전에 변경점이 없습니다.
+4. 충돌이 있는 변경점이 새로 발견되었습니다 --> 버전은 0.5.0으로 변경됩니다.
+5. 0.5.0 릴리즈가 만들어집니다.
 
-This behaviour works well with the  :ref:`version pragma <version_pragma>`.
+이러한 패턴은 :ref:`version pragma <version_pragma>` 와 잘 작동합니다.
