@@ -1,84 +1,78 @@
 ############
-Contributing
+기여하기
 ############
 
-Help is always welcome and there are plenty of options how you can contribute to Solidity.
+도움은 항상 환영하며 Solidity에 기여하는 방법은 여러가지가 있습니다.
 
-In particular, we appreciate support in the following areas:
+특히 다음 분야에서 많은 도움을 기다리고 있습니다:
 
-* Reporting issues.
-* Fixing and responding to `Solidity's GitHub issues
-  <https://github.com/ethereum/solidity/issues>`_, especially those tagged as
-  `"good first issue" <https://github.com/ethereum/solidity/labels/good%20first%20issue>`_ which are
-  meant as introductory issues for external contributors.
-* Improving the documentation.
-* Translating the documentation into more languages.
-* Responding to questions from other users on `StackExchange
-  <https://ethereum.stackexchange.com>`_ and the `Solidity Gitter Chat
-  <https://gitter.im/ethereum/solidity>`_.
-* Getting involved in the language design process by proposing language changes or new features in the `Solidity forum <https://forum.soliditylang.org/>`_ and providing feedback.
+* 이슈 리포트
+* `Solidity의 깃허브 이슈
+  <https://github.com/ethereum/solidity/issues>`_ 수정 및 대응, 특히 외부 컨트리뷰터의 입문용 이슈를 뜻하는 
+  `"good first issue" <https://github.com/ethereum/solidity/labels/good%20first%20issue>`_ 라고 태그된 이슈들
+* 문서 개선
+* 다른 언어로 문서 번역
+* `StackExchange
+  <https://ethereum.stackexchange.com>`_ 와 `Solidity Gitter Chat
+  <https://gitter.im/ethereum/solidity>`_ 에서 다른 사용자들의 질문에 답변
+* `Solidity forum <https://forum.soliditylang.org/>`_ 언어 변경사항 혹은 새로운 피쳐를 제안하거나 피드백을 제공함으로써 언어 설계 과정에 참여
 
-To get started, you can try :ref:`building-from-source` in order to familiarize
-yourself with the components of Solidity and the build process. Also, it may be
-useful to become well-versed at writing smart-contracts in Solidity.
+먼저 솔리디티의 컴포넌트와 빌드 프로세스에 익숙해지려면 :ref:`building-from-source` 
+를 참고하십시오. 또한 솔리디티로 스마트 컨트랙트를 작성하는 방법을 숙지하는 것도 좋습니다.
 
-Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project - in the issues, pull requests, or Gitter channels - you agree to abide by its terms.
+이 프로젝트는 다음 `컨트리뷰터 행동 지침 <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ 
+와 함께 릴리즈되었습니다. 프로젝트에 참여하면 (이슈, 풀리퀘스트, Gitter 채널 등) 이에 동의하게 됩니다.
 
 Team Calls
 ==========
 
-If you have issues or pull requests to discuss, or are interested in hearing what
-the team and contributors are working on, you can join our public team calls:
+논의가 필요한 이슈 또는 풀리퀘스트가 있거나, 혹은 팀 또는 컨트리뷰터들이
+무엇을 하고 있는지 듣고 싶으면 다음 공개 팀 콜에 참여하실 수 있습니다:
 
-- Mondays at 3pm CET/CEST.
-- Wednesdays at 2pm CET/CEST.
+- 월요일 3pm CET/CEST.
+- 수요일 2pm CET/CEST.
 
-Both calls take place on `Jitsi <https://meet.ethereum.org/solidity>`_.
+둘 다 `Jitsi <https://meet.ethereum.org/solidity>`_ 에서 참여할 수 있습니다.
 
-How to Report Issues
+이슈 리포딩
 ====================
 
-To report an issue, please use the
-`GitHub issues tracker <https://github.com/ethereum/solidity/issues>`_. When
-reporting issues, please mention the following details:
+이슈 리포팅은
+`GitHub issues tracker <https://github.com/ethereum/solidity/issues>`_ 를 사용하십시오.
+이슈 리포팅 시 다음과 같은 세부사항들을 알려주십시오:
 
-* Solidity version.
-* Source code (if applicable).
-* Operating system.
-* Steps to reproduce the issue.
-* Actual vs. expected behaviour.
+* 솔리디티 버전
+* 소스코드 (가능한 경우)
+* 운영체제
+* 이슈 재현을 위한 단계
+* 실제 작동과 의도한 작동 비교
 
-Reducing the source code that caused the issue to a bare minimum is always
-very helpful and sometimes even clarifies a misunderstanding.
+이슈를 발생시킨 소스코드를 최소한으로 줄이는 것 항상 많은 도움이 되며
+때로는 오해를 해결하기도 합니다.
 
-Workflow for Pull Requests
+풀리퀘스트 워크플로우
 ==========================
 
-In order to contribute, please fork off of the ``develop`` branch and make your
-changes there. Your commit messages should detail *why* you made your change
-in addition to *what* you did (unless it is a tiny change).
+기여하기 위해서는 ``develop`` 브랜치를 포크하고 거기서 수정하십시오. 커밋 메시지는
+*무엇* 을 변경했는 지 외에 *왜* 변경을 했는 지도 기술해야 합니다. (작은 변경이 아닌 경우)
 
-If you need to pull in any changes from ``develop`` after making your fork (for
-example, to resolve potential merge conflicts), please avoid using ``git merge``
-and instead, ``git rebase`` your branch. This will help us review your change
-more easily.
+포크 이후 ``develop`` 에서 변경사항을 pull해야하면 (가령 잠재적 병합 충돌을 해결), 
+``git merge`` 사용은 피하고 대신 작업 브랜치를 ``git rebase`` 하십시오. 이는 변경사항
+리뷰를 더 쉽게 합니다.
 
-Additionally, if you are writing a new feature, please ensure you add appropriate
-test cases under ``test/`` (see below).
+또한, 새로운 피쳐를 작성 중이라면, ``test/`` 하단에 필요한 테스트 케이스를 반드시 추가하십시오 (아래 참고).
 
-However, if you are making a larger change, please consult with the `Solidity Development Gitter channel
-<https://gitter.im/ethereum/solidity-dev>`_ (different from the one mentioned above, this one is
-focused on compiler and language development instead of language usage) first.
+다만, 더 큰 변경을 하는 경우, `Solidity Development Gitter channel <https://gitter.im/ethereum/solidity-dev>`_
+과 먼저 논의하십히오 (상기의 채널과 별개로, 이는 언어의 사용이 아닌 컴파일러와 언어 개발에 중점을 두고 있습니다).
 
-New features and bugfixes should be added to the ``Changelog.md`` file: please
-follow the style of previous entries, when applicable.
+새로운 피쳐와 버그픽스 내역는 ``Changelog.md`` 파일에 추가되어야 합니다.
+해당하는 경우 이전 엔트리의 스타일을 따르십시오.
 
-Finally, please make sure you respect the `coding style
-<https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_
-for this project. Also, even though we do CI testing, please test your code and
-ensure that it builds locally before submitting a pull request.
+마지막으로, 우리 프로젝트의 `coding style
+<https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_ 을 존중해주십시오.
+또한, CI 테스팅을 하고 있지만, 풀리퀘스트를 제출하기 전에 코드를 테스트하고 로컬에서 빌드되는 지 확인하십시오.
 
-Thank you for your help!
+도움을 주셔서 감사합니다!
 
 Running the Compiler Tests
 ==========================
@@ -86,104 +80,96 @@ Running the Compiler Tests
 Prerequisites
 -------------
 
-For running all compiler tests you may want to optionally install a few
-dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_,
-`libz3 <https://github.com/Z3Prover/z3>`_, and
+모든 컴파일러 테스트를 실행하기 위해서는 몇몇 의존성을 선택적으로 설치할 수 있습니다.
+(`evmone <https://github.com/ethereum/evmone/releases>`_, `libz3 <https://github.com/Z3Prover/z3>`_,
 `libhera <https://github.com/ewasm/hera>`_).
 
-On macOS some of the testing scripts expect GNU coreutils to be installed.
-This can be easiest accomplished using Homebrew: ``brew install coreutils``.
+MacOS의 경우 일부 테스트 스크립트는 GNU coreutils가 설치되어야 합니다.
+이는 Homebrew를 사용하는게 가장 쉬울 수 있습니다: ``brew install coreutils``.
 
 Running the Tests
 -----------------
 
-Solidity includes different types of tests, most of them bundled into the
-`Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ application ``soltest``.
-Running ``build/test/soltest`` or its wrapper ``scripts/soltest.sh`` is sufficient for most changes.
+Solidity는 여러 종류의 테스트가 있으며, 대부분은 `Boost C++ Test Framework
+<https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ 어플리케이션 ``soltest`` 에 번들로 제공됩니다.
+대부분의 변경의 경우 ``build/test/soltest`` 또는 이의 wrapper인 ``scripts/soltest.sh`` 를 실행하면 충분합니다.
 
-The ``./scripts/tests.sh`` script executes most Solidity tests automatically,
-including those bundled into the `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_
-application ``soltest`` (or its wrapper ``scripts/soltest.sh``), as well as command line tests and
-compilation tests.
+``./scripts/tests.sh`` 스크립트는 `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_
+어플리케이션 ``soltest`` (또는 wrapper ``scripts/soltest.sh``)에 번들된 테스트, 그리고 커멘드라인 테스트와 컴파일 테스트를 포함해서
+대부분의 Solidity 테스트를 자동으로 실행합니다.
 
-The test system automatically tries to discover the location of
-the `evmone <https://github.com/ethereum/evmone/releases>`_ for running the semantic tests.
+테스트 시스템은 semantic 테스트를 실행하기 위해 `evmone <https://github.com/ethereum/evmone/releases>`_
+의 위치를 자동으로 파악하려 합니다.
 
-The ``evmone`` library must be located in the ``deps`` or ``deps/lib`` directory relative to the
-current working directory, to its parent or its parent's parent. Alternatively an explicit location
-for the ``evmone`` shared object can be specified via the ``ETH_EVMONE`` environment variable.
+``evmone`` 라이브러리는 반드시 현재 작업 디렉토리, 또는 이의 부모, 또는 이의 부모의 부모에서 상대경로로
+``deps`` 또는 ``deps/lib`` 디렉토리에 위치해야합니다. 대안으로 ``evmone`` 공유 객체에 대한 명시적 위치를
+``ETH_EVMONE`` 환경변수에 지정할 수 있습니다.
 
-``evmone`` is needed mainly for running semantic and gas tests.
-If you do not have it installed, you can skip these tests by passing the ``--no-semantic-tests``
-flag to ``scripts/soltest.sh``.
+``evmone`` 주로 semantic 과 가스 테스트 실행에 필요합니다.
+설치하지 않은 경우, ``scripts/soltest.sh`` 에 ``--no-semantic-tests`` 플래그를 추가해 해당하는 테스트를 건너뛸 수 있습니다.
 
-Running Ewasm tests is disabled by default and can be explicitly enabled
-via ``./scripts/soltest.sh --ewasm`` and requires `hera <https://github.com/ewasm/hera>`_
-to be found by ``soltest``.
-The mechanism for locating the ``hera`` library is the same as for ``evmone``, except that the
-variable for specifying an explicit location is called ``ETH_HERA``.
+Ewasm 테스트는 기본적으로 비활성화되어 있으며, ``./scripts/soltest.sh --ewasm`` 를 사용해 명시적으로 허용할 수 있고
+``soltest`` 가 이를 찾기 위해 `hera <https://github.com/ewasm/hera>`_ 를 요구합니다.
+``hera`` 라이브러리를 위치시키는 방법은 명시적 위치 지정을 위한 변수 이름이 ``ETH_HERA`` 것을 제외하고 ``evmone`` 과 동일합니다.
 
-The ``evmone`` and ``hera`` libraries should both end with the file name
-extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+``evmone`` 과 ``hera`` 라이브러리는 둘다 리눅스에서 ``.so``, 윈도우에서는 ``.dll``, MacOS에서는 ``.dylib`` 확장자로 끝나야 합니다.
 
-For running SMT tests, the ``libz3`` library must be installed and locatable
-by ``cmake`` during compiler configure stage.
+SMT 테스트를 실행하려면 ``libz3`` 라이브러리가 설치되어 있어야 하며 컴파일러의 configure 단계에서 ``cmake`` 로
+찾을 수 있어야 합니다.
 
-If the ``libz3`` library is not installed on your system, you should disable the
-SMT tests by exporting ``SMT_FLAGS=--no-smt`` before running ``./scripts/tests.sh`` or
-running ``./scripts/soltest.sh --no-smt``.
-These tests are ``libsolidity/smtCheckerTests`` and ``libsolidity/smtCheckerTestsJSON``.
+``libz3`` 라이브러리가 설치되어있지 않다면 ``./scripts/tests.sh`` 를 실행하기 전에 ``SMT_FLAGS=--no-smt`` 를 익스포트해
+SMT 테스트를 비활성화하거나 ``./scripts/soltest.sh --no-smt`` 를 실행하십시오.
+SMT 테스트는 ``libsolidity/smtCheckerTests`` 과 ``libsolidity/smtCheckerTestsJSON`` 입니다.
 
 .. note ::
 
-    To get a list of all unit tests run by Soltest, run ``./build/test/soltest --list_content=HRF``.
+    Soltest가 실행하는 모든 단위테스트 목록을 보기 위해서는 ``./build/test/soltest --list_content=HRF`` 를 실행하십시오.
 
-For quicker results you can run a subset of, or specific tests.
+더 빠른 결과 확인을 위해서는 부분 또는 특정 테스트를 실행할 수 있습니다.
 
-To run a subset of tests, you can use filters:
+테스트 하위 집합을 실행하려면 필터를 사용할 수 있습니다:
 ``./scripts/soltest.sh -t TestSuite/TestName``,
-where ``TestName`` can be a wildcard ``*``.
+여기서 ``TestName`` 은 와일드카드 ``*`` 일 수 있습니다.
 
-Or, for example, to run all the tests for the yul disambiguator:
+또는 가령 yul disambiguator의 모든 테스트를 실행하는 경우:
 ``./scripts/soltest.sh -t "yulOptimizerTests/disambiguator/*" --no-smt``.
 
-``./build/test/soltest --help`` has extensive help on all of the options available.
+``./build/test/soltest --help`` 는 가능한 모든 옵션에 대한 광범위 도움말을 보여줍니다.
 
-See especially:
+특히 다음을 확인해보십시오:
 
-- `show_progress (-p) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/show_progress.html>`_ to show test completion,
-- `run_test (-t) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/run_test.html>`_ to run specific tests cases, and
-- `report-level (-r) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/report_level.html>`_ give a more detailed report.
+- 테스트 컴파일레이션을 표시하기 위해서는 `show_progress (-p) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/show_progress.html>`_ 
+- 특정 테스트 케이스 실행을 위해서는 `run_test (-t) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/run_test.html>`_
+- 더 자세한 결과 리포트를 위해서는 `report-level (-r) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/report_level.html>`_
 
 .. note ::
 
-    Those working in a Windows environment wanting to run the above basic sets
-    without libz3. Using Git Bash, you use: ``./build/test/Release/soltest.exe -- --no-smt``.
-    If you are running this in plain Command Prompt, use ``.\build\test\Release\soltest.exe -- --no-smt``.
+    윈도우 환경에서 위 기본 세트를 libz3 없이 실행하고 싶은 경우 다음을 참고하십시오.
+    Git Bash를 사용하는 경우, ``./build/test/Release/soltest.exe -- --no-smt`` 를 사용하십시오.
+    일반 명령 프롬프트에서 실행하는 경우 ``.\build\test\Release\soltest.exe -- --no-smt`` 를 사용하십시오.
 
-If you want to debug using GDB, make sure you build differently than the "usual".
-For example, you could run the following command in your ``build`` folder:
+GDB를 사용해서 디버깅하려는 경우 "일반적인 경우"와 다르게 빌드해야 합니다.
+예를 들어, 다음 명령어를 ``build`` 폴더에서 실행시킵니다:
+
 .. code-block:: bash
 
    cmake -DCMAKE_BUILD_TYPE=Debug ..
    make
 
-This creates symbols so that when you debug a test using the ``--debug`` flag,
-you have access to functions and variables in which you can break or print with.
+이는 심볼을 생성해 ``--debug`` 플래그를 사용해서 테스트 디버깅을 할 때
+함수와 변수에 접근해 브레이크 또는 출력할 수 있게 합니다.
 
-The CI runs additional tests (including ``solc-js`` and testing third party Solidity
-frameworks) that require compiling the Emscripten target.
+CI는 Emscripten 타깃 컴파일을 요구하는 추가적인 테스트를 실행합니다. (``solc-js`` 와 프레임워크 서드파티 테스트 포함)
 
 Writing and Running Syntax Tests
 --------------------------------
 
-Syntax tests check that the compiler generates the correct error messages for invalid code
-and properly accepts valid code.
-They are stored in individual files inside the ``tests/libsolidity/syntaxTests`` folder.
-These files must contain annotations, stating the expected result(s) of the respective test.
-The test suite compiles and checks them against the given expectations.
+신텍스 테스트는 컴파일러가 유효하지 않는 코드에 대해 올바른 오류 메시지를 생성하고 유효한 코드를 올바르게
+수락하는 지 확인합니다. 이는 ``tests/libsolidity/syntaxTests`` 폴더 안 개별 파일에 저장됩니다.
+이 파일들은 반드시 각 테스트에서 예상하는 결과(들)을 설명하는 주석을 포함해야합니다.
+테스트 스위트는 테스트들을 컴파일하고 주어진 예상 결과값들과 비교해 확인합니다.
 
-For example: ``./test/libsolidity/syntaxTests/double_stateVariable_declaration.sol``
+예를 들어: ``./test/libsolidity/syntaxTests/double_stateVariable_declaration.sol``
 
 .. code-block:: solidity
 
@@ -194,15 +180,15 @@ For example: ``./test/libsolidity/syntaxTests/double_stateVariable_declaration.s
     // ----
     // DeclarationError: (36-52): Identifier already declared.
 
-A syntax test must contain at least the contract under test itself, followed by the separator ``// ----``. The comments that follow the separator are used to describe the
-expected compiler errors or warnings. The number range denotes the location in the source where the error occurred.
-If you want the contract to compile without any errors or warning you can leave
-out the separator and the comments that follow it.
+신텍스 테스트는 최소한 테스트 중인 컨트랙트 자신을 반드시 포함해야 하며 이어서 ``// ----`` 로 분리합니다. 분리자 다음에 작성하는 주석은
+예상되는 컴파일러 오류나 경고를 서술하는 데 사용합니다. 위 숫자 구간은 오류가 발생한 소스 위치를 의미합니다.
+오류나 경고 없이 컨트랙트를 컴파일하기를 원한다면 분리자와 주석을 제거합니다.
 
-In the above example, the state variable ``variable`` was declared twice, which is not allowed. This results in a ``DeclarationError`` stating that the identifier was already declared.
+위 예시에서, 상태 변수 ``variable`` 이 두 번 선언되어 있지만 이는 금지되어 있습니다.
+이는 식별자가 이미 선언되었다는 ``DeclarationError`` 를 반환합니다.
 
-The ``isoltest`` tool is used for these tests and you can find it under ``./build/test/tools/``. It is an interactive tool which allows
-editing of failing contracts using your preferred text editor. Let's try to break this test by removing the second declaration of ``variable``:
+``isoltest`` 툴은 이와 같은 테스트에 사용되며 ``./build/test/tools/`` 하단에서 발견할 수 있습니다. 이는 원하는 에디터를 사용해
+실패하는 컨트랙트를 편집할 수 있도록 하는 대화식 툴입니다. 두번째 ``variable`` 선언을 지워 테스트가 실패하도록 해보겠습니다:
 
 .. code-block:: solidity
 
@@ -212,7 +198,7 @@ editing of failing contracts using your preferred text editor. Let's try to brea
     // ----
     // DeclarationError: (36-52): Identifier already declared.
 
-Running ``./build/test/tools/isoltest`` again results in a test failure:
+``./build/test/tools/isoltest`` 를 다시 실행하면 테스트가 실패합니다:
 
 .. code-block:: text
 
@@ -228,19 +214,21 @@ Running ``./build/test/tools/isoltest`` again results in a test failure:
             Success
 
 
-``isoltest`` prints the expected result next to the obtained result, and also
-provides a way to edit, update or skip the current contract file, or quit the application.
+``isoltest`` 는 예상 결과값과 실제 얻은 결과값을 출력하고, 현재 컨트랙트 파일을 수정, 업데이트, 또는 건너뛰거나,
+또는 어플리케이션 종료하는 방법를 제공합니다.
 
-It offers several options for failing tests:
+실패하는 테스트에 대해 몇가지 옵션을 제공합니다:
 
-- ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
-- ``update``: Updates the expectations for contract under test. This updates the annotations by removing unmet expectations and adding missing expectations. The test is then run again.
-- ``skip``: Skips the execution of this particular test.
-- ``quit``: Quits ``isoltest``.
+- ``edit``: ``isoltest`` 가 수정할 수 있도록 에디터에 컨트랙트를 열려고 시도합니다. 이는 커멘드 라인 (``isoltest --editor /path/to/editor``),
+  ``EDITOR`` 환경변수, 또는 ``/usr/bin/editor`` 를 순서대로 참고해서 에디터를 선택합니다.
+- ``update``: 테스트 중인 컨트랙트의 예상 결과값을 업데이트합니다. 이는 충족하지 않은 결과값을 지우고 누락된 결과값을 추가하는 방식으로 주석을
+  업데이트합니다. 그 후 테스트를 다시 실행합니다.
+- ``skip``: 해당 특정 테스트를 건너뜁니다.
+- ``quit``: ``isoltest`` 를 종료합니다.
 
-All of these options apply to the current contract, expect ``quit`` which stops the entire testing process.
+테스트 프로세스를 종료하는 ``quit`` 를 제외하고 위 모든 옵션들은 현재 컨트랙트에 적용됩니다.
 
-Automatically updating the test above changes it to
+위 테스트를 자동으로 업데이트하면 다음과 같이 바뀝니다.
 
 .. code-block:: solidity
 
@@ -249,7 +237,7 @@ Automatically updating the test above changes it to
     }
     // ----
 
-and re-run the test. It now passes again:
+그리고 테스트를 재실행하면 이제는 다시 통과합니다:
 
 .. code-block:: text
 
@@ -259,9 +247,9 @@ and re-run the test. It now passes again:
 
 .. note::
 
-    Choose a name for the contract file that explains what it tests, e.g. ``double_variable_declaration.sol``.
-    Do not put more than one contract into a single file, unless you are testing inheritance or cross-contract calls.
-    Each file should test one aspect of your new feature.
+    컨트랙트 파일의 이름은 ``double_variable_declaration.sol`` 와 같이 무엇을 테스트하는 지 설명하도록 작성하십시오.
+    상속이나 cross-contract call을 테스트하는 경우가 아니라면 하나의 파일에 둘 이상의 컨트랙트를 포함하지 마십시오.
+    각 파일은 새로운 기능의 한 측면을 테스트해야 합니다.
 
 
 Running the Fuzzer via AFL
