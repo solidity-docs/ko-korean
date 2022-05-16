@@ -34,7 +34,7 @@ Team Calls
 
 둘 다 `Jitsi <https://meet.ethereum.org/solidity>`_ 에서 참여할 수 있습니다.
 
-이슈 리포딩
+이슈 리포팅
 ====================
 
 이슈 리포팅은
