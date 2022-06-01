@@ -1,73 +1,67 @@
 .. _formal_verification:
 
 ##################################
-SMTChecker and Formal Verification
+SMTChecker와 수식 검증 (Formal Verification)
 ##################################
 
-Using formal verification it is possible to perform an automated mathematical
-proof that your source code fulfills a certain formal specification.
-The specification is still formal (just as the source code), but usually much
-simpler.
+Formal verification을 사용하면 당신의 소스 코드가 특정 수식에 대한 사양을 만족하는지 
+자동화된 수학적 검증을 수행할 수 있습니다. The specification is still formal (just
+as the source code), but usually much simpler.
 
 Note that formal verification itself can only help you understand the
 difference between what you did (the specification) and how you did it
 (the actual implementation). You still need to check whether the specification
 is what you wanted and that you did not miss any unintended effects of it.
 
-Solidity implements a formal verification approach based on
-`SMT (Satisfiability Modulo Theories) <https://en.wikipedia.org/wiki/Satisfiability_modulo_theories>`_ and
-`Horn <https://en.wikipedia.org/wiki/Horn-satisfiability>`_ solving.
-The SMTChecker module automatically tries to prove that the code satisfies the
-specification given by ``require`` and ``assert`` statements. That is, it considers
-``require`` statements as assumptions and tries to prove that the conditions
-inside ``assert`` statements are always true.  If an assertion failure is
-found, a counterexample may be given to the user showing how the assertion can
-be violated. If no warning is given by the SMTChecker for a property,
-it means that the property is safe.
+Solidity는 공식 검증 접근법을 `SMT (Satisfiability Modulo Theories) 
+<https://en.wikipedia.org/wiki/Satistiability_modulo_theories>`_ 와
+`Horn <https://en.wikipedia.org/wiki/Horn-satistiability>`_ 를 이용하여 구현합니다.
+SMTChecker 모듈은 자동적으로 해당 코드가 ``require``과 ``assert`` 에 의해 제시된
+사양을 만족하는지 증명을 시도합니다. 즉, ``require``구문은 가정으로 간주하고 ``assert``구문
+안의 조건이 항상 참임을 증명하려고 합니다. 만약 assertion failure가 발견되었을 경우,
+해당 assertion이 어떻게 위반될 수 있는지 보여주는 반례가 사용자에게 제공될 수 있습니다.
+만약 no warning이 property에 대해 SMTChecker로부터 제공되었다면, 이는 해당 property가 안전하다는
+것을 의미합니다.
 
-The other verification targets that the SMTChecker checks at compile time are:
+SMTChecker가 컴파일 타임에 확인하는 검증 타겟은 다음과 같습니다:
 
-- Arithmetic underflow and overflow.
-- Division by zero.
-- Trivial conditions and unreachable code.
-- Popping an empty array.
-- Out of bounds index access.
-- Insufficient funds for a transfer.
+- 산술적 언더플로우와 오버플로우.
+- 0으로 나누기.
+- 쓸모없는 조건과 도달할 수 없는 코드.
+- 비어있는 배열에서의 Pop 행위.
+- 경계를 벗어난 인덱스의 접근.
+- 송금을 위한 자금의 부족.
 
-All the targets above are automatically checked by default if all engines are
-enabled, except underflow and overflow for Solidity >=0.8.7.
+위에 나열된 모든 타겟들은 만약 모든 엔진이 허용되어 있다면 Solidity >=0.8.7 버전에서의 언더플로우와 오버플로우를 제외하고 기본적으로 자동으로 검증됩니다.
 
-The potential warnings that the SMTChecker reports are:
+SMTChecker가 보고하는 잠재적인 경고들은 다음과 같습니다:
 
-- ``<failing  property> happens here.``. This means that the SMTChecker proved that a certain property fails. A counterexample may be given, however in complex situations it may also not show a counterexample. This result may also be a false positive in certain cases, when the SMT encoding adds abstractions for Solidity code that is either hard or impossible to express.
-- ``<failing property> might happen here``. This means that the solver could not prove either case within the given timeout. Since the result is unknown, the SMTChecker reports the potential failure for soundness. This may be solved by increasing the query timeout, but the problem might also simply be too hard for the engine to solve.
+- ``<failing  property> happens here.``. 이 경고의 의미는 SMTChecker가 특정한 property가 실패했음을 입증함을 의미합니다. 반례가 있을 수 있지만, 복잡한 상황들에서는 반례에 대해 표시하지 않을 수도 있습니다. 이 결과는 또한 SMT encoding이 표현하기 어렵거나 불가능한 Solidity 코드에 대한 추상화를 추가하는 특정한 케이스들에 경우 False positive일 수도 있습니다.
 
-To enable the SMTChecker, you must select :ref:`which engine should run<smtchecker_engines>`,
-where the default is no engine. Selecting the engine enables the SMTChecker on all files.
+- ``<failing property> might happen here``. 이 경고의 의미는 solver가 주어진 시간 초과 내에 두 경우 모두를 증명하지 못했음을 의미합니다. 결과를 알 수 없기 때문에, SMTChecker는 건전성(Soundness)에 대한 잠재적 실패를 리포트합니다. 이 경우 쿼리 시간 초과를 늘려 해결할 수 있기는 하지만, 엔진이 이를 해결하기에 문제 자체가 너무 어려울 수도 있습니다.
+
+SMTChecker를 활성화하기 위해서, 당신은 :ref:`which engine should run<smtchecker_engines>`를 선택해야 하며 여기서 기본 값은 no engine (엔진 없음) 입니다. 엔진을 선택하면 모든 파일에서 SMTChecker가 활성화됩니다.
 
 .. note::
 
-    Prior to Solidity 0.8.4, the default way to enable the SMTChecker was via
-    ``pragma experimental SMTChecker;`` and only the contracts containing the
-    pragma would be analyzed. That pragma has been deprecated, and although it
-    still enables the SMTChecker for backwards compatibility, it will be removed
-    in Solidity 0.9.0. Note also that now using the pragma even in a single file
-    enables the SMTChecker for all files.
+    Solidity 0.8.4버전 이전에는, SMTChecker를 활성화하기 위한 기본적인 방법은
+    ``pragma experimental SMTChecker;``를 통한 방법이었고 오직 pragma가 포함된
+    컨트랙트만 분석되었습니다. 해당 pragma는 더 이상 사용되지 않으며 이전 버전과의
+    호환성을 위해 SMTChecker를 계속 활성화하지만 Solidity 0.9.0에서 제거되었습니다.
+    또한 참고로 현재는 단일 파일에서도 pragma를 사용하면 모든 파일에 대해 SMTChecker를
+    사용할 수 있습니다.
 
 .. note::
 
-    The lack of warnings for a verification target represents an undisputed
-    mathematical proof of correctness, assuming no bugs in the SMTChecker and
-    the underlying solver. Keep in mind that these problems are
-    *very hard* and sometimes *impossible* to solve automatically in the
-    general case.  Therefore, several properties might not be solved or might
-    lead to false positives for large contracts. Every proven property should
-    be seen as an important achievement. For advanced users, see :ref:`SMTChecker Tuning <smtchecker_options>`
-    to learn a few options that might help proving more complex
-    properties.
+    검증 대상에 대한 경고가 없다는 것은 SMTChecker 및 기본 솔버에 버그가 없다고 가정할 때,
+    정확성에 대한 수학적 검증에 논쟁의 여지가 없다는 것을 나타냅니다. 일반적인 경우에 이러한
+    문제들을 자동으로 해결하는 것은 *매우 어렵거나* 혹은 종종 *불가능* 하다는 것을 명심해야합니다.
+    따라서, 몇몇의 property들은 해결되지 않거나 또는 매우 큰 계약들에서 false positive(오탐)에 
+    이를 수 있습니다. 모든 입증된 property들은 중요한 성과로 간주되어야 합니다. 숙련된 유저들은 더 복잡한 property들을 증명하기 위해 도움을 줄 수 있는 몇 가지 옵션을 추가로 배우려면 :ref:`SMTChecker Tuning <smtchecker_options>`를 보는 것이 도움이 될 것입니다.
+
 
 ********
-Tutorial
+튜토리얼
 ********
 
 Overflow
@@ -95,12 +89,13 @@ Overflow
         }
     }
 
-The contract above shows an overflow check example.
-The SMTChecker does not check underflow and overflow by default for Solidity >=0.8.7,
-so we need to use the command line option ``--model-checker-targets "underflow,overflow"``
-or the JSON option ``settings.modelChecker.targets = ["underflow", "overflow"]``.
-See :ref:`this section for targets configuration<smtchecker_targets>`.
-Here, it reports the following:
+위의 컨트랙트 예제는 오버플로우를 확인하는 예제를 보여주고 있습니다.
+SMTChecker는 Solidity 버전이 0.8.7 버전 이상일 경우에는 기본적으로 언더플로우와 오버플로우를
+확인하지 않습니다.
+따라서 우리는 커맨드라인 옵션인 ``--model-checker-targets "underflow,overflow"``를 사용하거나,
+혹은 JSON 옵션인 ``settings.modelChecker.targets = ["underflow", "overflow"]``를 사용해야 합니다.
+:ref:`this section for targets configuration<smtchecker_targets>`를 참고하십시오.
+여기에 해당 리포트가 제시되었습니다:
 
 .. code-block:: text
 
@@ -119,8 +114,8 @@ Here, it reports the following:
     9 |             return _x + _y;
       |                    ^^^^^^^
 
-If we add ``require`` statements that filter out overflow cases,
-the SMTChecker proves that no overflow is reachable (by not reporting warnings):
+만약 우리가 ``require`` 구문을 해당 걸러내진 오버플로우 케이스들에 대해 추가한다면,
+SMTChecker는 아무런 오버플로우가 도달될 수 없다는 것을 증명합니다. (경고가 리포트되지 않았을 경우):
 
 .. code-block:: Solidity
 
@@ -429,8 +424,8 @@ that the assertion fails:
             Mutex.set(1) -- reentrant call
       --> m.sol:32:3:
        |
-    32 | 		assert(xPre == x);
-       | 		^^^^^^^^^^^^^^^^^
+    32 |        assert(xPre == x);
+       |        ^^^^^^^^^^^^^^^^^
 
 
 .. _smtchecker_options:
