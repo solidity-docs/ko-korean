@@ -1,72 +1,66 @@
 .. index:: auction;blind, auction;open, blind auction, open auction
 
 *************
-Blind Auction
+완전 경쟁 입찰
 *************
 
-In this section, we will show how easy it is to create a completely blind
-auction contract on Ethereum.  We will start with an open auction where
-everyone can see the bids that are made and then extend this contract into a
-blind auction where it is not possible to see the actual bid until the bidding
-period ends.
+이번 섹션에서는 이더리움에서 완전 경쟁 입찰 컨트랙트를 생성하는 것이 얼마나 쉬운지 알아보도록 하겠습니다. 
+이를 위해, 먼저 모든 사람이 입찰가를 볼 수 있는 공개 입찰을 시작한 후, 이 컨트랙트를 입찰 기간이 끝날 때까진 실제 입찰가를 볼 수 없는 비공개 입찰로 연장시켜 보겠습니다.
 
 .. _simple_auction:
 
-Simple Open Auction
+간단한 공개 입찰
 ===================
 
-The general idea of the following simple auction contract is that everyone can
-send their bids during a bidding period. The bids already include sending money
-/ Ether in order to bind the bidders to their bid. If the highest bid is
-raised, the previous highest bidder gets their money back.  After the end of
-the bidding period, the contract has to be called manually for the beneficiary
-to receive their money - contracts cannot activate themselves.
+아래 간단한 공개 입찰 컨트랙트의 핵심은 입찰 기간 동안엔 누구든지 입찰가를 제시할 수 있다는 점입니다. 
+입찰에는 입찰자가 본인이 제시한 입찰가에 종속하게끔 하도록 돈이나 Ether를 보내는 것을 이미 포함하고 있습니다. 
+만일 제일 높은 입찰가가 제시될 경우, 직전의 제일 높은 가격으로 부른 입찰자에게 돈이 들어갑니다. 
+입찰 기간이 종료된 이후 수혜자가 돈을 받기 위해선 컨트랙트는 수동적으로 호출되어야 하며 컨트랙트 스스로 활성화될 수 없습니다.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.4;
     contract SimpleAuction {
-        // Parameters of the auction. Times are either
-        // absolute unix timestamps (seconds since 1970-01-01)
-        // or time periods in seconds.
+        // 입찰의 파라미터를 의미합니다. 
+        // 여기서의 시간은 절대적 unix 타임스탬프 (1970-01-01 이후부터 초 단위)이거나
+        // 초 단위의 타임을 의미합니다. 
         address payable public beneficiary;
         uint public auctionEndTime;
 
-        // Current state of the auction.
+        // 입찰의 현재 상황을 가리킵니다. 
         address public highestBidder;
         uint public highestBid;
 
-        // Allowed withdrawals of previous bids
+        // 이전 입찰에서 허용된 철회를 의미합니다.
         mapping(address => uint) pendingReturns;
 
-        // Set to true at the end, disallows any change.
-        // By default initialized to `false`.
+        // 맨 마지막에 true로 설정함으로서 어떠한 변동도 허용하지 않습니다.
+        // 기본적으로 `false` 값으로 시작됩니다. 
         bool ended;
 
-        // Events that will be emitted on changes.
+        // 변동 사항으로 인해 송출되는 이벤트를 의미합니다.
         event HighestBidIncreased(address bidder, uint amount);
         event AuctionEnded(address winner, uint amount);
 
-        // Errors that describe failures.
+        // 실패 내역을 설명하는 에러들입니다.
 
-        // The triple-slash comments are so-called natspec
-        // comments. They will be shown when the user
-        // is asked to confirm a transaction or
-        // when an error is displayed.
+        // 세 개 연속의 슬래쉬 코멘트를 natspec 코멘트라 합니다.
+        // 유저에게 트랜잭션을 확정하라고 요구하거나 
+        // 에러 나타날 때 보여집니다. 
 
-        /// The auction has already ended.
+        /// 입찰이 이미 종료되었습니다. 
         error AuctionAlreadyEnded();
-        /// There is already a higher or equal bid.
+        /// 이미 같거나 보다 높은 입찰가가 존재합니다.
         error BidNotHighEnough(uint highestBid);
-        /// The auction has not ended yet.
+        /// 입찰이 아직 끝나지 않았습니다. 
         error AuctionNotYetEnded();
-        /// The function auctionEnd has already been called.
+        /// auctionEnd 함수가 이미 호출되었습니다. 
         error AuctionEndAlreadyCalled();
 
-        /// Create a simple auction with `biddingTime`
-        /// seconds bidding time on behalf of the
-        /// beneficiary address `beneficiaryAddress`.
+        /// 수혜자의 주소인 `beneficiaryAddress`을 대신하여 
+        /// 입찰 시간인 `biddingTime`초를 넣어 
+        /// 간단한 입찰을 생성합니다. 
         constructor(
             uint biddingTime,
             address payable beneficiaryAddress
@@ -75,36 +69,29 @@ to receive their money - contracts cannot activate themselves.
             auctionEndTime = block.timestamp + biddingTime;
         }
 
-        /// Bid on the auction with the value sent
-        /// together with this transaction.
-        /// The value will only be refunded if the
-        /// auction is not won.
+        /// 해당 트랜잭션과 함께 제시된 경매의 입찰가입니다. 
+        /// 입찰가는 오직 경매에서 이기지 못했을 때에만 환불받을 수 있습니다. 
         function bid() external payable {
-            // No arguments are necessary, all
-            // information is already part of
-            // the transaction. The keyword payable
-            // is required for the function to
-            // be able to receive Ether.
+            // 여기선 어떠한 인수도 필요하지 않습니다.
+            // 모든 정보는 이미 트랜잭션의 일부이기 때문입니다. 
+            // Ether를 받기 위해서 함수에 payable이라는 키워드가 필요합니다. 
 
-            // Revert the call if the bidding
-            // period is over.
+            // 만일 입찰 기간이 끝났다면 해당 호출을 모두 취소합니다. 
             if (block.timestamp > auctionEndTime)
                 revert AuctionAlreadyEnded();
 
-            // If the bid is not higher, send the
-            // money back (the revert statement
-            // will revert all changes in this
-            // function execution including
-            // it having received the money).
+            // 만일 입찰가가 높지 않다면, 돈을 다시 보내줍니다.
+            // (취소에 대한 명령문은 여태까지 받았던 돈들을 포함하여
+            // 해당 함수에서 실행하는 모든 변동 사항들을 무효화합니다.)
             if (msg.value <= highestBid)
                 revert BidNotHighEnough(highestBid);
 
             if (highestBid != 0) {
-                // Sending back the money by simply using
-                // highestBidder.send(highestBid) is a security risk
-                // because it could execute an untrusted contract.
-                // It is always safer to let the recipients
-                // withdraw their money themselves.
+                // highestBidder.send(highestBid)를 이용하여 단순히 
+                // 돈을 환불시키는 것에는 보안상 위험이 있습니다.  
+                // 왜냐하면 신뢰할 수 없는 컨트랙트를 실행시킬 수도 있기 때문입니다.
+                // 그렇기 때문에 항상 수혜자들이 본인의 돈을 직접
+                // 인출하게끔 하는 것이 안전합니다. 
                 pendingReturns[highestBidder] += highestBid;
             }
             highestBidder = msg.sender;
@@ -112,18 +99,18 @@ to receive their money - contracts cannot activate themselves.
             emit HighestBidIncreased(msg.sender, msg.value);
         }
 
-        /// Withdraw a bid that was overbid.
+        /// 초과 입찰한 입찰가에 대하여 인출합니다.
         function withdraw() external returns (bool) {
             uint amount = pendingReturns[msg.sender];
             if (amount > 0) {
-                // It is important to set this to zero because the recipient
-                // can call this function again as part of the receiving call
-                // before `send` returns.
+                // 이 부분을 항상 0으로 설정하는 것이 중요합니다. 
+                // 왜냐하면 `send`가 반환하기 전에 수혜자가 반환 호출의 한 부분으로써
+                // 함수를 다시 호출할 수도 있기 때문입니다. 
                 pendingReturns[msg.sender] = 0;
 
-                // msg.sender is not of type `address payable` and must be
-                // explicitly converted using `payable(msg.sender)` in order
-                // use the member function `send()`.
+                // msg.sender는 `address payable` 타입이 아니며 and must be
+                // `send()` 함수의 멤버를 사용하기 위해 를 사용함으로서
+                // `payable(msg.sender)`를 사용하여 분명히 변환되었음을 알려야 합니다. 
                 if (!payable(msg.sender).send(amount)) {
                     // No need to call throw here, just reset the amount owing
                     pendingReturns[msg.sender] = amount;
@@ -133,33 +120,31 @@ to receive their money - contracts cannot activate themselves.
             return true;
         }
 
-        /// End the auction and send the highest bid
-        /// to the beneficiary.
+        /// 입찰을 종료하고 수혜자에게 가장 높은 입찰가를 보냅니다.
         function auctionEnd() external {
-            // It is a good guideline to structure functions that interact
-            // with other contracts (i.e. they call functions or send Ether)
-            // into three phases:
-            // 1. checking conditions
-            // 2. performing actions (potentially changing conditions)
-            // 3. interacting with other contracts
-            // If these phases are mixed up, the other contract could call
-            // back into the current contract and modify the state or cause
-            // effects (ether payout) to be performed multiple times.
-            // If functions called internally include interaction with external
-            // contracts, they also have to be considered interaction with
-            // external contracts.
+            // 다음 세 가지 단계를 통해 
+            // 다른 컨트랙트들과 상호작용하는 함수를 설계하는 것이 좋습니다
+            // (예: 함수 호출 혹은 Ether를 보내는 등)
+            // 1. 조건 확인하기 
+            // 2. 액션 실행 (잠재적으로 조건을 바꿀 수도 있습니다)
+            // 3. 다른 컨트랙트들과 상호작용하기 
+            // 만일 이러한 단계들이 뒤죽박죽 섞이게 될 경우 
+            // 다른 컨트랙트가 현재 컨트랙트를 다시 호출할 수 있고 
+            // 이에 state를 수정하거나 (ether payout)과 같은 효과가 여러번 일어날 수 있습니다.
+            // 만일 내부에서 호출된 함수들이 외부 컨트랙트와의 상호작용을 포함한다면
+            // 이는 외부 컨트랙트들과 상호작용이 있었다고 고려되어야 합니다.
 
-            // 1. Conditions
+            // 1. 조건
             if (block.timestamp < auctionEndTime)
                 revert AuctionNotYetEnded();
             if (ended)
                 revert AuctionEndAlreadyCalled();
 
-            // 2. Effects
+            // 2. 효과
             ended = true;
             emit AuctionEnded(highestBidder, highestBid);
 
-            // 3. Interaction
+            // 3. 상호작용
             beneficiary.transfer(highestBid);
         }
     }
