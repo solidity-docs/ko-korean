@@ -122,30 +122,29 @@
 
         /// 입찰을 종료하고 수혜자에게 가장 높은 입찰가를 보냅니다.
         function auctionEnd() external {
-            // It is a good guideline to structure functions that interact
-            // with other contracts (i.e. they call functions or send Ether)
-            // into three phases:
-            // 1. checking conditions
-            // 2. performing actions (potentially changing conditions)
-            // 3. interacting with other contracts
-            // If these phases are mixed up, the other contract could call
-            // back into the current contract and modify the state or cause
-            // effects (ether payout) to be performed multiple times.
-            // If functions called internally include interaction with external
-            // contracts, they also have to be considered interaction with
-            // external contracts.
+            // 다음 세 가지 단계를 통해 
+            // 다른 컨트랙트들과 상호작용하는 함수를 설계하는 것이 좋습니다
+            // (예: 함수 호출 혹은 Ether를 보내는 등)
+            // 1. 조건 확인하기 
+            // 2. 액션 실행 (잠재적으로 조건을 바꿀 수도 있습니다)
+            // 3. 다른 컨트랙트들과 상호작용하기 
+            // 만일 이러한 단계들이 뒤죽박죽 섞이게 될 경우 
+            // 다른 컨트랙트가 현재 컨트랙트를 다시 호출할 수 있고 
+            // 이에 state를 수정하거나 (ether payout)과 같은 효과가 여러번 일어날 수 있습니다.
+            // 만일 내부에서 호출된 함수들이 외부 컨트랙트와의 상호작용을 포함한다면
+            // 이는 외부 컨트랙트들과 상호작용이 있었다고 고려되어야 합니다.
 
-            // 1. Conditions
+            // 1. 조건
             if (block.timestamp < auctionEndTime)
                 revert AuctionNotYetEnded();
             if (ended)
                 revert AuctionEndAlreadyCalled();
 
-            // 2. Effects
+            // 2. 효과
             ended = true;
             emit AuctionEnded(highestBidder, highestBid);
 
-            // 3. Interaction
+            // 3. 상호작용
             beneficiary.transfer(highestBid);
         }
     }
