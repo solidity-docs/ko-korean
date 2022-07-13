@@ -4,33 +4,32 @@
 Creating Contracts
 ******************
 
-Contracts can be created "from outside" via Ethereum transactions or from within Solidity contracts.
+컨트랙트는 이더리움 트랜잭션를 통한 "외부로부터" 또는 솔리디티의 컨트랙트 내부로부터
+생성될 수 있습니다.
 
-IDEs, such as `Remix <https://remix.ethereum.org/>`_, make the creation process seamless using UI elements.
+`Remix <https://remix.ethereum.org/>`_와 같은 IDE들은 UI 요소들을 활용하여
+생성 프로세스를 원활하게 만듭니다.
 
-One way to create contracts programmatically on Ethereum is via the JavaScript API `web3.js <https://github.com/ethereum/web3.js>`_.
-It has a function called `web3.eth.Contract <https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#new-contract>`_
-to facilitate contract creation.
+이더리움에서 프로그래밍 방식으로 컨트랙트를 생성할 수 있는 한 가지 방법은 JavaScript API인
+`web3.js <https://github.com/ethereum/web3.js>`_를 통한 방법입니다.
+이는 컨트랙트 생성을 용이하게 하기 위해 `web3.eth.Contract <https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#new-contract>`_ 라고 불리는 함수를 갖고 있습니다.
+    
+컨트랙트가 생성되었을 때, :ref:`constructor <constructor>` (``constructor`` 키워드와 함께 정의된 함수)
+가 한 번 호출됩니다.
 
-When a contract is created, its :ref:`constructor <constructor>` (a function declared with
-the ``constructor`` keyword) is executed once.
+생성자는 선택적입니다. 오직 한 개의 생성자만 허용되는데, 이는 오버로딩이 제공되지 않음을 의미합니다.
 
-A constructor is optional. Only one constructor is allowed, which means
-overloading is not supported.
-
-After the constructor has executed, the final code of the contract is stored on the
-blockchain. This code includes all public and external functions and all functions
-that are reachable from there through function calls. The deployed code does not
-include the constructor code or internal functions only called from the constructor.
+생성자가 실행된 후, 컨트랙트의 최종 코드는 블록체인 위에 저장됩니다. 이 코드는 모든
+퍼블릭, 그리고 외부 함수들과 함수 호출을 통해 도달할 수 있는 모든 함수들을 포함하고 있습니다.
+배포된 코드는 생성자 코드나 혹은 생성자로부터만 호출되는 내부 함수들을 포함하지 않습니다.
 
 .. index:: constructor;arguments
 
-Internally, constructor arguments are passed :ref:`ABI encoded <ABI>` after the code of
-the contract itself, but you do not have to care about this if you use ``web3.js``.
+내부적으로, 생성자 인수는 컨트랙트 자체의 코드 뒤에 :ref:`ABI encoded <ABI>`로 전달되지만
+``web3.js``를 사용하는 경우 이를 신경 쓸 필요가 없습니다.
 
-If a contract wants to create another contract, the source code
-(and the binary) of the created contract has to be known to the creator.
-This means that cyclic creation dependencies are impossible.
+만약 컨트랙트가 다른 컨트랙트를 만들기를 원한다면, 생성된 컨트랙트의 소스 코드 (그리고 바이너리)를
+작성자에게 알려야 합니다. 이는 순환 생성 종속성이 불가능함을 의미합니다.
 
 .. code-block:: solidity
 
