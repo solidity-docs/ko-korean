@@ -87,6 +87,13 @@ Prerequisites
 MacOS의 경우 일부 테스트 스크립트는 GNU coreutils가 설치되어야 합니다.
 이는 Homebrew를 사용하는게 가장 쉬울 수 있습니다: ``brew install coreutils``.
 
+On Windows systems make sure that you have a privilege to create symlinks,
+otherwise several tests may fail.
+Administrators should have that privilege, but you may also
+`grant it to other users <https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_
+or
+`enable Developer Mode <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
+
 Running the Tests
 -----------------
 
@@ -226,7 +233,11 @@ Writing and Running Syntax Tests
 - ``skip``: 해당 특정 테스트를 건너뜁니다.
 - ``quit``: ``isoltest`` 를 종료합니다.
 
+<<<<<<< HEAD
 테스트 프로세스를 종료하는 ``quit`` 를 제외하고 위 모든 옵션들은 현재 컨트랙트에 적용됩니다.
+=======
+All of these options apply to the current contract, except ``quit`` which stops the entire testing process.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 위 테스트를 자동으로 업데이트하면 다음과 같이 바뀝니다.
 
@@ -456,7 +467,7 @@ For example ``pragma solidity >=0.4.0 <0.9.0;``.
 Running Documentation Tests
 ---------------------------
 
-Make sure your contributions pass our documentation tests by running ``./scripts/docs.sh`` that installs dependencies
+Make sure your contributions pass our documentation tests by running ``./docs/docs.sh`` that installs dependencies
 needed for documentation and checks for any problems such as broken links or syntax issues.
 
 Solidity Language Design
