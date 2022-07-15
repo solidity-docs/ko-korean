@@ -9,12 +9,31 @@ Solidity 컴파일러 설치하기
 버저닝
 ==========
 
+<<<<<<< HEAD
 Solidity 버전들은 `semantic versioning <https://semver.org>`_ 방식을 따르며 **nightly 빌드** 또한 가능합니다. 
 nightly 빌드는 항상 동작한다고 보기에는 힘들며,  
 The nightly builds
 are not guaranteed to be working and despite best efforts they might contain undocumented
 and/or broken changes. We recommend using the latest release. Package installers below
 will use the latest release.
+=======
+Solidity versions follow `Semantic Versioning <https://semver.org>`_. In
+addition, patch level releases with major release 0 (i.e. 0.x.y) will not
+contain breaking changes. That means code that compiles with version 0.x.y
+can be expected to compile with 0.x.z where z > y.
+
+In addition to releases, we provide **nightly development builds** with the
+intention of making it easy for developers to try out upcoming features and
+provide early feedback. Note, however, that while the nightly builds are usually
+very stable, they contain bleeding-edge code from the development branch and are
+not guaranteed to be always working. Despite our best efforts, they might
+contain undocumented and/or broken changes that will not become a part of an
+actual release. They are not meant for production use.
+
+When deploying contracts, you should use the latest released version of Solidity. This
+is because breaking changes, as well as new features and bug fixes are introduced regularly.
+We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 Remix
 =====
@@ -498,10 +517,18 @@ Solidity 커밋과 결합된 플랫폼이 SemVer 빌드의 메타데이터를 �
 
 예시:
 
+<<<<<<< HEAD
 1. 0.4.0 버전이 만들어집니다.
 2. nightly 빌드는 현 시점부터 0.4.1의 버전을 가지게 됩니다.
 3. 충돌이 없는 변경점이 새로 발견되었습니다 --> 현 버전에 변경점이 없습니다.
 4. 충돌이 있는 변경점이 새로 발견되었습니다 --> 버전은 0.5.0으로 변경됩니다.
 5. 0.5.0 릴리즈가 만들어집니다.
+=======
+1. The 0.4.0 release is made.
+2. The nightly build has a version of 0.4.1 from now on.
+3. Non-breaking changes are introduced --> no change in version.
+4. A breaking change is introduced --> version is bumped to 0.5.0.
+5. The 0.5.0 release is made.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 이러한 패턴은 :ref:`version pragma <version_pragma>` 와 잘 작동합니다.
