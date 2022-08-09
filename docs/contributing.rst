@@ -2,7 +2,11 @@
 기여하기
 ############
 
+<<<<<<< HEAD
 도움은 항상 환영하며 Solidity에 기여하는 방법은 여러가지가 있습니다.
+=======
+Help is always welcome and there are plenty of options to contribute to Solidity.
+>>>>>>> 6a42da8d3579dc4b49fdd8679d7b1663658d70d0
 
 특히 다음 분야에서 많은 도움을 기다리고 있습니다:
 
@@ -20,8 +24,12 @@
 먼저 솔리디티의 컴포넌트와 빌드 프로세스에 익숙해지려면 :ref:`building-from-source` 
 를 참고하십시오. 또한 솔리디티로 스마트 컨트랙트를 작성하는 방법을 숙지하는 것도 좋습니다.
 
+<<<<<<< HEAD
 이 프로젝트는 다음 `컨트리뷰터 행동 지침 <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ 
 와 함께 릴리즈되었습니다. 프로젝트에 참여하면 (이슈, 풀리퀘스트, Gitter 채널 등) 이에 동의하게 됩니다.
+=======
+Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project — in the issues, pull requests, or Gitter channels — you agree to abide by its terms.
+>>>>>>> 6a42da8d3579dc4b49fdd8679d7b1663658d70d0
 
 Team Calls
 ==========
@@ -47,8 +55,13 @@ Team Calls
 * 이슈 재현을 위한 단계
 * 실제 작동과 의도한 작동 비교
 
+<<<<<<< HEAD
 이슈를 발생시킨 소스코드를 최소한으로 줄이는 것 항상 많은 도움이 되며
 때로는 오해를 해결하기도 합니다.
+=======
+Reducing the source code that caused the issue to a bare minimum is always
+very helpful, and sometimes even clarifies a misunderstanding.
+>>>>>>> 6a42da8d3579dc4b49fdd8679d7b1663658d70d0
 
 풀리퀘스트 워크플로우
 ==========================
@@ -62,8 +75,14 @@ Team Calls
 
 또한, 새로운 피쳐를 작성 중이라면, ``test/`` 하단에 필요한 테스트 케이스를 반드시 추가하십시오 (아래 참고).
 
+<<<<<<< HEAD
 다만, 더 큰 변경을 하는 경우, `Solidity Development Gitter channel <https://gitter.im/ethereum/solidity-dev>`_
 과 먼저 논의하십히오 (상기의 채널과 별개로, 이는 언어의 사용이 아닌 컴파일러와 언어 개발에 중점을 두고 있습니다).
+=======
+However, if you are making a larger change, please consult with the `Solidity Development Gitter channel
+<https://gitter.im/ethereum/solidity-dev>`_ (different from the one mentioned above — this one is
+focused on compiler and language development instead of language usage) first.
+>>>>>>> 6a42da8d3579dc4b49fdd8679d7b1663658d70d0
 
 새로운 피쳐와 버그픽스 내역는 ``Changelog.md`` 파일에 추가되어야 합니다.
 해당하는 경우 이전 엔트리의 스타일을 따르십시오.
@@ -84,8 +103,20 @@ Prerequisites
 (`evmone <https://github.com/ethereum/evmone/releases>`_, `libz3 <https://github.com/Z3Prover/z3>`_,
 `libhera <https://github.com/ewasm/hera>`_).
 
+<<<<<<< HEAD
 MacOS의 경우 일부 테스트 스크립트는 GNU coreutils가 설치되어야 합니다.
 이는 Homebrew를 사용하는게 가장 쉬울 수 있습니다: ``brew install coreutils``.
+=======
+On macOS systems, some of the testing scripts expect GNU coreutils to be installed.
+This can be easiest accomplished using Homebrew: ``brew install coreutils``.
+>>>>>>> 6a42da8d3579dc4b49fdd8679d7b1663658d70d0
+
+On Windows systems, make sure that you have a privilege to create symlinks,
+otherwise several tests may fail.
+Administrators should have that privilege, but you may also
+`grant it to other users <https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_
+or
+`enable Developer Mode <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
 
 Running the Tests
 -----------------
@@ -101,9 +132,15 @@ Solidity는 여러 종류의 테스트가 있으며, 대부분은 `Boost C++ Tes
 테스트 시스템은 semantic 테스트를 실행하기 위해 `evmone <https://github.com/ethereum/evmone/releases>`_
 의 위치를 자동으로 파악하려 합니다.
 
+<<<<<<< HEAD
 ``evmone`` 라이브러리는 반드시 현재 작업 디렉토리, 또는 이의 부모, 또는 이의 부모의 부모에서 상대경로로
 ``deps`` 또는 ``deps/lib`` 디렉토리에 위치해야합니다. 대안으로 ``evmone`` 공유 객체에 대한 명시적 위치를
 ``ETH_EVMONE`` 환경변수에 지정할 수 있습니다.
+=======
+The ``evmone`` library must be located in the ``deps`` or ``deps/lib`` directory relative to the
+current working directory, to its parent or its parent's parent. Alternatively, an explicit location
+for the ``evmone`` shared object can be specified via the ``ETH_EVMONE`` environment variable.
+>>>>>>> 6a42da8d3579dc4b49fdd8679d7b1663658d70d0
 
 ``evmone`` 주로 semantic 과 가스 테스트 실행에 필요합니다.
 설치하지 않은 경우, ``scripts/soltest.sh`` 에 ``--no-semantic-tests`` 플래그를 추가해 해당하는 테스트를 건너뛸 수 있습니다.
@@ -226,7 +263,11 @@ Writing and Running Syntax Tests
 - ``skip``: 해당 특정 테스트를 건너뜁니다.
 - ``quit``: ``isoltest`` 를 종료합니다.
 
+<<<<<<< HEAD
 테스트 프로세스를 종료하는 ``quit`` 를 제외하고 위 모든 옵션들은 현재 컨트랙트에 적용됩니다.
+=======
+All of these options apply to the current contract, except ``quit`` which stops the entire testing process.
+>>>>>>> 6a42da8d3579dc4b49fdd8679d7b1663658d70d0
 
 위 테스트를 자동으로 업데이트하면 다음과 같이 바뀝니다.
 
@@ -273,7 +314,7 @@ Next, build Solidity (or just the ``solfuzzer`` binary) with AFL as your compile
     cmake .. -DCMAKE_C_COMPILER=path/to/afl-gcc -DCMAKE_CXX_COMPILER=path/to/afl-g++
     make solfuzzer
 
-At this stage you should be able to see a message similar to the following:
+At this stage, you should be able to see a message similar to the following:
 
 .. code-block:: text
 
@@ -456,13 +497,13 @@ For example ``pragma solidity >=0.4.0 <0.9.0;``.
 Running Documentation Tests
 ---------------------------
 
-Make sure your contributions pass our documentation tests by running ``./scripts/docs.sh`` that installs dependencies
+Make sure your contributions pass our documentation tests by running ``./docs/docs.sh`` that installs dependencies
 needed for documentation and checks for any problems such as broken links or syntax issues.
 
 Solidity Language Design
 ========================
 
-To actively get involved in the language design process and share your ideas concerning the future of Solidity,
+To actively get involved in the language design process and to share your ideas concerning the future of Solidity,
 please join the `Solidity forum <https://forum.soliditylang.org/>`_.
 
 The Solidity forum serves as the place to propose and discuss new language features and their implementation in
@@ -481,7 +522,7 @@ If you want to know where the team is standing in terms or implementing new feat
 Issues in the design backlog need further specification and will either be discussed in a language design call or in a regular team call. You can
 see the upcoming changes for the next breaking release by changing from the default branch (`develop`) to the `breaking branch <https://github.com/ethereum/solidity/tree/breaking>`_.
 
-For ad-hoc cases and questions you can reach out to us via the `Solidity-dev Gitter channel <https://gitter.im/ethereum/solidity-dev>`_, a
+For ad-hoc cases and questions, you can reach out to us via the `Solidity-dev Gitter channel <https://gitter.im/ethereum/solidity-dev>`_ — a
 dedicated chatroom for conversations around the Solidity compiler and language development.
 
 We are happy to hear your thoughts on how we can improve the language design process to be even more collaborative and transparent.
