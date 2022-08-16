@@ -8,8 +8,14 @@
 간단한 스마트 컨트랙트
 ***********************
 
+<<<<<<< HEAD
 변수값을 설정하고 이를 다른 컨트랙트에서 접근 가능하도록 노출시켜보는 간단한 예제를 만드는 것부터 시작해보겠습니다.
 지금 당장 이해가 안되더라도 걱정 마십시오. 앞으로 더 자세한 내용을 다룰 예정입니다.
+=======
+Let us begin with a basic example that sets the value of a variable and exposes
+it for other contracts to access. It is fine if you do not understand
+everything right now, we will go into more details later.
+>>>>>>> a0ee14f7c2bddfccf20bf8656b0340e07b02922c
 
 Storage 예제
 ===============
@@ -146,8 +152,8 @@ Subcurrency 예제
 
 .. code-block:: solidity
 
-    function balances(address _account) external view returns (uint) {
-        return balances[_account];
+    function balances(address account) external view returns (uint) {
+        return balances[account];
     }
 
 해당 함수를 개인 계정에 남아 있는 잔액을 조회할 때 사용할 수 있습니다.
@@ -186,11 +192,21 @@ event를 주시하기 위해 아래 ``Coin`` 컨트랙트 객체를 만들기 �
 기본적인 :ref:`Checked arithmetic <unchecked>` 으로 인해, ``balances[receiver] += amount;`` 부분에서 overflow가 발생할 경우 
 (즉 ``balances[receiver] + amount`` 부분의 arbitrary precision arithmetic이 ``uint`` (``2**256 - 1``)의 최댓값보다 클 경우) 트랜잭션은 되돌아갑니다.
 
+<<<<<<< HEAD
 :ref:`Errors <errors>` 는 호출자에게 조건 혹은 처리 과정이 왜 실패했는지에 대한 정보를 제공해줍니다.
 Error는 :ref:`revert statement <revert-statement>` 와 함께 사용됩니다. 
 revert statement는 무조건적으로 종료하고 ``require`` 함수와 비슷하게 모든 변경 사항들을 원상복귀시킵니다. 
 다만, 동시에 호출자(궁극적으로는 프론트엔드 어플리케이션 혹은 블록 탐색자)에게 전달될 오류 이름과 추가적인 데이터를 제공하기도 합니다. 
 따라서 실패를 쉽게 디버깅하거나 조기에 발견할 수 있게 됩니다. 
+=======
+:ref:`Errors <errors>` allow you to provide more information to the caller about
+why a condition or operation failed. Errors are used together with the
+:ref:`revert statement <revert-statement>`. The ``revert`` statement unconditionally
+aborts and reverts all changes similar to the ``require`` function, but it also
+allows you to provide the name of an error and additional data which will be supplied to the caller
+(and eventually to the front-end application or block explorer) so that
+a failure can more easily be debugged or reacted upon.
+>>>>>>> a0ee14f7c2bddfccf20bf8656b0340e07b02922c
 
 ``send`` 함수는 (가지고 있는 코인을) 어느 누구에게든지 보내고자 하는 모든 사람들에 의해 사용될 수 있습니다. 
 만일 전송자가 전송하고자 하는 코인의 양이 충분치 않을 경우, ``if`` 조건은 참으로 판별하게 됩니다. 
@@ -316,6 +332,7 @@ Ethereum에는 동일한 주소를 공유하고 있는 두 가지 종류의 계�
 가스
 ===
 
+<<<<<<< HEAD
 생성이 되고 난 후, 각 트랜잭션은 일정량의 **가스**를 지불하게 됩니다. 
 이는 트랜잭션을 실행하기 위해 필요한 작업량을 제한함과 동시에 작업을 수행하기 위하여 지불하기 위함입니다. 
 EVM이 트랜잭션을 실행하는 동안, 가스는 특정 규칙에 따라 점차적으로 고갈됩니다.
@@ -324,14 +341,41 @@ EVM이 트랜잭션을 실행하는 동안, 가스는 특정 규칙에 따라 �
 만일 실행 이후 약간의 가스가 남게 된다면, 그 가스는 똑같이 생성자에게 환불됩니다.
 
 만일 가스가 일정 수준까지 사용하게 될 경우 (즉 음수가 될 경우), out-of-gas 예외가 발생되며 현재 프레임의 상태에 맞춰 모든 변경 사항이 취소가 됩니다. 
+=======
+Upon creation, each transaction is charged with a certain amount of **gas**
+that has to be paid for by the originator of the transaction (``tx.origin``).
+While the EVM executes the
+transaction, the gas is gradually depleted according to specific rules.
+If the gas is used up at any point (i.e. it would be negative),
+an out-of-gas exception is triggered, which ends execution and reverts all modifications
+made to the state in the current call frame.
+>>>>>>> a0ee14f7c2bddfccf20bf8656b0340e07b02922c
+
+This mechanism incentivizes economical use of EVM execution time
+and also compensates EVM executors (i.e. miners / stakers) for their work.
+Since each block has a maximum amount of gas, it also limits the amount
+of work needed to validate a block.
+
+The **gas price** is a value set by the originator of the transaction, who
+has to pay ``gas_price * gas`` up front to the EVM executor.
+If some gas is left after execution, it is refunded to the transaction originator.
+In case of an exception that reverts changes, already used up gas is not refunded.
+
+Since EVM executors can choose to include a transaction or not,
+transaction senders cannot abuse the system by setting a low gas price.
 
 .. index:: ! storage, ! memory, ! stack
 
 스토리지, 메모리 및 스택
 =============================
 
+<<<<<<< HEAD
 Ethereum 가상 머신은 데이터를 저장할 수 있는 세 가지 공간이 있는데, 바로 스토리지, 메모리 그리고 스택입니다.
 다음 단락에서 바로 설명드리도록 하겠습니다.
+=======
+The Ethereum Virtual Machine has three areas where it can store data:
+storage, memory and the stack.
+>>>>>>> a0ee14f7c2bddfccf20bf8656b0340e07b02922c
 
 각 계정은 **스토리지**라는 데이터 공간이 있는데 함수의 호출과 트랜잭션 사이에서 지속적으로 존재합니다. 
 스토리지는 256 비트 단어를 256 비트의 단어로 매핑해주는 키-값 저장소입니다. 
@@ -385,14 +429,21 @@ call payload에 접근할 수 있게 되는데, 이는 **calldata**라 하는 �
 콜들은 1024만큼의 depth로 **한정되어 있는데**, 이는 더욱 복잡한 작업의 경우 재귀 호출보다는 루프가 더 선호된다는 의미입니다.
 또한, 63 혹은 64번째의 가스만 message call에 전달될 수 있으며 이는 실제론 1000보다 작은 depth limit이 걸리게 됩니다.
 
-.. index:: delegatecall, callcode, library
+.. index:: delegatecall, library
 
-Delegatecall / Callcode and Libraries
-=====================================
+Delegatecall and Libraries
+==========================
 
+<<<<<<< HEAD
 **deleegatecall**이라 하는 message call의 특수 변형 형태가 있습니다. 
 message call과 동일하지만 호출 중인 컨트랙트의 컨텍스트 내에서 실행되는 타겟 주소의 코드와 
 ``msg.sender`` 및 ``msg.value``가 그 값들을 변경하지 않는다는 점만 다릅니다. 
+=======
+There exists a special variant of a message call, named **delegatecall**
+which is identical to a message call apart from the fact that
+the code at the target address is executed in the context (i.e. at the address) of the calling
+contract and ``msg.sender`` and ``msg.value`` do not change their values.
+>>>>>>> a0ee14f7c2bddfccf20bf8656b0340e07b02922c
 
 이는 컨트랙트가 런타임에서 다른 주소로부터 코드를 동적으로 로드할 수 있음을 의미합니다. 
 스토리지, 현 주소 그리고 잔고는 여전히 호출 중인 컨트랙트를 참조하며 오직 코드만이 호출된 주소로부터 가져와집니다.
@@ -421,7 +472,7 @@ Create
 이렇게 **create call**과 일반 message call 간의 유일한 차이는 payload 데이터가 실행되고 코드로 결과가 저장되며 
 호출자 혹은 생성자가 스택 상에 새로운 컨트랙트의 주소를 받는다는 점입니다.
 
-.. index:: selfdestruct, self-destruct, deactivate
+.. index:: ! selfdestruct, deactivate
 
 Deactivate and Self-destruct
 ============================
