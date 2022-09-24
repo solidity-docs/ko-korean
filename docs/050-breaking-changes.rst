@@ -1,19 +1,18 @@
 ********************************
-Solidity v0.5.0 Breaking Changes
+Solidity 버전 0.5.0 변경점
 ********************************
 
-This section highlights the main breaking changes introduced in Solidity
-version 0.5.0, along with the reasoning behind the changes and how to update
-affected code.
-For the full list check
-`the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_.
+해당 섹션에서는 Solidity 버전 0.5.0에 나타난 주요 변경점들을 변경 이유 및 그로 인해 코드를 어떤 식으로 
+업데이트 해야 하는지에 대한 소개와 함께 설명하고 있습니다.
+모든 변경점에 대해 확인을 원하실 경우 
+`변경 사항들을 <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_ 체크해보시기 바랍니다.
 
-.. note::
-   Contracts compiled with Solidity v0.5.0 can still interface with contracts
-   and even libraries compiled with older versions without recompiling or
-   redeploying them.  Changing the interfaces to include data locations and
-   visibility and mutability specifiers suffices. See the
-   :ref:`Interoperability With Older Contracts <interoperability>` section below.
+.. 참조::
+   Solidity 0.5.0 버전으로 컴파일된 컨트랙트들은 다른 컨트랙트들 맟
+   재컴파일링 혹은 재배포를 하지 않아도 오래된 버전의 컴파일된 라이브러리들과도 상호 작용이 가능합니다.
+   데이터 위치, 가시성 그리고 변동 가능한 특정자를 포함시키기 위해 인터페이스를 바꾸셔도 상관 없습니다.
+   아래 :ref:`Interoperability With Older Contracts <interoperability>` 부분을
+   참조해주시기 바랍니다.
 
 Semantic Only Changes
 =====================
