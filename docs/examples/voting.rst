@@ -95,6 +95,7 @@
         function delegate(address to) external {
             // 참조값을 할당합니다. 
             Voter storage sender = voters[msg.sender];
+            require(sender.weight != 0, "You have no right to vote");
             require(!sender.voted, "You already voted.");
 
             require(to != msg.sender, "Self-delegation is disallowed.");
@@ -112,11 +113,21 @@
                 require(to != msg.sender, "Found loop in delegation.");
             }
 
+<<<<<<< HEAD
             // `sender`가 참조값이므로
             // `voters[msg.sender].voted`를 수정합니다.
+=======
+            Voter storage delegate_ = voters[to];
+
+            // Voters cannot delegate to accounts that cannot vote.
+            require(delegate_.weight >= 1);
+
+            // Since `sender` is a reference, this
+            // modifies `voters[msg.sender]`.
+>>>>>>> 3ddf5db755e7ada1e26c4850764d5f7ad988333e
             sender.voted = true;
             sender.delegate = to;
-            Voter storage delegate_ = voters[to];
+
             if (delegate_.voted) {
                 // 만일 위임자가 이미 투표하였을 경우, 
                 // 투표수에 직접적으로 추가합니다. 
@@ -170,5 +181,13 @@
 가능한 개선 사항들
 =====================
 
+<<<<<<< HEAD
 현재로썬 모든 참가자들에게 투표권을 부여하기 위해 많은 트랜잭션이 필요합니다.
 더 나은 방법이 있을까요?
+=======
+Currently, many transactions are needed to
+assign the rights to vote to all participants.
+Moreover, if two or more proposals have the same
+number of votes, ``winningProposal()`` is not able
+to register a tie. Can you think of a way to fix these issues?
+>>>>>>> 3ddf5db755e7ada1e26c4850764d5f7ad988333e
