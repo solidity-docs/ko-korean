@@ -4,7 +4,7 @@
 
 ## 관리자(Moderator) 및 기여자(Contributor)
 
-현재 관리자로 지정되어 있는 사람은 다음과 같습니다. 관리자의 권한에 대한 자세한 사항은 [여기](https://github.com/solidity-docs/translation-guide/blob/main/maintainer-guide.md#maintainer-guide){:target="\_blank"}를 참조해주시기 바랍니다.
+현재 관리자로 지정되어 있는 사람은 다음과 같습니다. 관리자의 권한에 대한 자세한 사항은 [여기](https://github.com/solidity-docs/translation-guide/blob/main/maintainer-guide.md#maintainer-guide)를 참조해주시기 바랍니다.
 
 - [x] donghhan
 - [x] GanziDaeyong
@@ -24,5 +24,5 @@
 
 솔리디티 공식 문서는 reStructuredText 파일로 구성되어 있습니다. VS Code를 사용하시는 분들께서는 다음 확장 프로그램들을 이용해보세요.
 
-- [LeXtudio Inc.의 reStructuredText](https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext){:target="\_blank"}
-- [Trond Snekvik의 reStructuredText Syntax highlighting](https://marketplace.visualstudio.com/items?itemName=trond-snekvik.simple-rst){:target="\_blank"}
+- [LeXtudio Inc.의 reStructuredText](https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext)
+- [Trond Snekvik의 reStructuredText Syntax highlighting](https://marketplace.visualstudio.com/items?itemName=trond-snekvik.simple-rst)
