@@ -7,6 +7,7 @@
 현재 관리자로 지정되어 있는 사람은 다음과 같습니다. 관리자의 권한에 대한 자세한 사항은 [여기](https://github.com/solidity-docs/translation-guide/blob/main/maintainer-guide.md#maintainer-guide){:target="\_blank"}를 참조해주시기 바랍니다.
 
 - [x] donghhan
+- [x] GanziDaeyong
 
 솔리디티 한국어 공식 문서에 기여하길 원하시는 분들은 누구든지 자유롭게 참여하실 수 있습니다.
 
