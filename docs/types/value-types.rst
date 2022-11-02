@@ -188,7 +188,8 @@ The address type comes in two flavours, which are largely identical:
 - ``address payable``: Same as ``address``, but with the additional members ``transfer`` and ``send``.
 
 The idea behind this distinction is that ``address payable`` is an address you can send Ether to,
-while a plain ``address`` cannot be sent Ether.
+while you are not supposed to send Ether to a plain ``address``, for example because it might be a smart contract
+that was not built to accept Ether.
 
 Type conversions:
 
@@ -209,22 +210,25 @@ an exception to this rule.
     declare its type as ``address payable`` to make this requirement visible. Also,
     try to make this distinction or conversion as early as possible.
 
+    The distinction between ``address`` and ``address payable`` was introduced with version 0.5.0.
+    Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to
+    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+
+
 Operators:
 
 * ``<=``, ``<``, ``==``, ``!=``, ``>=`` and ``>``
 
 .. warning::
     If you convert a type that uses a larger byte size to an ``address``, for example ``bytes32``, then the ``address`` is truncated.
-    To reduce conversion ambiguity version 0.4.24 and higher of the compiler force you make the truncation explicit in the conversion.
+    To reduce conversion ambiguity, starting with version 0.4.24, the compiler will force you to make the truncation explicit in the conversion.
     Take for example the 32-byte value ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC``.
 
     You can use ``address(uint160(bytes20(b)))``, which results in ``0x111122223333444455556666777788889999aAaa``,
     or you can use ``address(uint160(uint256(b)))``, which results in ``0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc``.
 
 .. note::
-    The distinction between ``address`` and ``address payable`` was introduced with version 0.5.0.
-    Also starting from that version, contracts do not derive from the address type, but can still be explicitly converted to
-    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+    Mixed-case hexadecimal numbers conforming to `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ are automatically treated as literals of the ``address`` type. See :ref:`Address Literals<address_literals>`.
 
 .. _members-of-addresses:
 
@@ -331,7 +335,9 @@ on ``call``.
 
 * ``code`` and ``codehash``
 
-You can query the deployed code for any smart contract. Use ``code`` to get the EVM bytecode as a string, which might be empty. Use ``codehash`` get the Keccak-256 hash of that code.
+You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
+``bytes memory``, which might be empty. Use ``.codehash`` to get the Keccak-256 hash of that code
+(as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
 
 .. note::
     All contracts can be converted to ``address`` type, so it is possible to query the balance of the
@@ -445,8 +451,8 @@ Integer literals are formed from a sequence of digits in the range 0-9.
 They are interpreted as decimals. For example, ``69`` means sixty nine.
 Octal literals do not exist in Solidity and leading zeros are invalid.
 
-Decimal fractional literals are formed by a ``.`` with at least one number on
-one side.  Examples include ``1.``, ``.1`` and ``1.3``.
+Decimal fractional literals are formed by a ``.`` with at least one number after the decimal point.
+Examples include ``.1`` and ``1.3`` (but not ``1.``).
 
 Scientific notation in the form of ``2e10`` is also supported, where the
 mantissa can be fractional but the exponent has to be an integer.
@@ -460,13 +466,22 @@ There is no additional semantic meaning added to a number literal containing und
 the underscores are ignored.
 
 Number literal expressions retain arbitrary precision until they are converted to a non-literal type (i.e. by
-using them together with a non-literal expression or by explicit conversion).
+using them together with anything other than a number literal expression (like boolean literals) or by explicit conversion).
 This means that computations do not overflow and divisions do not truncate
 in number literal expressions.
 
 For example, ``(2**800 + 1) - 2**800`` results in the constant ``1`` (of type ``uint8``)
 although intermediate results would not even fit the machine word size. Furthermore, ``.5 * 8`` results
 in the integer ``4`` (although non-integers were used in between).
+
+.. warning::
+    While most operators produce a literal expression when applied to literals, there are certain operators that do not follow this pattern:
+
+    - Ternary operator (``... ? ... : ...``),
+    - Array subscript (``<array>[<index>]``).
+
+    You might expect expressions like ``255 + (true ? 1 : 0)`` or ``255 + [1, 2, 3][0]`` to be equivalent to using the literal 256
+    directly, but in fact they are computed within the type ``uint8`` and can overflow.
 
 Any operator that can be applied to integers can also be applied to number literal expressions as
 long as the operands are integers. If any of the two is fractional, bit operations are disallowed
@@ -774,6 +789,18 @@ This includes private, internal and public functions of both contracts and libra
 functions.
 External function types, on the other hand, are only compatible with public and external contract
 functions.
+
+.. note::
+    External functions with ``calldata`` parameters are incompatible with external function types with ``calldata`` parameters.
+    They are compatible with the corresponding types with ``memory`` parameters instead.
+    For example, there is no function that can be pointed at by a value of type ``function (string calldata) external`` while
+    ``function (string memory) external`` can point at both ``function f(string memory) external {}`` and
+    ``function g(string calldata) external {}``.
+    This is because for both locations the arguments are passed to the function in the same way.
+    The caller cannot pass its calldata directly to an external function and always ABI-encodes the arguments into memory.
+    Marking the parameters as ``calldata`` only affects the implementation of the external function and is
+    meaningless in a function pointer on the caller's side.
+
 Libraries are excluded because they require a ``delegatecall`` and use :ref:`a different ABI
 convention for their selectors <library-selectors>`.
 Functions declared in interfaces do not have definitions so pointing at them does not make sense either.
