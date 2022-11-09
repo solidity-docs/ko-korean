@@ -4,9 +4,14 @@
 솔리디티는 스마트 컨트랙트를 시도하기 위한 객체지향적인 고급 프로그래밍 언어입니다. 
 여기서 스마트 컨트랙트란 이더리움 상태 내부에 있는 여러 계정들의 행동들을 통제할 수 있는 프로그램을 의미합니다.
 
+<<<<<<< HEAD
 솔리디티는 `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ 입니다.
 C++, 파이썬 및 자바스크립트의 영향을 받았으며 이더리움 가상 머신(EVM)을 공략하기 위해 고안되었습니다.
 솔리디티가 어떤 언어로부터 영감을 받았는지에 대한 자세한 설명은 :doc:`language influeces <language-influences>` 섹션에서 확인하실 수 있습니다.
+=======
+Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ designed to target the Ethereum Virtual Machine (EVM).
+It is influenced by C++, Python and JavaScript. You can find more details about which languages Solidity has been inspired by in the :doc:`language influences <language-influences>` section.
+>>>>>>> 9db2da0385c5abec0d1c3eab468648ec85fb5caa
 
 솔리디티는 정적 타입 언어로서 다른 특징 중에서도 상속, 라이브러리 그리고 유저가 스스로 정의한 복잡한 타입에 대한 정의 등을 지원합니다. 
 
@@ -70,6 +75,7 @@ Ethereum에 대한 더 많은 문서, 다양한 튜토리얼, 툴, 그리고 개
 번역
 ------------
 
+<<<<<<< HEAD
 현재 커뮤니티 자원자분들께서 본 공식 문서를 몇몇 언어로 번역하고 계십니다. 
 완성도 및 업데이트 상황은 언어별로 상이하며, 영문이 원본입니다. 
 
@@ -86,6 +92,30 @@ Ethereum에 대한 더 많은 문서, 다양한 튜토리얼, 툴, 그리고 개
 * `중국어(간체) <https://learnblockchain.cn/docs/solidity/>`_ (진행 중)
 * `스페인어 <https://solidity-es.readthedocs.io>`_
 * `터키어 <https://github.com/denizozzgur/Solidity_TR/blob/master/README.md>`_ (부분적으로 진행)
+=======
+Community contributors help translate this documentation into several languages.
+Note that they have varying degrees of completeness and up-to-dateness. The English
+version stands as a reference.
+
+You can switch between languages by clicking on the flyout menu in the bottom-left corner
+and selecting the preferred language.
+
+* `Chinese <https://github.com/solidity-docs/zh-cn-chinese/>`_
+* `French <https://docs.soliditylang.org/fr/latest/>`_
+* `Indonesian <https://github.com/solidity-docs/id-indonesian>`_
+* `Japanese <https://github.com/solidity-docs/ja-japanese>`_
+* `Korean <https://github.com/solidity-docs/ko-korean>`_
+* `Persian <https://github.com/solidity-docs/fa-persian>`_
+* `Russian <https://github.com/solidity-docs/ru-russian>`_
+* `Spanish <https://github.com/solidity-docs/es-spanish>`_
+* `Turkish <https://github.com/solidity-docs/tr-turkish>`_
+
+.. note::
+
+   We set up a GitHub organization and translation workflow to help streamline the
+   community efforts. Please refer to the translation guide in the `solidity-docs org <https://github.com/solidity-docs>`_
+   for information on how to start a new language or contribute to the community translations.
+>>>>>>> 9db2da0385c5abec0d1c3eab468648ec85fb5caa
 
 차례
 ========
