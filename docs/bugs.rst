@@ -3,21 +3,18 @@
 .. _known_bugs:
 
 ##################
-List of Known Bugs
+알려진 버그들
 ##################
 
-Below, you can find a JSON-formatted list of some of the known security-relevant bugs in the
-Solidity compiler. The file itself is hosted in the `Github repository
-<https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_.
-The list stretches back as far as version 0.3.0, bugs known to be present only
-in versions preceding that are not listed.
+아래는 솔리디티 컴파일러에서 발견된 보안과 관련된 버그들을 JSON 형태의 리스트로 나타낸 것입니다. 
+파일은 `Github 레포지토리<https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_ 에서 호스팅되고 있습니다.
+리스트는 과거 버전 0.3.0서부터 나타내고 있으며 버그는 리스트에 나타나있지 않은 전 버전에서만 존재합니다.
 
-There is another file called `bugs_by_version.json
-<https://github.com/ethereum/solidity/blob/develop/docs/bugs_by_version.json>`_,
-which can be used to check which bugs affect a specific version of the compiler.
+`bugs_by_version.json
+<https://github.com/ethereum/solidity/blob/develop/docs/bugs_by_version.json>`_라는 또다른 파일이 있으며,
+이는 컴파일러의 어떤 버전에 영향을 끼치는지 체크하는데 사용될 수 있습니다.
 
-Contract source verification tools and also other tools interacting with
-contracts should consult this list according to the following criteria:
+컨트랙트와 상호작용하고 있는 컨트랙트 소스 유효성 검사 툴과 그밖의 툴들은 반드시 다음 조건들을 따라 리스트에 표기해야 합니다.
 
 - It is mildly suspicious if a contract was compiled with a nightly
   compiler version instead of a released version. This list does not keep
