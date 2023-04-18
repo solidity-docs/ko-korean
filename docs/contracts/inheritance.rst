@@ -40,7 +40,7 @@ Details are given in the following example.
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-
+    // This will report a warning due to deprecated selfdestruct
 
     contract Owned {
         constructor() { owner = payable(msg.sender); }
@@ -76,9 +76,9 @@ Details are given in the following example.
     }
 
 
-    // Multiple inheritance is possible. Note that `owned` is
+    // Multiple inheritance is possible. Note that `Owned` is
     // also a base class of `Destructible`, yet there is only a single
-    // instance of `owned` (as for virtual inheritance in C++).
+    // instance of `Owned` (as for virtual inheritance in C++).
     contract Named is Owned, Destructible {
         constructor(bytes32 name) {
             Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
@@ -130,6 +130,7 @@ seen in the following example:
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+    // This will report a warning due to deprecated selfdestruct
 
     contract owned {
         constructor() { owner = payable(msg.sender); }
@@ -162,6 +163,7 @@ explicitly in the final override, but this function will bypass
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+    // This will report a warning due to deprecated selfdestruct
 
     contract owned {
         constructor() { owner = payable(msg.sender); }
@@ -421,8 +423,8 @@ equivalent to ``constructor() {}``. For example:
     abstract contract A {
         uint public a;
 
-        constructor(uint _a) {
-            a = _a;
+        constructor(uint a_) {
+            a = a_;
         }
     }
 
@@ -434,16 +436,16 @@ You can use internal parameters in a constructor (for example storage pointers).
 the contract has to be marked :ref:`abstract <abstract-contract>`, because these parameters
 cannot be assigned valid values from outside but only through the constructors of derived contracts.
 
-.. warning ::
+.. warning::
     Prior to version 0.4.22, constructors were defined as functions with the same name as the contract.
     This syntax was deprecated and is not allowed anymore in version 0.5.0.
 
-.. warning ::
+.. warning::
     Prior to version 0.7.0, you had to specify the visibility of constructors as either
     ``internal`` or ``public``.
 
 
-.. index:: ! base;constructor
+.. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
 
 Arguments for Base Constructors
 ===============================
@@ -459,7 +461,7 @@ derived contracts need to specify all of them. This can be done in two ways:
 
     contract Base {
         uint x;
-        constructor(uint _x) { x = _x; }
+        constructor(uint x_) { x = x_; }
     }
 
     // Either directly specify in the inheritance list...
@@ -467,14 +469,23 @@ derived contracts need to specify all of them. This can be done in two ways:
         constructor() {}
     }
 
-    // or through a "modifier" of the derived constructor.
+    // or through a "modifier" of the derived constructor...
     contract Derived2 is Base {
-        constructor(uint _y) Base(_y * _y) {}
+        constructor(uint y) Base(y * y) {}
+    }
+
+    // or declare abstract...
+    abstract contract Derived3 is Base {
+    }
+
+    // and have the next concrete derived contract initialize it.
+    contract DerivedFromDerived is Derived3 {
+        constructor() Base(10 + 10) {}
     }
 
 One way is directly in the inheritance list (``is Base(7)``).  The other is in
 the way a modifier is invoked as part of
-the derived constructor (``Base(_y * _y)``). The first way to
+the derived constructor (``Base(y * y)``). The first way to
 do it is more convenient if the constructor argument is a
 constant and defines the behaviour of the contract or
 describes it. The second way has to be used if the
@@ -484,7 +495,12 @@ inheritance list or in modifier-style in the derived constructor.
 Specifying arguments in both places is an error.
 
 If a derived contract does not specify the arguments to all of its base
-contracts' constructors, it will be abstract.
+contracts' constructors, it must be declared abstract. In that case, when
+another contract derives from it, that other contract's inheritance list
+or constructor must provide the necessary parameters
+for all base classes that haven't had their parameters specified (otherwise,
+that other contract must be declared abstract as well). For example, in the above
+code snippet, see ``Derived3`` and ``DerivedFromDerived``.
 
 .. index:: ! inheritance;multiple, ! linearization, ! C3 linearization
 
