@@ -130,6 +130,7 @@ If the array is shorter than the target type, it will be padded with zeros at th
         }
     }
 
+.. index:: ! literal;conversion, literal;rational, literal;hexadecimal number
 .. _types-conversion-literals:
 
 Conversions between Literals and Elementary Types
@@ -151,6 +152,8 @@ that is large enough to represent it without truncation:
     Prior to version 0.8.0, any decimal or hexadecimal number literals could be explicitly
     converted to an integer type. From 0.8.0, such explicit conversions are as strict as implicit
     conversions, i.e., they are only allowed if the literal fits in the resulting range.
+
+.. index:: literal;string, literal;hexadecimal
 
 Fixed-Size Byte Arrays
 ----------------------
@@ -182,12 +185,18 @@ if their number of characters matches the size of the bytes type:
     bytes2 e = "x"; // not allowed
     bytes2 f = "xyz"; // not allowed
 
+.. index:: literal;address
+
 Addresses
 ---------
 
 As described in :ref:`address_literals`, hex literals of the correct size that pass the checksum
 test are of ``address`` type. No other literals can be implicitly converted to the ``address`` type.
 
-Explicit conversions from ``bytes20`` or any integer type to ``address`` result in ``address payable``.
+Explicit conversions to ``address`` are allowed only from ``bytes20`` and ``uint160``.
 
-An ``address a`` can be converted to ``address payable`` via ``payable(a)``.
+An ``address a`` can be converted explicitly to ``address payable`` via ``payable(a)``.
+
+.. note::
+    Prior to version 0.8.0, it was possible to explicitly convert from any integer type (of any size, signed or unsigned) to  ``address`` or ``address payable``.
+    Starting with in 0.8.0 only conversion from ``uint160`` is allowed.
