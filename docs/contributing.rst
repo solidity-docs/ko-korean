@@ -2,10 +2,15 @@
 기여하기
 ############
 
+<<<<<<< HEAD
 도움은 항상 환영하며 Solidity에 기여하는 방법은 여러가지가 있습니다.
+=======
+Help is always welcome and there are plenty of options to contribute to Solidity.
+>>>>>>> english/develop
 
 특히 다음 분야에서 많은 도움을 기다리고 있습니다:
 
+<<<<<<< HEAD
 * 이슈 리포트
 * `Solidity의 깃허브 이슈
   <https://github.com/ethereum/solidity/issues>`_ 수정 및 대응, 특히 외부 컨트리뷰터의 입문용 이슈를 뜻하는 
@@ -16,16 +21,34 @@
   <https://ethereum.stackexchange.com>`_ 와 `Solidity Gitter Chat
   <https://gitter.im/ethereum/solidity>`_ 에서 다른 사용자들의 질문에 답변
 * `Solidity forum <https://forum.soliditylang.org/>`_ 언어 변경사항 혹은 새로운 피쳐를 제안하거나 피드백을 제공함으로써 언어 설계 과정에 참여
+=======
+* Reporting issues.
+* Fixing and responding to `Solidity's GitHub issues
+  <https://github.com/ethereum/solidity/issues>`_, especially those tagged as
+  `"good first issue" <https://github.com/ethereum/solidity/labels/good%20first%20issue>`_ which are
+  meant as introductory issues for external contributors.
+* Improving the documentation.
+* `Translating <https://github.com/solidity-docs>`_ the documentation into more languages.
+* Responding to questions from other users on `StackExchange
+  <https://ethereum.stackexchange.com>`_ and the `Solidity Gitter Chat
+  <https://gitter.im/ethereum/solidity>`_.
+* Getting involved in the language design process by proposing language changes or new features in the `Solidity forum <https://forum.soliditylang.org/>`_ and providing feedback.
+>>>>>>> english/develop
 
 먼저 솔리디티의 컴포넌트와 빌드 프로세스에 익숙해지려면 :ref:`building-from-source` 
 를 참고하십시오. 또한 솔리디티로 스마트 컨트랙트를 작성하는 방법을 숙지하는 것도 좋습니다.
 
+<<<<<<< HEAD
 이 프로젝트는 다음 `컨트리뷰터 행동 지침 <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ 
 와 함께 릴리즈되었습니다. 프로젝트에 참여하면 (이슈, 풀리퀘스트, Gitter 채널 등) 이에 동의하게 됩니다.
+=======
+Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project — in the issues, pull requests, or Gitter channels — you agree to abide by its terms.
+>>>>>>> english/develop
 
 Team Calls
 ==========
 
+<<<<<<< HEAD
 논의가 필요한 이슈 또는 풀리퀘스트가 있거나, 혹은 팀 또는 컨트리뷰터들이
 무엇을 하고 있는지 듣고 싶으면 다음 공개 팀 콜에 참여하실 수 있습니다:
 
@@ -33,6 +56,14 @@ Team Calls
 - 수요일 2pm CET/CEST.
 
 둘 다 `Jitsi <https://meet.ethereum.org/solidity>`_ 에서 참여할 수 있습니다.
+=======
+If you have issues or pull requests to discuss, or are interested in hearing what
+the team and contributors are working on, you can join our public team call:
+
+- Wednesdays at 3PM CET/CEST.
+
+The call takes place on `Jitsi <https://meet.soliditylang.org/>`_.
+>>>>>>> english/develop
 
 이슈 리포팅
 ====================
@@ -41,6 +72,7 @@ Team Calls
 `GitHub issues tracker <https://github.com/ethereum/solidity/issues>`_ 를 사용하십시오.
 이슈 리포팅 시 다음과 같은 세부사항들을 알려주십시오:
 
+<<<<<<< HEAD
 * 솔리디티 버전
 * 소스코드 (가능한 경우)
 * 운영체제
@@ -49,6 +81,19 @@ Team Calls
 
 이슈를 발생시킨 소스코드를 최소한으로 줄이는 것 항상 많은 도움이 되며
 때로는 오해를 해결하기도 합니다.
+=======
+* Solidity version.
+* Source code (if applicable).
+* Operating system.
+* Steps to reproduce the issue.
+* Actual vs. expected behavior.
+
+Reducing the source code that caused the issue to a bare minimum is always
+very helpful, and sometimes even clarifies a misunderstanding.
+
+For technical discussions about language design, a post in the
+`Solidity forum <https://forum.soliditylang.org/>`_ is the correct place (see :ref:`solidity_language_design`).
+>>>>>>> english/develop
 
 풀리퀘스트 워크플로우
 ==========================
@@ -62,8 +107,14 @@ Team Calls
 
 또한, 새로운 피쳐를 작성 중이라면, ``test/`` 하단에 필요한 테스트 케이스를 반드시 추가하십시오 (아래 참고).
 
+<<<<<<< HEAD
 다만, 더 큰 변경을 하는 경우, `Solidity Development Gitter channel <https://gitter.im/ethereum/solidity-dev>`_
 과 먼저 논의하십히오 (상기의 채널과 별개로, 이는 언어의 사용이 아닌 컴파일러와 언어 개발에 중점을 두고 있습니다).
+=======
+However, if you are making a larger change, please consult with the `Solidity Development Gitter channel
+<https://gitter.im/ethereum/solidity-dev>`_ (different from the one mentioned above — this one is
+focused on compiler and language development instead of language usage) first.
+>>>>>>> english/develop
 
 새로운 피쳐와 버그픽스 내역는 ``Changelog.md`` 파일에 추가되어야 합니다.
 해당하는 경우 이전 엔트리의 스타일을 따르십시오.
@@ -72,7 +123,14 @@ Team Calls
 <https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_ 을 존중해주십시오.
 또한, CI 테스팅을 하고 있지만, 풀리퀘스트를 제출하기 전에 코드를 테스트하고 로컬에서 빌드되는 지 확인하십시오.
 
+<<<<<<< HEAD
 도움을 주셔서 감사합니다!
+=======
+We highly recommend going through our `review checklist <https://github.com/ethereum/solidity/blob/develop/ReviewChecklist.md>`_ before submitting the pull request.
+We thoroughly review every PR and will help you get it right, but there are many common problems that can be easily avoided, making the review much smoother.
+
+Thank you for your help!
+>>>>>>> english/develop
 
 Running the Compiler Tests
 ==========================
@@ -80,12 +138,28 @@ Running the Compiler Tests
 Prerequisites
 -------------
 
+<<<<<<< HEAD
 모든 컴파일러 테스트를 실행하기 위해서는 몇몇 의존성을 선택적으로 설치할 수 있습니다.
 (`evmone <https://github.com/ethereum/evmone/releases>`_, `libz3 <https://github.com/Z3Prover/z3>`_,
 `libhera <https://github.com/ewasm/hera>`_).
 
 MacOS의 경우 일부 테스트 스크립트는 GNU coreutils가 설치되어야 합니다.
 이는 Homebrew를 사용하는게 가장 쉬울 수 있습니다: ``brew install coreutils``.
+=======
+For running all compiler tests you may want to optionally install a few
+dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_,
+`libz3 <https://github.com/Z3Prover/z3>`_).
+
+On macOS systems, some of the testing scripts expect GNU coreutils to be installed.
+This can be easiest accomplished using Homebrew: ``brew install coreutils``.
+>>>>>>> english/develop
+
+On Windows systems, make sure that you have a privilege to create symlinks,
+otherwise several tests may fail.
+Administrators should have that privilege, but you may also
+`grant it to other users <https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_
+or
+`enable Developer Mode <https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
 
 Running the Tests
 -----------------
@@ -94,25 +168,43 @@ Solidity는 여러 종류의 테스트가 있으며, 대부분은 `Boost C++ Tes
 <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ 어플리케이션 ``soltest`` 에 번들로 제공됩니다.
 대부분의 변경의 경우 ``build/test/soltest`` 또는 이의 wrapper인 ``scripts/soltest.sh`` 를 실행하면 충분합니다.
 
+<<<<<<< HEAD
 ``./scripts/tests.sh`` 스크립트는 `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_
 어플리케이션 ``soltest`` (또는 wrapper ``scripts/soltest.sh``)에 번들된 테스트, 그리고 커멘드라인 테스트와 컴파일 테스트를 포함해서
 대부분의 Solidity 테스트를 자동으로 실행합니다.
+=======
+The ``./scripts/tests.sh`` script executes most Solidity tests automatically,
+including those bundled into the `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_
+application ``soltest`` (or its wrapper ``scripts/soltest.sh``), as well as command-line tests and
+compilation tests.
+>>>>>>> english/develop
 
 테스트 시스템은 semantic 테스트를 실행하기 위해 `evmone <https://github.com/ethereum/evmone/releases>`_
 의 위치를 자동으로 파악하려 합니다.
 
+<<<<<<< HEAD
 ``evmone`` 라이브러리는 반드시 현재 작업 디렉토리, 또는 이의 부모, 또는 이의 부모의 부모에서 상대경로로
 ``deps`` 또는 ``deps/lib`` 디렉토리에 위치해야합니다. 대안으로 ``evmone`` 공유 객체에 대한 명시적 위치를
 ``ETH_EVMONE`` 환경변수에 지정할 수 있습니다.
+=======
+The ``evmone`` library must be located in the ``deps`` or ``deps/lib`` directory relative to the
+current working directory, to its parent or its parent's parent. Alternatively, an explicit location
+for the ``evmone`` shared object can be specified via the ``ETH_EVMONE`` environment variable.
+>>>>>>> english/develop
 
 ``evmone`` 주로 semantic 과 가스 테스트 실행에 필요합니다.
 설치하지 않은 경우, ``scripts/soltest.sh`` 에 ``--no-semantic-tests`` 플래그를 추가해 해당하는 테스트를 건너뛸 수 있습니다.
 
+<<<<<<< HEAD
 Ewasm 테스트는 기본적으로 비활성화되어 있으며, ``./scripts/soltest.sh --ewasm`` 를 사용해 명시적으로 허용할 수 있고
 ``soltest`` 가 이를 찾기 위해 `hera <https://github.com/ewasm/hera>`_ 를 요구합니다.
 ``hera`` 라이브러리를 위치시키는 방법은 명시적 위치 지정을 위한 변수 이름이 ``ETH_HERA`` 것을 제외하고 ``evmone`` 과 동일합니다.
 
 ``evmone`` 과 ``hera`` 라이브러리는 둘다 리눅스에서 ``.so``, 윈도우에서는 ``.dll``, MacOS에서는 ``.dylib`` 확장자로 끝나야 합니다.
+=======
+The ``evmone`` library should both end with the file name
+extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+>>>>>>> english/develop
 
 SMT 테스트를 실행하려면 ``libz3`` 라이브러리가 설치되어 있어야 하며 컴파일러의 configure 단계에서 ``cmake`` 로
 찾을 수 있어야 합니다.
@@ -121,7 +213,7 @@ SMT 테스트를 실행하려면 ``libz3`` 라이브러리가 설치되어 있�
 SMT 테스트를 비활성화하거나 ``./scripts/soltest.sh --no-smt`` 를 실행하십시오.
 SMT 테스트는 ``libsolidity/smtCheckerTests`` 과 ``libsolidity/smtCheckerTestsJSON`` 입니다.
 
-.. note ::
+.. note::
 
     Soltest가 실행하는 모든 단위테스트 목록을 보기 위해서는 ``./build/test/soltest --list_content=HRF`` 를 실행하십시오.
 
@@ -142,7 +234,7 @@ SMT 테스트는 ``libsolidity/smtCheckerTests`` 과 ``libsolidity/smtCheckerTes
 - 특정 테스트 케이스 실행을 위해서는 `run_test (-t) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/run_test.html>`_
 - 더 자세한 결과 리포트를 위해서는 `report-level (-r) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/report_level.html>`_
 
-.. note ::
+.. note::
 
     윈도우 환경에서 위 기본 세트를 libz3 없이 실행하고 싶은 경우 다음을 참고하십시오.
     Git Bash를 사용하는 경우, ``./build/test/Release/soltest.exe -- --no-smt`` 를 사용하십시오.
@@ -151,6 +243,12 @@ SMT 테스트는 ``libsolidity/smtCheckerTests`` 과 ``libsolidity/smtCheckerTes
 GDB를 사용해서 디버깅하려는 경우 "일반적인 경우"와 다르게 빌드해야 합니다.
 예를 들어, 다음 명령어를 ``build`` 폴더에서 실행시킵니다:
 
+<<<<<<< HEAD
+=======
+If you want to debug using GDB, make sure you build differently than the "usual".
+For example, you could run the following command in your ``build`` folder:
+
+>>>>>>> english/develop
 .. code-block:: bash
 
    cmake -DCMAKE_BUILD_TYPE=Debug ..
@@ -219,6 +317,7 @@ Writing and Running Syntax Tests
 
 실패하는 테스트에 대해 몇가지 옵션을 제공합니다:
 
+<<<<<<< HEAD
 - ``edit``: ``isoltest`` 가 수정할 수 있도록 에디터에 컨트랙트를 열려고 시도합니다. 이는 커멘드 라인 (``isoltest --editor /path/to/editor``),
   ``EDITOR`` 환경변수, 또는 ``/usr/bin/editor`` 를 순서대로 참고해서 에디터를 선택합니다.
 - ``update``: 테스트 중인 컨트랙트의 예상 결과값을 업데이트합니다. 이는 충족하지 않은 결과값을 지우고 누락된 결과값을 추가하는 방식으로 주석을
@@ -227,6 +326,14 @@ Writing and Running Syntax Tests
 - ``quit``: ``isoltest`` 를 종료합니다.
 
 테스트 프로세스를 종료하는 ``quit`` 를 제외하고 위 모든 옵션들은 현재 컨트랙트에 적용됩니다.
+=======
+- ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command-line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
+- ``update``: Updates the expectations for contract under test. This updates the annotations by removing unmet expectations and adding missing expectations. The test is then run again.
+- ``skip``: Skips the execution of this particular test.
+- ``quit``: Quits ``isoltest``.
+
+All of these options apply to the current contract, except ``quit`` which stops the entire testing process.
+>>>>>>> english/develop
 
 위 테스트를 자동으로 업데이트하면 다음과 같이 바뀝니다.
 
@@ -251,6 +358,60 @@ Writing and Running Syntax Tests
     상속이나 cross-contract call을 테스트하는 경우가 아니라면 하나의 파일에 둘 이상의 컨트랙트를 포함하지 마십시오.
     각 파일은 새로운 기능의 한 측면을 테스트해야 합니다.
 
+Command-line Tests
+------------------
+
+Our suite of end-to-end command-line tests checks the behaviour of the compiler binary as a whole
+in various scenarios.
+These tests are located in `test/cmdlineTests/ <https://github.com/ethereum/solidity/tree/develop/test/cmdlineTests>`_,
+one per subdirectory, and can be executed using the ``cmdlineTests.sh`` script.
+
+By default the script runs all available tests.
+You can also provide one or more `file name patterns <https://www.gnu.org/software/bash/manual/bash.html#Filename-Expansion>`_,
+in which case only the tests matching at least one pattern will be executed.
+
+By default the script assumes that a ``solc`` binary is available inside the ``build/`` subdirectory
+inside the working copy.
+If you build the compiler outside of the source tree, you can use the ``SOLIDITY_BUILD_DIR`` environment
+variable to specify a different location for the build directory.
+
+Example:
+
+.. code-block:: bash
+
+    export SOLIDITY_BUILD_DIR=~/solidity/build/
+    test/cmdlineTests.sh "standard_*" "*_yul_*"
+
+The commands above will run tests from directories starting with ``test/cmdlineTests/standard_`` and
+subdirectories of ``test/cmdlineTests/`` that have ``_yul_`` somewhere in the name.
+It will also assume that the file ``solidity/build/solc/solc`` inside your home directory is the
+compiler binary (unless you are on Windows -- then ``solidity/build/solc/Release/solc.exe``).
+
+There are several kinds of command-line tests:
+
+- *Standard JSON test*: contains at least an ``input.json`` file.
+  In general may contain:
+
+    - ``input.json``: input file to be passed to the ``--standard-json`` option on the command line.
+    - ``output.json``: expected Standard JSON output.
+    - ``args``: extra command-line arguments passed to ``solc``.
+
+- *CLI test*: contains at least an ``input.*`` file (other than ``input.json``).
+  In general may contain:
+
+    - ``input.*``: a single input file, whose name will be supplied to ``solc`` on the command line.
+      Usually ``input.sol`` or ``input.yul``.
+    - ``args``: extra command-line arguments passed to ``solc``.
+    - ``stdin``: content to be passed to ``solc`` via standard input.
+    - ``output``: expected content of the standard output.
+    - ``err``: expected content of the standard error output.
+    - ``exit``: expected exit code. If not provided, zero is expected.
+
+- *Script test*: contains a ``test.*`` file.
+  In general may contain:
+
+    - ``test.*``: a single script to run, usually ``test.sh`` or ``test.py``.
+      The script must be executable.
 
 Running the Fuzzer via AFL
 ==========================
@@ -273,7 +434,7 @@ Next, build Solidity (or just the ``solfuzzer`` binary) with AFL as your compile
     cmake .. -DCMAKE_C_COMPILER=path/to/afl-gcc -DCMAKE_CXX_COMPILER=path/to/afl-g++
     make solfuzzer
 
-At this stage you should be able to see a message similar to the following:
+At this stage, you should be able to see a message similar to the following:
 
 .. code-block:: text
 
@@ -332,7 +493,7 @@ The AFL documentation states that the corpus (the initial input files) should no
 too large. The files themselves should not be larger than 1 kB and there should be
 at most one input file per functionality, so better start with a small number of.
 There is also a tool called ``afl-cmin`` that can trim input files
-that result in similar behaviour of the binary.
+that result in similar behavior of the binary.
 
 Now run the fuzzer (the ``-m`` extends the size of memory to 60 MB):
 
@@ -379,18 +540,17 @@ contributions to Solidity.
 English Language
 ----------------
 
-Use English, with British English spelling preferred, unless using project or brand names. Try to reduce the usage of
-local slang and references, making your language as clear to all readers as possible. Below are some references to help:
+Use International English, unless using project or brand names. Try to reduce the usage of
+local slang and references, making your language as clear to all readers as possible.
+Below are some references to help:
 
 * `Simplified technical English <https://en.wikipedia.org/wiki/Simplified_Technical_English>`_
 * `International English <https://en.wikipedia.org/wiki/International_English>`_
-* `British English spelling <https://en.oxforddictionaries.com/spelling/british-and-spelling>`_
-
 
 .. note::
 
     While the official Solidity documentation is written in English, there are community contributed :ref:`translations`
-    in other languages available. Please refer to the `translation guide <https://github.com/solidity-docs/translation-guide>`_
+    in other languages available. Please refer to the `translation guide <https://github.com/solidity-docs#solidity-documentation-translation-guide>`_
     for information on how to contribute to the community translations.
 
 Title Case for Headings
@@ -456,13 +616,15 @@ For example ``pragma solidity >=0.4.0 <0.9.0;``.
 Running Documentation Tests
 ---------------------------
 
-Make sure your contributions pass our documentation tests by running ``./scripts/docs.sh`` that installs dependencies
+Make sure your contributions pass our documentation tests by running ``./docs/docs.sh`` that installs dependencies
 needed for documentation and checks for any problems such as broken links or syntax issues.
+
+.. _solidity_language_design:
 
 Solidity Language Design
 ========================
 
-To actively get involved in the language design process and share your ideas concerning the future of Solidity,
+To actively get involved in the language design process and to share your ideas concerning the future of Solidity,
 please join the `Solidity forum <https://forum.soliditylang.org/>`_.
 
 The Solidity forum serves as the place to propose and discuss new language features and their implementation in
@@ -481,7 +643,7 @@ If you want to know where the team is standing in terms or implementing new feat
 Issues in the design backlog need further specification and will either be discussed in a language design call or in a regular team call. You can
 see the upcoming changes for the next breaking release by changing from the default branch (`develop`) to the `breaking branch <https://github.com/ethereum/solidity/tree/breaking>`_.
 
-For ad-hoc cases and questions you can reach out to us via the `Solidity-dev Gitter channel <https://gitter.im/ethereum/solidity-dev>`_, a
+For ad-hoc cases and questions, you can reach out to us via the `Solidity-dev Gitter channel <https://gitter.im/ethereum/solidity-dev>`_ — a
 dedicated chatroom for conversations around the Solidity compiler and language development.
 
 We are happy to hear your thoughts on how we can improve the language design process to be even more collaborative and transparent.
