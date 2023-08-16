@@ -12,10 +12,19 @@
 간단한 공개 입찰
 ===================
 
+<<<<<<< HEAD
 아래 간단한 공개 입찰 컨트랙트의 핵심은 입찰 기간 동안엔 누구든지 입찰가를 제시할 수 있다는 점입니다. 
 입찰에는 입찰자가 본인이 제시한 입찰가에 종속하게끔 하도록 돈이나 Ether를 보내는 것을 이미 포함하고 있습니다. 
 만일 제일 높은 입찰가가 제시될 경우, 직전의 제일 높은 가격으로 부른 입찰자에게 돈이 들어갑니다. 
 입찰 기간이 종료된 이후 수혜자가 돈을 받기 위해선 컨트랙트는 수동적으로 호출되어야 하며 컨트랙트 스스로 활성화될 수 없습니다.
+=======
+The general idea of the following simple auction contract is that everyone can
+send their bids during a bidding period. The bids already include sending some compensation,
+e.g. Ether, in order to bind the bidders to their bid. If the highest bid is
+raised, the previous highest bidder gets their Ether back.  After the end of
+the bidding period, the contract has to be called manually for the beneficiary
+to receive their Ether - contracts cannot activate themselves.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -80,18 +89,34 @@
             if (block.timestamp > auctionEndTime)
                 revert AuctionAlreadyEnded();
 
+<<<<<<< HEAD
             // 만일 입찰가가 높지 않다면, 돈을 다시 보내줍니다.
             // (취소에 대한 명령문은 여태까지 받았던 돈들을 포함하여
             // 해당 함수에서 실행하는 모든 변동 사항들을 무효화합니다.)
+=======
+            // If the bid is not higher, send the
+            // Ether back (the revert statement
+            // will revert all changes in this
+            // function execution including
+            // it having received the Ether).
+>>>>>>> english/develop
             if (msg.value <= highestBid)
                 revert BidNotHighEnough(highestBid);
 
             if (highestBid != 0) {
+<<<<<<< HEAD
                 // highestBidder.send(highestBid)를 이용하여 단순히 
                 // 돈을 환불시키는 것에는 보안상 위험이 있습니다.  
                 // 왜냐하면 신뢰할 수 없는 컨트랙트를 실행시킬 수도 있기 때문입니다.
                 // 그렇기 때문에 항상 수혜자들이 본인의 돈을 직접
                 // 인출하게끔 하는 것이 안전합니다. 
+=======
+                // Sending back the Ether by simply using
+                // highestBidder.send(highestBid) is a security risk
+                // because it could execute an untrusted contract.
+                // It is always safer to let the recipients
+                // withdraw their Ether themselves.
+>>>>>>> english/develop
                 pendingReturns[highestBidder] += highestBid;
             }
             highestBidder = msg.sender;
@@ -162,19 +187,19 @@ During the **bidding period**, a bidder does not actually send their bid, but
 only a hashed version of it.  Since it is currently considered practically
 impossible to find two (sufficiently long) values whose hash values are equal,
 the bidder commits to the bid by that.  After the end of the bidding period,
-the bidders have to reveal their bids: They send their values unencrypted and
+the bidders have to reveal their bids: They send their values unencrypted, and
 the contract checks that the hash value is the same as the one provided during
 the bidding period.
 
 Another challenge is how to make the auction **binding and blind** at the same
-time: The only way to prevent the bidder from just not sending the money after
+time: The only way to prevent the bidder from just not sending the Ether after
 they won the auction is to make them send it together with the bid. Since value
 transfers cannot be blinded in Ethereum, anyone can see the value.
 
 The following contract solves this problem by accepting any value that is
 larger than the highest bid. Since this can of course only be checked during
 the reveal phase, some bids might be **invalid**, and this is on purpose (it
-even provides an explicit flag to place invalid bids with high value
+even provides an explicit flag to place invalid bids with high-value
 transfers): Bidders can confuse competition by placing several high or low
 invalid bids.
 
