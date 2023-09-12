@@ -150,8 +150,8 @@ throws an exception or goes out of gas.
     use ``f.value(x).gas(g)()``. This was deprecated in Solidity 0.6.2 and is no
     longer possible since Solidity 0.7.0.
 
-Named Calls and Anonymous Function Parameters
----------------------------------------------
+Function Calls with Named Parameters
+------------------------------------
 
 Function call arguments can be given by name, in any order,
 if they are enclosed in ``{ }`` as can be seen in the following
@@ -173,14 +173,15 @@ parameters from the function declaration, but can be in arbitrary order.
         function set(uint key, uint value) public {
             data[key] = value;
         }
-
     }
 
-Omitted Function Parameter Names
---------------------------------
+Omitted Names in Function Definitions
+-------------------------------------
 
-The names of unused parameters (especially return parameters) can be omitted.
-Those parameters will still be present on the stack, but they are inaccessible.
+The names of parameters and return values in the function declaration can be omitted.
+Those items with omitted names will still be present on the stack, but they are
+inaccessible by name. An omitted return value name
+can still return a value to the caller by use of the ``return`` statement.
 
 .. code-block:: solidity
 
@@ -283,7 +284,7 @@ which only need to be created if there is a dispute.
                 salt,
                 keccak256(abi.encodePacked(
                     type(D).creationCode,
-                    arg
+                    abi.encode(arg)
                 ))
             )))));
 
@@ -364,13 +365,13 @@ i.e. the following is not valid: ``(x, uint y) = (1, 2);``
 .. warning::
     Be careful when assigning to multiple variables at the same time when
     reference types are involved, because it could lead to unexpected
-    copying behaviour.
+    copying behavior.
 
 Complications for Arrays and Structs
 ------------------------------------
 
 The semantics of assignments are more complicated for non-value types like arrays and structs,
-including ``bytes`` and ``string``, see :ref:`Data location and assignment behaviour <data-location-assignment>` for details.
+including ``bytes`` and ``string``, see :ref:`Data location and assignment behavior <data-location-assignment>` for details.
 
 In the example below the call to ``g(x)`` has no effect on ``x`` because it creates
 an independent copy of the storage value in memory. However, ``h(x)`` successfully modifies ``x``
@@ -509,7 +510,7 @@ additional checks.
 Since Solidity 0.8.0, all arithmetic operations revert on over- and underflow by default,
 thus making the use of these libraries unnecessary.
 
-To obtain the previous behaviour, an ``unchecked`` block can be used:
+To obtain the previous behavior, an ``unchecked`` block can be used:
 
 .. code-block:: solidity
 
@@ -649,7 +650,7 @@ in the following situations:
 
 For the following cases, the error data from the external call
 (if provided) is forwarded. This means that it can either cause
-an `Error` or a `Panic` (or whatever else was given):
+an ``Error`` or a ``Panic`` (or whatever else was given):
 
 #. If a ``.transfer()`` fails.
 #. If you call a function via a message call but it does not finish
@@ -684,7 +685,7 @@ and ``assert`` for internal error checking.
             addr.transfer(msg.value / 2);
             // Since transfer throws an exception on failure and
             // cannot call back here, there should be no way for us to
-            // still have half of the money.
+            // still have half of the Ether.
             assert(address(this).balance == balanceBeforeTransfer - msg.value / 2);
             return address(this).balance;
         }
@@ -718,7 +719,7 @@ The ``revert`` statement takes a custom error as direct argument without parenth
 
     revert CustomError(arg1, arg2);
 
-For backwards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
+For backward-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
 and accepts a string:
 
     revert();
