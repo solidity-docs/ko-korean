@@ -9,24 +9,55 @@ Solidity 컴파일러 설치하기
 버저닝
 ==========
 
+<<<<<<< HEAD
 Solidity 버전들은 `semantic versioning <https://semver.org>`_ 방식을 따르며 **nightly 빌드** 또한 가능합니다. 
 nightly 빌드는 항상 동작한다고 보기에는 힘들며,  
 The nightly builds
 are not guaranteed to be working and despite best efforts they might contain undocumented
 and/or broken changes. We recommend using the latest release. Package installers below
 will use the latest release.
+=======
+Solidity versions follow `Semantic Versioning <https://semver.org>`_. In
+addition, patch-level releases with major release 0 (i.e. 0.x.y) will not
+contain breaking changes. That means code that compiles with version 0.x.y
+can be expected to compile with 0.x.z where z > y.
+
+In addition to releases, we provide **nightly development builds** to make
+it easy for developers to try out upcoming features and
+provide early feedback. Note, however, that while the nightly builds are usually
+very stable, they contain bleeding-edge code from the development branch and are
+not guaranteed to be always working. Despite our best efforts, they might
+contain undocumented and/or broken changes that will not become a part of an
+actual release. They are not meant for production use.
+
+When deploying contracts, you should use the latest released version of Solidity. This
+is because breaking changes, as well as new features and bug fixes are introduced regularly.
+We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+>>>>>>> english/develop
 
 Remix
 =====
 
 *규모가 작은 컨트랙트를 작성하거나 Solidity를 보다 빠르게 배우기 위해 Remix를 사용할 것을 추천드립니다.*
 
+<<<<<<< HEAD
 `Remix online에 접속하면 <https://remix.ethereum.org/>`_, 어떤 것도 설치하실 필요가 없어집니다.
 인터넷 연결 없이 사용하고 싶으시다면, https://github.com/ethereum/remix-live/tree/gh-pages 페이지에 접속하신 후 ``.zip`` 파일을 다운로드 하십시오.
 Remix는 여러 버전의 Solidity를 설치하지 않고도 nightly 빌드를 테스트해볼 수 있는 편리한 옵션이기도 합니다. 
 
 이 페이지에선 여러분의 컴퓨터에 Solidity 컴파일러 소프트웨어 커맨드라인을 설치하기 위한 자세한 옵션들을 다뤄볼 예정입니다. 
 규모가 큰 컨트랙트나 더 많은 컴파일 옵션이 필요하실 경우 커맨드라인 컴파일러를 사용해 보십시오. 
+=======
+`Access Remix online <https://remix.ethereum.org/>`_, you do not need to install anything.
+If you want to use it without connection to the Internet, go to
+https://github.com/ethereum/remix-live/tree/gh-pages#readme and follow the instructions on that page.
+Remix is also a convenient option for testing nightly builds
+without installing multiple Solidity versions.
+
+Further options on this page detail installing command-line Solidity compiler software
+on your computer. Choose a command-line compiler if you are working on a larger contract
+or if you require more compilation options.
+>>>>>>> english/develop
 
 .. _solcjs:
 
@@ -38,9 +69,16 @@ npm / Node.js
 :ref:`commandline-compiler` 문서는 여러분들이 모든 기능을 포함하고 있는 컴파일러인 ``solc``를 사용하고 있다고 가정합니다. 
 이 `레포지토리 <https://github.com/ethereum/solc-js>`_ 안에 ``solcjs`` 에 대한 자세한 설명이 있습니다. 
 
+<<<<<<< HEAD
 참고: solc-js 프로젝트는 Emscripten, 즉 같은 컴파일러 소스 코드를 사용하는 C++ `solc` 에서 유래됐습니다. 
 `solc-js` 는 Remix처럼 JavaScript 프로젝트에 사용될 수 있습니다. 
 자세한 사항은 solc-js 레포지토리를 참고해주십시오.
+=======
+Note: The solc-js project is derived from the C++
+`solc` by using Emscripten, which means that both use the same compiler source code.
+`solc-js` can be used in JavaScript projects directly (such as Remix).
+Please refer to the solc-js repository for instructions.
+>>>>>>> english/develop
 
 .. code-block:: bash
 
@@ -48,39 +86,71 @@ npm / Node.js
 
 .. 참고::
 
+<<<<<<< HEAD
     commandline executable은 ``solcjs`` 라 불립니다.
 
     ``solcjs`` 커맨드라인 옵션은 ``solc`` 및 툴들(예: ``geth``)과 호환되지 않습니다. 
     따라서 ``solc`` 에서의 행동은 ``solcjs`` 에선 작동되지 않습니다. 
+=======
+    The command-line executable is named ``solcjs``.
+
+    The command-line options of ``solcjs`` are not compatible with ``solc`` and tools (such as ``geth``)
+    expecting the behavior of ``solc`` will not work with ``solcjs``.
+>>>>>>> english/develop
 
 Docker
 ======
 
+<<<<<<< HEAD
 Solidity 빌드의 Docker 이미지들은 ``ethereum`` 단체의 ``solc`` 이미지를 통해 가능합니다.
 가장 최신 버전은 ``stable`` 태그를, 잠재적으로 불안정한 변동은 develop 브랜치에 있는 ``nightly`` 를 사용하십시오.
 
 Docker 이미지는 compiler executable를 실행하기 때문에 모든 컴파일러 인수를 전달할 수 있습니다. 
 예를 들어, (만약 여러분이 가지고 있지 않다면) 아래 명령어가 안정된 버전의 ``solc`` 이미지를 ``--help`` 인수를 전달한 후 pull하여 새로운 컨테이너에서 작동시키게 합니다.
+=======
+Docker images of Solidity builds are available using the ``solc`` image from the ``ethereum`` organization.
+Use the ``stable`` tag for the latest released version, and ``nightly`` for potentially unstable changes in the develop branch.
+
+The Docker image runs the compiler executable so that you can pass all compiler arguments to it.
+For example, the command below pulls the stable version of the ``solc`` image (if you do not have it already),
+and runs it in a new container, passing the ``--help`` argument.
+>>>>>>> english/develop
 
 .. code-block:: bash
 
     docker run ethereum/solc:stable --help
 
+<<<<<<< HEAD
 0.5.4 버전처럼 여러분들이 원하는 빌드 버전을 태그를 명시할 수도 있습니다.
+=======
+For example, You can specify release build versions in the tag for the 0.5.4 release.
+>>>>>>> english/develop
 
 .. code-block:: bash
 
     docker run ethereum/solc:0.5.4 --help
 
+<<<<<<< HEAD
 Docker 이미지를 호스트 머신에서 Solidity 파일들을 컴파일하려면 입력과 출력을 위한 로컬 폴더를 불러온 뒤 컴파일 하고자 하는 컨트랙트를 지정합니다. 예를 들자면,
+=======
+To use the Docker image to compile Solidity files on the host machine, mount a
+local folder for input and output, and specify the contract to compile. For example.
+>>>>>>> english/develop
 
 .. code-block:: bash
 
     docker run -v /local/path:/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/Contract.sol
 
+<<<<<<< HEAD
 툴링과 함께 컴파일러를 사용할 때 추천드리는 표준 JSON 인터페이스를 사용하실 수도 있습니다. 
 이 인터페이스를 사용할 땐 JSON 입력이 self-contained되어 있을 경우 어떤 경로도 불러오실 필요가 없습니다.
 :ref:`import callback에 의해 로드되어야 하는 <initial-vfs-content-standard-json-with-import-callback>` 어떠한 외부 파일을 참조할 필요가 없습니다.
+=======
+You can also use the standard JSON interface (which is recommended when using the compiler with tooling).
+When using this interface, it is not necessary to mount any directories as long as the JSON input is
+self-contained (i.e. it does not refer to any external files that would have to be
+:ref:`loaded by the import callback <initial-vfs-content-standard-json-with-import-callback>`).
+>>>>>>> english/develop
 
 .. code-block:: bash
 
@@ -108,14 +178,23 @@ Nightly 버전의 경우 다음 명령어를 통해 설치됩니다.
     sudo apt-get update
     sudo apt-get install solc
 
+<<<<<<< HEAD
 또한, 몇몇 리눅스 버전은 독자적인 패키지를 제공합니다. 이러한 패키지들은 저희가 직접 유지 보수를 하고 있진 않습니다만,
 패키지를 유지 보수하는 사람들에 의해 계속해서 업데이트 되고 있습니다.
 
 예를 들어, Arch 리눅스는 최신 개발 버전의 패키지를 가지고 있습니다.
+=======
+Furthermore, some Linux distributions provide their own packages. These packages are not directly
+maintained by us but usually kept up-to-date by the respective package maintainers.
 
-.. code-block:: bash
+For example, Arch Linux has packages for the latest development version as AUR packages: `solidity <https://aur.archlinux.org/packages/solidity>`_
+and `solidity-bin <https://aur.archlinux.org/packages/solidity-bin>`_.
+>>>>>>> english/develop
 
-    pacman -S solidity
+.. note::
+
+    Please be aware that `AUR <https://wiki.archlinux.org/title/Arch_User_Repository>`_ packages
+    are user-produced content and unofficial packages. Exercise caution when using them.
 
 `snap package <https://snapcraft.io/solc>`_ 라는 것도 있지만 **현재는 유지 보수가 되고 있지 않습니다**.
 모든 `supported Linux distros <https://snapcraft.io/docs/core/install>`_ 내에서 설치가 가능합니다. 
@@ -181,6 +260,7 @@ Static Binaries
 
 이 레포지토리는 사용자들이 사용할 수 있는 바이너리들을 찾는 쉽고 빠른 방법일 뿐만이 아니라 다른 3자 툴과도 호환이 가능합니다. 
 
+<<<<<<< HEAD
 - 해당 콘텐츠는 https://binaries.soliditylang.org에 미러링되어 있으며 HTTPS, 인증, rate limiting 혹은 git을 사용하지 않고도 쉽게 다운로드 가능합니다.
 - 콘텐트는 올바른 `Content-Type` 헤더를 통해 제공되며 CORS 설정에 비교적 업격하지 않아 브라우저에서 작동되는 툴에 의해 바로 로드될 수 있습니다.
 - 바이너리들은 (필수 DLL과 함께 번들링된 오래된 Windows 빌드의 예외와 함께) 설치나 언팩킹이 필요 없습니다.
@@ -188,14 +268,35 @@ Static Binaries
   파일들은 또한 절대 변경되지 않으며 반드시 원본 검사합과 항상 합치해야 합니다. 발생될 수 있는 유일한 예외는 깨졌거나 사용 불가능한 파일들이 가져올 수 있는 잠정적인 해입니다. 
 - 파일들은 HTTP와 HTTPS를 통해 서브가 됩니다. 여러분들께서 파일 리스트를 (git, HTTPS, IPFS 혹은 로컬에서 캐싱함으로서) 안전한 방법으로 보관하고 
   파일 다운로드 후 바이너리들의 해시를 인증하실 수만 있다면, HTTPS를 사용하실 필요가 없습니다.
+=======
+- The content is mirrored to https://binaries.soliditylang.org where it can be easily downloaded over
+  HTTPS without any authentication, rate limiting or the need to use git.
+- Content is served with correct `Content-Type` headers and lenient CORS configuration so that it
+  can be directly loaded by tools running in the browser.
+- Binaries do not require installation or unpacking (exception for older Windows builds
+  bundled with necessary DLLs).
+- We strive for a high level of backward-compatibility. Files, once added, are not removed or moved
+  without providing a symlink/redirect at the old location. They are also never modified
+  in place and should always match the original checksum. The only exception would be broken or
+  unusable files with the potential to cause more harm than good if left as is.
+- Files are served over both HTTP and HTTPS. As long as you obtain the file list in a secure way
+  (via git, HTTPS, IPFS or just have it cached locally) and verify hashes of the binaries
+  after downloading them, you do not have to use HTTPS for the binaries themselves.
+>>>>>>> english/develop
 
 동일한 바이너리들은 대부분 `Solidity release page on Github`_ 상에서 가능합니다. 차이점은 저희가 Github 배포 페이지에서는 오래된 버전이 릴리즈에 대해서 업데이트를 하지 않는다는 점입니다.
 이는 네이밍 컨벤션이 바뀔 경우 재명명하지 않고 릴리즈 당시 호환되지 않는 플랫폼들에 대한 빌드를 추가하지 않는다는 뜻입니다. 
 이는 오직 ``solc-bin`` 에서만 이루어집니다.
 
+<<<<<<< HEAD
 ``solc-bin`` 레포지토리는 몇 가지 상위 디렉토리를 가지고 있으며 각각의 디렉토리는 단일 플랫폼을 대표하고 있습니다. 
 각각의 디렉토리들은 사용 가능한 바이너리들의 리스트인 ``list.json`` 파일을 가지고 있습니다. 
 예를 들어 ``emscripten-wasm32/list.json`` 파일의 경우 버전 0.7.4에서 다음과 같은 정보를 확인하실 수 있습니다.
+=======
+The ``solc-bin`` repository contains several top-level directories, each representing a single platform.
+Each one includes a ``list.json`` file listing the available binaries. For example in
+``emscripten-wasm32/list.json`` you will find the following information about version 0.7.4:
+>>>>>>> english/develop
 
 .. code-block:: json
 
@@ -214,6 +315,7 @@ Static Binaries
 
 이는 다음을 의미합니다.
 
+<<<<<<< HEAD
 - `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_ 에서 여러분은 동일한 디렉토리에 있는 바이너리를 찾아보실 수 있습니다.
   파일은 symlink일 수 있기 때문에 git을 통해 다운로드하지 않을 경우 스스로 해결하셔야 하며 그렇지 않을 경우 파일은 symlink와 호환되지 않습니다.
 - 바이너리는 또한 https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js에 미러링되어 있습니다.
@@ -223,6 +325,23 @@ Static Binaries
 - 바이너리 무결성을 keccak256 해시와 ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3`` 와의 대조를 통해 인증할 수 있습니다.
   해시는 커맨드 라인에서 `sha3sum`_ 혹은 자바스크립트의 `keccak256() function from ethereumjs-util`_ 에 의해 제공되는 ``keccak256sum`` 유틸리티를 통해 연산될 수 있습니다.
 - 바이너리 무결성을 sha256 해시와 ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2`` 를 통해서도 인증할 수 있습니다. 
+=======
+- You can find the binary in the same directory under the name
+  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_.
+  Note that the file might be a symlink, and you will need to resolve it yourself if you are not using
+  git to download it or your file system does not support symlinks.
+- The binary is also mirrored at https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js.
+  In this case git is not necessary and symlinks are resolved transparently, either by serving a copy
+  of the file or returning a HTTP redirect.
+- The file is also available on IPFS at `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_.
+- The file might in future be available on Swarm at `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_.
+- You can verify the integrity of the binary by comparing its keccak256 hash to
+  ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``.  The hash can be computed
+  on the command-line using ``keccak256sum`` utility provided by `sha3sum`_ or `keccak256() function
+  from ethereumjs-util`_ in JavaScript.
+- You can also verify the integrity of the binary by comparing its sha256 hash to
+  ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2``.
+>>>>>>> english/develop
 
 .. 주의::
 
@@ -264,8 +383,12 @@ Static Binaries
 
 소스에서 빌드해보기
 ====================
+<<<<<<< HEAD
 
 전제 조건 - 모든 운영체제
+=======
+Prerequisites - All Operating Systems
+>>>>>>> english/develop
 -------------------------------------
 
 다음은 Solidity의 모든 빌드에 대한 의존성들을 보여줍니다.
@@ -273,14 +396,23 @@ Static Binaries
 +-----------------------------------+-------------------------------------------------------+
 | 소프트웨어                           | 비고                                                   |
 +===================================+=======================================================+
+<<<<<<< HEAD
 | `CMake`_ (version 3.13+)          | 크로스플랫폼 빌드 파일 생성기                                |
+=======
+| `CMake`_ (version 3.21.3+ on      | Cross-platform build file generator.                  |
+| Windows, 3.13+ otherwise)         |                                                       |
+>>>>>>> english/develop
 +-----------------------------------+-------------------------------------------------------+
 | `Boost`_ (version 1.77+ on        | C++ 라이브러리  .                                        |
 | Windows, 1.65+ otherwise)         |                                                       |
 +-----------------------------------+-------------------------------------------------------+
 | `Git`_                            | 소스 코드를 불러오기 위한 커맨드 라인 툴                       |
 +-----------------------------------+-------------------------------------------------------+
+<<<<<<< HEAD
 | `z3`_ (version 4.8+, Optional)    | SMT checker와의 사용을 위함                               |
+=======
+| `z3`_ (version 4.8.16+, Optional) | For use with SMT checker.                             |
+>>>>>>> english/develop
 +-----------------------------------+-------------------------------------------------------+
 | `cvc4`_ (Optional)                | SMT checker와의 사용을 위함                               |
 +-----------------------------------+-------------------------------------------------------+
@@ -291,9 +423,16 @@ Static Binaries
 .. _CMake: https://cmake.org/download/
 .. _z3: https://github.com/Z3Prover/z3
 
+<<<<<<< HEAD
 .. 참고::
     0.5.10 버전 이전의 Solidity의 경우 Boost 버전 1.70+과 올바르게 연결하는데 실패할 수 있습니다. 
     해결책으로는 Solidity를 설정하기 위해 cmake 커맨드를 실행하기 전에 ``<Boost install path>/lib/cmake/Boost-1.70.0`` 를 임시로 이름을 바꾸는 것입니다.
+=======
+.. note::
+    Solidity versions prior to 0.5.10 can fail to correctly link against Boost versions 1.70+.
+    A possible workaround is to temporarily rename ``<Boost install path>/lib/cmake/Boost-1.70.0``
+    prior to running the cmake command to configure Solidity.
+>>>>>>> english/develop
 
     0.5.10 버전 이후부터는 Boost 1.70+와의 연결은 수동적인 간섭 없이도 잘 동작합니다.
 
@@ -305,7 +444,22 @@ Static Binaries
     만일 여러분께서 CMake에 ``-DSTRICT_Z3_VERSION=OFF`` 옵션을 추가해주신다면 상기 표에 있는 요구 사항을 충족하는 모든 버전을 통해 빌드하실 수 있습니다.
     그러나 이 경우 SMT 테스트를 건너뛰기 위해 ``scripts/tests.sh`` 에 ``--no-smt`` 옵션을 추가해주시기 바랍니다.
 
+<<<<<<< HEAD
 컴파일러 최소 사양
+=======
+.. note::
+    By default the build is performed in *pedantic mode*, which enables extra warnings and tells the
+    compiler to treat all warnings as errors.
+    This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
+    If you are only interested in creating a release build and do not intend to modify the source code
+    to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
+    Doing this is not recommended for general use but may be necessary when using a toolchain we are
+    not testing with or trying to build an older version with newer tools.
+    If you encounter such warnings, please consider
+    `reporting them <https://github.com/ethereum/solidity/issues/new>`_.
+
+Minimum Compiler Versions
+>>>>>>> english/develop
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 다음 C++ 컴파일러와 최소 사양들은 Solidity codebase를 빌드할 수 있습니다.
@@ -317,10 +471,21 @@ Static Binaries
 선결 조건 - macOS
 ---------------------
 
+<<<<<<< HEAD
 macOS 빌드의 경우, 최신 버전의 `Xcode를 설치하십시오 <https://developer.apple.com/xcode/download/>`_ . 
 이는 OS X 상의 C++ 어플리케이션을 빌드하기 위해 필요한 `Clang C++ 컴파일러 <https://en.wikipedia.org/wiki/Clang>`_ , `Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_
 그리고 기타 Apple 개발툴들을 포함하고 있습니다.
 만일 Xcode를 처음으로 설치하시거나 새로운 버전을 막 설치하셨을 경우, 커맨드 라인 빌드를 하시기 전에 라이선스에 동의하셔야 합니다.
+=======
+For macOS builds, ensure that you have the latest version of
+`Xcode installed <https://developer.apple.com/xcode/resources/>`_.
+This contains the `Clang C++ compiler <https://en.wikipedia.org/wiki/Clang>`_, the
+`Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_ and other Apple development
+tools that are required for building C++ applications on OS X.
+If you are installing Xcode for the first time, or have just installed a new
+version then you will need to agree to the license before you can do
+command-line builds:
+>>>>>>> english/develop
 
 .. code-block:: bash
 
@@ -359,7 +524,7 @@ Visual Studio 2019는 IDE와 필요한 컴파일러 및 라이브러리들을 �
 * C++/CLI support
 
 .. _Visual Studio 2019: https://www.visualstudio.com/vs/
-.. _Visual Studio 2019 Build Tools: https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2019
+.. _Visual Studio 2019 Build Tools: https://visualstudio.microsoft.com/vs/older-downloads/#visual-studio-2019-and-other-products
 
 모든 필수 외부 의존성을 설치하기 위한 도우미 스크립트 또한 사용하실 수 있습니다.
 
@@ -379,15 +544,28 @@ Visual Studio 2019는 IDE와 필요한 컴파일러 및 라이브러리들을 �
     git clone --recursive https://github.com/ethereum/solidity.git
     cd solidity
 
+<<<<<<< HEAD
 저희 Solidity 개발에 도움을 주고 싶으실 경우, Solidity를 fork한 후 두번째 remote로서 개인 fork를 추가하시기 바랍니다.
+=======
+If you want to help develop Solidity,
+you should fork Solidity and add your personal fork as a second remote:
+>>>>>>> english/develop
 
 .. code-block:: bash
 
     git remote add personal git@github.com:[username]/solidity.git
 
+<<<<<<< HEAD
 .. 참고::
     이 방법은 컴파일러에 의해 만들어진 각각의 바이트코드에 설정된 flag를 야기하는 릴리즈 전 빌드를 생성합니다.
     릴리즈된 Solidity 컴파일러를 재빌드하고 싶으실 경우, github 릴리즈 페이지에 있는 소스 코드를 사용하십시오.
+=======
+.. note::
+    This method will result in a pre-release build leading to e.g. a flag
+    being set in each bytecode produced by such a compiler.
+    If you want to re-build a released Solidity compiler, then
+    please use the source tarball on the github release page:
+>>>>>>> english/develop
 
     https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
@@ -451,8 +629,13 @@ CMake 옵션
 
 SMT Solvers
 -----------
+<<<<<<< HEAD
 Solidity는 (시스템 상에 존재할 경우) SMT solver에 의해 기본적으로 빌드됩니다. 
 각각의 solver는 `cmake` 옵션에 의해 비활성화 시킬 수 있습니다.
+=======
+Solidity can be built against SMT solvers and will do so by default if
+they are found in the system. Each solver can be disabled by a ``cmake`` option.
+>>>>>>> english/develop
 
 *참고: 몇몇의 케이스들의 경우 빌드하는데 실패할 수도 있습니다.*
 
@@ -498,6 +681,7 @@ Solidity 커밋과 결합된 플랫폼이 SemVer 빌드의 메타데이터를 �
 
 예시:
 
+<<<<<<< HEAD
 1. 0.4.0 버전이 만들어집니다.
 2. nightly 빌드는 현 시점부터 0.4.1의 버전을 가지게 됩니다.
 3. 충돌이 없는 변경점이 새로 발견되었습니다 --> 현 버전에 변경점이 없습니다.
@@ -505,3 +689,12 @@ Solidity 커밋과 결합된 플랫폼이 SemVer 빌드의 메타데이터를 �
 5. 0.5.0 릴리즈가 만들어집니다.
 
 이러한 패턴은 :ref:`version pragma <version_pragma>` 와 잘 작동합니다.
+=======
+1. The 0.4.0 release is made.
+2. The nightly build has a version of 0.4.1 from now on.
+3. Non-breaking changes are introduced --> no change in version.
+4. A breaking change is introduced --> version is bumped to 0.5.0.
+5. The 0.5.0 release is made.
+
+This behavior works well with the  :ref:`version pragma <version_pragma>`.
+>>>>>>> english/develop
