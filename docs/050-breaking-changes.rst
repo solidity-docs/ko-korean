@@ -89,8 +89,8 @@ For most of the topics the compiler will provide suggestions.
 
 * Explicit data location for all variables of struct, array or mapping types is
   now mandatory. This is also applied to function parameters and return
-  variables.  For example, change ``uint[] x = m_x`` to ``uint[] storage x =
-  m_x``, and ``function f(uint[][] x)`` to ``function f(uint[][] memory x)``
+  variables.  For example, change ``uint[] x = z`` to ``uint[] storage x =
+  z``, and ``function f(uint[][] x)`` to ``function f(uint[][] memory x)``
   where ``memory`` is the data location and might be replaced by ``storage`` or
   ``calldata`` accordingly.  Note that ``external`` functions require
   parameters with a data location of ``calldata``.
@@ -137,7 +137,7 @@ For most of the topics the compiler will provide suggestions.
   ``payable`` or create a new internal function for the program logic that
   uses ``msg.value``.
 
-* For clarity reasons, the command line interface now requires ``-`` if the
+* For clarity reasons, the command-line interface now requires ``-`` if the
   standard input is used as source.
 
 Deprecated Elements
@@ -147,18 +147,18 @@ This section lists changes that deprecate prior features or syntax.  Note that
 many of these changes were already enabled in the experimental mode
 ``v0.5.0``.
 
-Command Line and JSON Interfaces
+Command-line and JSON Interfaces
 --------------------------------
 
-* The command line option ``--formal`` (used to generate Why3 output for
+* The command-line option ``--formal`` (used to generate Why3 output for
   further formal verification) was deprecated and is now removed.  A new
   formal verification module, the SMTChecker, is enabled via ``pragma
   experimental SMTChecker;``.
 
-* The command line option ``--julia`` was renamed to ``--yul`` due to the
+* The command-line option ``--julia`` was renamed to ``--yul`` due to the
   renaming of the intermediate language ``Julia`` to ``Yul``.
 
-* The ``--clone-bin`` and ``--combined-json clone-bin`` command line options
+* The ``--clone-bin`` and ``--combined-json clone-bin`` command-line options
   were removed.
 
 * Remappings with empty prefix are disallowed.
@@ -483,7 +483,7 @@ New version:
             return data;
         }
 
-        using address_make_payable for address;
+        using AddressMakePayable for address;
         // Data location for 'arr' must be specified
         function g(uint[] memory /* arr */, bytes8 x, OtherContract otherContract, address unknownContract) public payable {
             // 'otherContract.transfer' is not provided.
@@ -500,7 +500,7 @@ New version:
             // 'address payable' should be used whenever possible.
             // To increase clarity, we suggest the use of a library for
             // the conversion (provided after the contract in this example).
-            address payable addr = unknownContract.make_payable();
+            address payable addr = unknownContract.makePayable();
             require(addr.send(1 ether));
 
             // Since uint32 (4 bytes) is smaller than bytes8 (8 bytes),
@@ -516,8 +516,8 @@ New version:
 
     // We can define a library for explicitly converting ``address``
     // to ``address payable`` as a workaround.
-    library address_make_payable {
-        function make_payable(address x) internal pure returns (address payable) {
+    library AddressMakePayable {
+        function makePayable(address x) internal pure returns (address payable) {
             return address(uint160(x));
         }
     }
