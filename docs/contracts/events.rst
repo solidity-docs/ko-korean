@@ -1,4 +1,4 @@
-.. index:: ! event
+.. index:: ! event, ! event; anonymous, ! event; indexed, ! event; topic
 
 .. _events:
 
@@ -9,12 +9,13 @@ Events
 Solidity events give an abstraction on top of the EVM's logging functionality.
 Applications can subscribe and listen to these events through the RPC interface of an Ethereum client.
 
-Events are inheritable members of contracts. When you call them, they cause the
+Events can be defined at file level or as inheritable members of contracts (including interfaces and libraries).
+When you call them, they cause the
 arguments to be stored in the transaction's log - a special data structure
-in the blockchain. These logs are associated with the address of the contract,
+in the blockchain. These logs are associated with the address of the contract that emitted them,
 are incorporated into the blockchain, and stay there as long as a block is
 accessible (forever as of now, but this might
-change with Serenity). The Log and its event data is not accessible from within
+change in the future). The Log and its event data is not accessible from within
 contracts (not even from the contract that created them).
 
 It is possible to request a Merkle proof for logs, so if
@@ -73,6 +74,18 @@ four indexed arguments rather than three.
     In particular, it is possible to "fake" the signature of another event
     using an anonymous event.
 
+.. index:: ! selector; of an event
+
+Members of Events
+=================
+
+- ``event.selector``: For non-anonymous events, this is a ``bytes32`` value
+  containing the ``keccak256`` hash of the event signature, as used in the default topic.
+
+
+Example
+=======
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
@@ -80,18 +93,18 @@ four indexed arguments rather than three.
 
     contract ClientReceipt {
         event Deposit(
-            address indexed _from,
-            bytes32 indexed _id,
-            uint _value
+            address indexed from,
+            bytes32 indexed id,
+            uint value
         );
 
-        function deposit(bytes32 _id) public payable {
+        function deposit(bytes32 id) public payable {
             // Events are emitted using `emit`, followed by
             // the name of the event and the arguments
             // (if any) in parentheses. Any such invocation
             // (even deeply nested) can be detected from
             // the JavaScript API by filtering for `Deposit`.
-            emit Deposit(msg.sender, _id, msg.value);
+            emit Deposit(msg.sender, id, msg.value);
         }
     }
 
@@ -126,9 +139,9 @@ The output of the above looks like the following (trimmed):
 
     {
        "returnValues": {
-           "_from": "0x1111…FFFFCCCC",
-           "_id": "0x50…sd5adb20",
-           "_value": "0x420042"
+           "from": "0x1111…FFFFCCCC",
+           "id": "0x50…sd5adb20",
+           "value": "0x420042"
        },
        "raw": {
            "data": "0x7f…91385",
@@ -137,8 +150,8 @@ The output of the above looks like the following (trimmed):
     }
 
 Additional Resources for Understanding Events
-==============================================
+=============================================
 
-- `Javascript documentation <https://github.com/ethereum/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
+- `JavaScript documentation <https://github.com/web3/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
 - `Example usage of events <https://github.com/ethchange/smart-exchange/blob/master/lib/contracts/SmartExchange.sol>`_
 - `How to access them in js <https://github.com/ethchange/smart-exchange/blob/master/lib/exchange_transactions.js>`_
