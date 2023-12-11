@@ -272,6 +272,15 @@ invalid bids.
         /// not the exact amount are ways to hide the real bid but
         /// still make the required deposit. The same address can
         /// place multiple bids.
+        /// 아래 함수를 통해 블라인드 입찰을 진행합니다.
+        /// `blindedBid` = keccak256(abi.encodePacked(value, fake, secret)).
+        /// 보낸 ether는 입찰이 공개단계에서 확실히 공개되었을 때만 환불됩니다.
+        /// 입찰은 입찰과 함께 보낸 ether이 적어도 'value'이고
+        /// 'fake'가 true가 아닐 때에만 유효합니다.
+        /// 'fake'를 true로 설정하고 정확하지 않은 양을 이더를 보내는 것은
+        /// 실제 입찰을 숨기는 방법이지만,  여전히 필요한 보증금을 지불합니다.
+        /// 동일한 주소로 여러 번 입찰이 가능합니다.
+
         function bid(bytes32 blindedBid)
             external
             payable
@@ -286,6 +295,8 @@ invalid bids.
         /// Reveal your blinded bids. You will get a refund for all
         /// correctly blinded invalid bids and for all bids except for
         /// the totally highest.
+        /// 블라인드된 입찰을 공개합니다. 
+        /// 가장 높은 입찰을 제외한 무효가 확실한 모든 입찰들이 환불됩니다.
         function reveal(
             uint[] calldata values,
             bool[] calldata fakes,
@@ -323,6 +334,7 @@ invalid bids.
         }
 
         /// Withdraw a bid that was overbid.
+        /// 초괴입찰된 입찰을 철회합니다.
         function withdraw() external {
             uint amount = pendingReturns[msg.sender];
             if (amount > 0) {
@@ -338,6 +350,7 @@ invalid bids.
 
         /// End the auction and send the highest bid
         /// to the beneficiary.
+        /// 입찰을 종료하고, 수혜자에게 가장 큰 입찰을 보냅니다.
         function auctionEnd()
             external
             onlyAfter(revealEnd)
@@ -351,6 +364,7 @@ invalid bids.
         // This is an "internal" function which means that it
         // can only be called from the contract itself (or from
         // derived contracts).
+        // 이것은 계약 자체(또는 파생된 계약)으로부터만 호출이 가능한 "내적인" 기능입니다.
         function placeBid(address bidder, uint value) internal
                 returns (bool success)
         {
