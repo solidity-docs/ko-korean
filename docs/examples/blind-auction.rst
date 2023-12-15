@@ -319,6 +319,8 @@ invalid bids.
                 if (bidToCheck.blindedBid != keccak256(abi.encodePacked(value, fake, secret))) {
                     // Bid was not actually revealed.
                     // Do not refund deposit.
+                    // 입찰은 확실히 공개되지 않습니다.
+                    // 
                     continue;
                 }
                 refund += bidToCheck.deposit;
@@ -333,8 +335,7 @@ invalid bids.
             payable(msg.sender).transfer(refund);
         }
 
-        /// Withdraw a bid that was overbid.
-        /// 초괴입찰된 입찰을 철회합니다.
+        /// 초과입찰된 입찰을 철회합니다.
         function withdraw() external {
             uint amount = pendingReturns[msg.sender];
             if (amount > 0) {
@@ -348,8 +349,6 @@ invalid bids.
             }
         }
 
-        /// End the auction and send the highest bid
-        /// to the beneficiary.
         /// 입찰을 종료하고, 수혜자에게 가장 큰 입찰을 보냅니다.
         function auctionEnd()
             external
@@ -361,9 +360,6 @@ invalid bids.
             beneficiary.transfer(highestBid);
         }
 
-        // This is an "internal" function which means that it
-        // can only be called from the contract itself (or from
-        // derived contracts).
         // 이것은 계약 자체(또는 파생된 계약)으로부터만 호출이 가능한 "내적인" 기능입니다.
         function placeBid(address bidder, uint value) internal
                 returns (bool success)
