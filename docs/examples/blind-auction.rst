@@ -152,41 +152,16 @@
 블라인드 입찰
 =============
 
-The previous open auction is extended to a blind auction in the following. The
-advantage of a blind auction is that there is no time pressure towards the end
-of the bidding period. Creating a blind auction on a transparent computing
-platform might sound like a contradiction, but cryptography comes to the
-rescue.
 
 위에 소개한 간단한 공개 입찰은 다음을 통해 블라인드 입찰이 됩니다. 블라인드 입찰의 장점은 입찰 기간 만료로 인한 시간적 압박이 없다는 것입니다.
 투명한 컴퓨팅 플랫폼 위에서 블라인드 경매를 구축한다는 것이 모순적으로 들릴 수 있지만, 암호학이 이를 해결할 것입니다.
-
-During the **bidding period**, a bidder does not actually send their bid, but
-only a hashed version of it.  Since it is currently considered practically
-impossible to find two (sufficiently long) values whose hash values are equal,
-the bidder commits to the bid by that.  After the end of the bidding period,
-the bidders have to reveal their bids: They send their values unencrypted and
-the contract checks that the hash value is the same as the one provided during
-the bidding period.
 
 **입찰 기간** 동안, 입찰자는 자신의 입찰을 전송하지 않습니다. 대신 입찰의 해쉬된 버전을 전송할 뿐입니다.
 해쉬 값이 같은 (충분히 긴) 두 변수 값을 찾는 것은 현재에 실질적으로 불가능하다고 여겨지기 때문에,  입찰자는 이러한 방식을 수용할 수 있습니다.
 입찰 기간이 끝난 후, 입찰자들은 그들의 입찰을 공개해야 합니다: 그들은 암호화되지 않은 변수값을 보내고, 컨트랙트는 변수의 해쉬값이 입찰 기간동안 들어온 값과 같은지 확인합니다.     
 
-Another challenge is how to make the auction **binding and blind** at the same
-time: The only way to prevent the bidder from just not sending the money after
-they won the auction is to make them send it together with the bid. Since value
-transfers cannot be blinded in Ethereum, anyone can see the value.
-
 또 다른 문제는 어떻게 입찰을 **가리는 것**과 동시에 **묶을 수 있는지**에 대한 것입니다. 경매에서 낙찰된 후 입찰자가 돈을 보내지 않는 것을 막는 유일한 방법은
 입찰과 함꼐 돈을 보내도록 하는 것입니다.  이더리움 내에서는 변수 전송을 가릴 수 없고, 모두가 변수값을 볼 수 있기 때문입니다. 
-
-The following contract solves this problem by accepting any value that is
-larger than the highest bid. Since this can of course only be checked during
-the reveal phase, some bids might be **invalid**, and this is on purpose (it
-even provides an explicit flag to place invalid bids with high value
-transfers): Bidders can confuse competition by placing several high or low
-invalid bids.
 
 다음의 컨트랙트는 가장 높은 입찰가보다 더 큰 모든 변수를 받아들임으로써 위의 문제를 해결합니다.
 이는 물론 공개 단계에서만 확인이 가능하기 때문에, 일부 입찰은 무효가 될 수 있으며, 이는 고의적인 것입니다.
@@ -220,27 +195,17 @@ invalid bids.
 
         event AuctionEnded(address winner, uint highestBid);
 
-        // Errors that describe failures.
         // 실패 내역을 설명하는 에러들입니다.
 
-        /// The function has been called too early.
-        // 함수가 너무 일찍 호출되었습니다.
-        /// Try again at `time`.
-        // '제 시간'에 다시 시도해주세요.
+        /// 함수가 너무 일찍 호출되었습니다.
+        /// '제 시간'에 다시 시도해주세요.
         error TooEarly(uint time);
-        /// The function has been called too late.
-        // 함수가 너무 늦게 호출되었습니다.
-        /// It cannot be called after `time`.
-        // 'time' 이후에 호출될 수 없습니다.
+        /// 함수가 너무 늦게 호출되었습니다.
+        /// 'time' 값 이후에 호출될 수 없습니다.
         error TooLate(uint time);
-        /// The function auctionEnd has already been called.
-        // auctionEnd 함수가 이미 호출되었습니다.
+        /// auctionEnd 함수가 이미 호출되었습니다.
         error AuctionEndAlreadyCalled();
 
-        // Modifiers are a convenient way to validate inputs to
-        // functions. `onlyBefore` is applied to `bid` below:
-        // The new function body is the modifier's body where
-        // `_` is replaced by the old function body.
         // Modifier는 함수에 대한 입력을 검증하는 편리한 방법입니다.
         // 'onlyBefore'는 아래의 'bid'에 적용됩니다:
         // 새로운 함수 body는 modifier의 body로, '_'가 기존의 함수 body로 대체됩니다.
@@ -263,15 +228,6 @@ invalid bids.
             revealEnd = biddingEnd + revealTime;
         }
 
-        /// Place a blinded bid with `blindedBid` =
-        /// keccak256(abi.encodePacked(value, fake, secret)).
-        /// The sent ether is only refunded if the bid is correctly
-        /// revealed in the revealing phase. The bid is valid if the
-        /// ether sent together with the bid is at least "value" and
-        /// "fake" is not true. Setting "fake" to true and sending
-        /// not the exact amount are ways to hide the real bid but
-        /// still make the required deposit. The same address can
-        /// place multiple bids.
         /// 아래 함수를 통해 블라인드 입찰을 진행합니다.
         /// `blindedBid` = keccak256(abi.encodePacked(value, fake, secret)).
         /// 보낸 ether는 입찰이 공개단계에서 확실히 공개되었을 때만 환불됩니다.
@@ -292,9 +248,6 @@ invalid bids.
             }));
         }
 
-        /// Reveal your blinded bids. You will get a refund for all
-        /// correctly blinded invalid bids and for all bids except for
-        /// the totally highest.
         /// 블라인드된 입찰을 공개합니다. 
         /// 가장 높은 입찰을 제외한 무효가 확실한 모든 입찰들이 환불됩니다.
         function reveal(
@@ -320,7 +273,7 @@ invalid bids.
                     // Bid was not actually revealed.
                     // Do not refund deposit.
                     // 입찰은 확실히 공개되지 않습니다.
-                    // 
+                    // 보증금을 환불하지 마세요.
                     continue;
                 }
                 refund += bidToCheck.deposit;
@@ -328,8 +281,7 @@ invalid bids.
                     if (placeBid(msg.sender, value))
                         refund -= value;
                 }
-                // Make it impossible for the sender to re-claim
-                // the same deposit.
+                // 발송인이 같은 보증금을 재청구할 수 없도록 합니다.
                 bidToCheck.blindedBid = bytes32(0);
             }
             payable(msg.sender).transfer(refund);
@@ -339,10 +291,11 @@ invalid bids.
         function withdraw() external {
             uint amount = pendingReturns[msg.sender];
             if (amount > 0) {
-                // It is important to set this to zero because the recipient
-                // can call this function again as part of the receiving call
-                // before `transfer` returns (see the remark above about
-                // conditions -> effects -> interaction).
+
+                // 이것을 0으로 설정하는 것은 매우 중요합니다. 왜냐하면 수령인은
+                // 이 함수를 'transfer'이 return하기 전에 다시 호출할 수 있기 때문입니다
+                // ( 위의 conditions -> effects -> interaction 에 대한 언급을 보십시오).
+
                 pendingReturns[msg.sender] = 0;
 
                 payable(msg.sender).transfer(amount);
