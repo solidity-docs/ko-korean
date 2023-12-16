@@ -37,7 +37,7 @@ The compiler does not validate that the license is part of the
 `list allowed by SPDX <https://spdx.org/licenses/>`_, but
 it does include the supplied string in the :ref:`bytecode metadata <metadata>`.
 
-컴파일러는 라이센스가 `SPDX에서 혀용하는 목록 <https://spdx.org/licenses/>`_의 일부인지는
+컴파일러는 라이센스가 `list allowed by SPDX <https://spdx.org/licenses/>`_의 일부인지는
 확인하지 않지만, 제공된 문자열을 :ref:`bytecode metadata <metadata>`에 포함하고 있습니다.
 
 If you do not want to specify a license or if the source code is
@@ -79,7 +79,7 @@ you have to add the pragma to all your files if you want to enable it
 in your whole project. If you :ref:`import<import>` another file, the pragma
 from that file does *not* automatically apply to the importing file.
 
-``pragma`` 키워드는 특정 컴파일러 기능 또는 검사를 활성하하는 데에 사용됩니다.
+``프래그마`` 키워드는 특정 컴파일러 기능 또는 검사를 활성하하는 데에 사용됩니다.
 pragma 지시문은 항상 소스파일에만 종속되어서, 만약 모든 프로젝트의
 모든 파일에 pragma를 활성화하고 싶다면 이를 모든 파일에 추가해야합니다. 
 .. index:: ! pragma, version
@@ -87,7 +87,7 @@ pragma 지시문은 항상 소스파일에만 종속되어서, 만약 모든 프
 .. _version_pragma:
 
 Version Pragma
-버전 Pragma
+버전 프래그마
 --------------
 
 Source files can (and should) be annotated with a version pragma to reject
@@ -99,16 +99,16 @@ a good idea to read through the changelog at least for releases that contain
 breaking changes. These releases always have versions of the form
 ``0.x.0`` or ``x.0.0``.
 
-소스파일은 버전 Pragma를 주석으로 달아 호환되지 않는 변경사항을 도입할 지도 모르는
+소스파일은 버전 프래그마를 주석으로 달아 호환되지 않는 변경사항을 도입할 지도 모르는
 미래 컴파일러 버전과의 컴파일을 거부할 수 있습니다(해야만 합니다.).
 우리는 이 변경사항을 절대적으로 최소화하고, 의미론의 변화 또는 구문의 변화를
 요구하는 방식으로 도입하기 위해 노력하고 있습니다만, 이것이 항상
-가능한 것은 아닙니다. 따라서 최소한의 변경 사항이 포함된 release의 경우
-changelog를 통해 읽는 것이 항상 좋은 방법입니다. 이러한 release는 항상 
-``0.x.0`` 또는 ``x.0.0`` 형식의 버전이 있습니다.
+가능한 것은 아닙니다. 따라서 최소한의 변경 사항이 포함된 버전의 경우
+변경로그를 통해 읽는 것이 항상 좋은 방법입니다. 이러한 버전은 항상 
+``0.x.0`` 또는 ``x.0.0`` 형태를 가지고 있습니다.
 
 The version pragma is used as follows: ``pragma solidity ^0.5.2;``
-버전 pragma는 다음과 같이 사용됩니다. ``pragma solidity ^0.5.2;``
+버전 프래그마는 다음과 같이 사용됩니다. ``pragma solidity ^0.5.2;``
 
 A source file with the line above does not compile with a compiler earlier than version 0.5.2,
 and it also does not work on a compiler starting from version 0.6.0 (this
@@ -120,7 +120,7 @@ compiler is not fixed, so that bugfix releases are still possible.
 위 라인이 쓰여진 소스파일은 0.5.2 보다 이전 버전의 컴파일러로 컴파일되지 않고,
 버전 0.6.0으로 시작하는 컴파일 위에서 동작하지 않습니다(두 번째 조건은 ``^``를 사용하여 추가됩니다.).
 ``0.6.0``버전까지는 변경사항이 없을 것이기 때문에, 코드가 의도한 대로 컴파일될 것임을 확신할 수 있습니다.
-컴파일러의 정확한 버전은 고정되지 않아서, 버그 수정 release는 언제나 가능합니다.
+컴파일러의 정확한 버전은 고정되지 않아서, 버그 수정 릴리즈는 언제나 가능합니다.
 
 It is possible to specify more complex rules for the compiler version,
 these follow the same syntax used by `npm <https://docs.npmjs.com/cli/v6/using-npm/semver>`_.
@@ -135,16 +135,20 @@ these follow the same syntax used by `npm <https://docs.npmjs.com/cli/v6/using-n
   required by the pragma. If it does not match, the compiler issues
   an error.
 
-  버전 pragma를 사용하는 것은 컴파일러의 버전을 *바꾸는* 것이 아닙니다.
+  버전 프래그마를 사용하는 것은 컴파일러의 버전을 *바꾸는* 것이 아닙니다.
   또한 컴파일러의 특징을 *활성화/비활성화* 하는 것도 아닙니다.
-  단지 pragma에 의해 요구된 버전에 부합하는지 확인하기 위해 컴파일러에게 알려주는 것 뿐입니다.
+  단지 프래그마에 의해 요구된 버전에 부합하는지 확인하기 위해 컴파일러에게 알려주는 것 뿐입니다.
   버전이 맞지 않다면, 컴파일러는 에러를 출력합니다.
 
 ABI Coder Pragma
+ABI 코더 프래그마 
 ----------------
 
 By using ``pragma abicoder v1`` or ``pragma abicoder v2`` you can
 select between the two implementations of the ABI encoder and decoder.
+
+``pragma abicoder v1`` 와 ``pragma abicoder v2``를 이용함으로써,
+ABI 인코더와 디코더 두 가지 구현 중 하나를 선택할 수 있습니다.
 
 The new ABI coder (v2) is able to encode and decode arbitrarily nested
 arrays and structs. It might produce less optimal code and has not
@@ -154,6 +158,13 @@ activate it using ``pragma abicoder v2;``. Since it will be
 activated by default starting from Solidity 0.8.0, there is the option to select
 the old coder using ``pragma abicoder v1;``.
 
+새로운 ABI 코더 (v2)는 임의적으로 둘러싸인 배열과 구조를 인코딩, 디코딩할 수 있습니다.
+이는 최적이 아닌 코드를 생산할 지도 모르고 예전 인코더만큼 많은 테스트를 받지 못했을지
+몰라도, 솔리디티 0.6.0이서는 비실험적인 것으로 여겨집니다.
+여전히 ``pragma abicoder v2;``를 사용해 명시적으로 활성화할 수 있습니다.
+솔리디티 0.8.0으로 시작하는 경우 기본적으로 활성화되기 떄문에, 
+``pragma abicoder v1;``를 사용하여 옛 버전의 코더를 선택할 수 있는 옵션이 있습니다.
+
 The set of types supported by the new encoder is a strict superset of
 the ones supported by the old one. Contracts that use it can interact with ones
 that do not without limitations. The reverse is possible only as long as the
@@ -161,6 +172,14 @@ non-``abicoder v2`` contract does not try to make calls that would require
 decoding types only supported by the new encoder. The compiler can detect this
 and will issue an error. Simply enabling ``abicoder v2`` for your contract is
 enough to make the error go away.
+
+새로운 인코더가 지원하는 타입 집합은 기존 인코더가 지원하는 타입의 완전한
+상위집합입니다. 이를 사용하는 컨트랙트는 이를 사용하지 않는 컨트랙트와 제약 없이
+상호작용할 수 있습니다. 그 반대는 ``abicoder v2``가 아닌 컨트랙트가 
+새로운 인코더의 지원을 받는 디코딩 타입을 필요로 하는 호출을 시도하지 
+않을 때 가능합니다. 컴파일러는 이를 발견하고 에러를 출력할 수 있습니다.
+컨트랙트를 위해 ``abicoder v2``를 활성화하는 것은 위의 에러를 없앨 수 있습니다.
+
 
 .. note::
   This pragma applies to all the code defined in the file where it is activated,
@@ -170,23 +189,40 @@ enough to make the error go away.
   by inheriting it from another contract. This is allowed if the new types are only
   used internally and not in external function signatures.
 
+  이 프래그마는  코드가 결국 어디서 끝났는지는 상관 없이, 프래그마가 정의된 
+  활성화된 파일 내 모든 코드에 적용됩니다. 이는 ABI 코더 v1으로 
+  컴파일되도록 선택된 컨트랙트의 소스파일이 다른 컨트랙트에서부터 그것을 물려받음으로써
+  여전히 새로운 인코더를 사용하는 코드를 포함할 수 있다는 것을 의미합니다.
+  이것은 새로운 타입이 내부적으로만 사용되고, 외부 함수 기호로 사용되지 않았을 때
+  허용됩니다. 
+
+
 .. note::
   Up to Solidity 0.7.4, it was possible to select the ABI coder v2
   by using ``pragma experimental ABIEncoderV2``, but it was not possible
   to explicitly select coder v1 because it was the default.
+
+  솔리디티 0.7.4까지는 ``pragma experimental ABIEncoderV2``를 사용함으로써
+  ABI coder v2를 선택하는 것이 가능했지만, coder v1은 기본값이었기 때문에 명시적
+  으로 선택하는 것이 불가능했습니다.
 
 .. index:: ! pragma, experimental
 
 .. _experimental_pragma:
 
 Experimental Pragma
+실험적 프래그마
 -------------------
 
 The second pragma is the experimental pragma. It can be used to enable
 features of the compiler or language that are not yet enabled by default.
 The following experimental pragmas are currently supported:
 
+두 번째 프래그마는 실험적 프래그마입니다. 컴파일러의 특성이나 아직 기본으로 
+활성화되지 않은 언어를 활성화하는데에 사용될 수 있습니다.
 
+
+ABIEncoderV2
 ABIEncoderV2
 ~~~~~~~~~~~~
 
@@ -194,8 +230,12 @@ Because the ABI coder v2 is not considered experimental anymore,
 it can be selected via ``pragma abicoder v2`` (please see above)
 since Solidity 0.7.4.
 
+ABI 코더 v2는 더 이상 실험적으로 여겨지지 않아서, 솔리디티 0.7.4부터는
+``pragma abicoder v2``프래그마를 이용하여 선택할 수 있게 되었습니다.(위를 참고하세요.)
+
 .. _smt_checker:
 
+SMTChecker
 SMTChecker
 ~~~~~~~~~~
 
@@ -207,6 +247,14 @@ but not for the Docker images, Windows binaries or the
 statically-built Linux binaries. It can be activated for solc-js via the
 `smtCallback <https://github.com/ethereum/solc-js#example-usage-with-smtsolver-callback>`_ if you have an SMT solver
 installed locally and run solc-js via node (not via the browser).
+
+이 컴포넌트는 솔리디티 컴파일러가 빌드되면 활성화되어야 하므로 모든 솔리디티 바이너리에서
+사용가능한 것은 아닙니다. :ref:`build instructions<smt_solvers_build>`은 
+이 옵션을 어떻게 활성화하는지 설명합니다. 대부분의 버전의 경우
+우분투 PPA 릴리즈에 대해 활성화되지만, Docker 이미지, 윈도우 바이너리 또는
+정적-구축 리눅스 바이너리에 대해서는 활성화되지 않습니다. solc-js에 대해서는 만약 로컬에 설치된 SMT solver를 가지고 있고 (브라우저를 통해서가 아닌) 
+노드를 통해 solc-js를 실행하는 경우 `smtCallback <https://github.com/ethereum/solc-js#example-usage-with-smtsolver-callback>`_를 통해 활성화가 가능합니다.
+
 
 If you use ``pragma experimental SMTChecker;``, then you get additional
 :ref:`safety warnings<formal_verification>` which are obtained by querying an
