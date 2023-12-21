@@ -218,7 +218,7 @@ The second pragma is the experimental pragma. It can be used to enable
 features of the compiler or language that are not yet enabled by default.
 The following experimental pragmas are currently supported:
 
-두 번째 프래그마는 실험적 프래그마입니다. 컴파일러의 특성이나 아직 기본으로 
+두 번째 프래그마는 실험적 프래그마입니다. 컴파일러의 기능이나 아직 기본으로 
 활성화되지 않은 언어를 활성화하는데에 사용될 수 있습니다.
 
 
@@ -263,14 +263,20 @@ The component does not yet support all features of the Solidity language and
 likely outputs many warnings. In case it reports unsupported features, the
 analysis may not be fully sound.
 
+만약 ``pragma experimental SMTChecker;``을 사용한다면, SMT solver에 질의를 보냄으로써 생기는 추가적인 :ref:`safety warnings<formal_verification>`을 얻습니다.
+이 컴포넌트는 아직 솔리디티 언어의 모든 기능을 지원하지 않고 많은 경고를 초래할 수 있습니다. 지원하지 않는 기능의 경우 분석이 정확하지 않을 수 있습니다.
+
+
 .. index:: source file, ! import, module, source unit
 
 .. _import:
 
 Importing other Source Files
+다른 소스 파일 가져오기
 ============================
 
 Syntax and Semantics
+구문과 의미
 --------------------
 
 Solidity supports import statements to help modularise your code that
@@ -278,9 +284,16 @@ are similar to those available in JavaScript
 (from ES6 on). However, Solidity does not support the concept of
 a `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_.
 
+솔리디티는 코드를 자바스크립트에서 이용가능한 것과 비슷하게
+모듈화하는 것을 돕기 위해 코드문을(ES6부터) 가져오는 것을 지원합니다.
+그러나, 솔리디티는 `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_
+의 컨셉은 지원하지 않습니다.
+
 At a global level, you can use import statements of the following form:
 
-.. code-block:: solidity
+전역 수준에서, 다음과 같은 형태로 코드문을 가져올 수 있습니다.
+
+.. code-block:: solidity 솔리디티
 
     import "filename";
 
@@ -292,8 +305,17 @@ If you add new top-level items inside "filename", they automatically
 appear in all files that import like this from "filename". It is better to import specific
 symbols explicitly.
 
+``filename`` 부분을 *import path*라고 부릅니다.
+이 구문은 "filename"의 모든 전역 심볼(과 그 곳에 불려온 심볼들)을 현재의 전역 영역으로
+가져옵니다(ES6 과는 다르지만 Solidity의 하위호환입니다.).
+이 형태는 예상치 못한 namespace 오염을 유발할 수 있기 때문에 사용에는 추천되지 않습니다. 
+만약 새로운 top-level 아이템들을 "filename"에 추가하였다면, 모든 파일에 "filename" 형태와 같이 가져온 것들이 자동으로 나타납니다.
+특정 심볼을 명시적으로 가져오는 것이 낫습니다.
+
 The following example creates a new global symbol ``symbolName`` whose members are all
 the global symbols from ``"filename"``:
+
+다음 예제는 ``"filename"``으로부터 온 전역 심볼을 멤버로 가지는 새로운 전역 심볼 ``symbolName``을 생성합니다.
 
 .. code-block:: solidity
 
@@ -301,7 +323,11 @@ the global symbols from ``"filename"``:
 
 which results in all global symbols being available in the format ``symbolName.symbol``.
 
+이는 모든 전역 심볼을 ``symbolName.symbol`` 형태로 사용할 수 있게 해 줍니다.
+
 A variant of this syntax that is not part of ES6, but possibly useful is:
+
+ES6의 일부는 아니지만 유용할 수 있는 이 구문의 변형은 다음과 같습니다.
 
 .. code-block:: solidity
 
@@ -309,9 +335,15 @@ A variant of this syntax that is not part of ES6, but possibly useful is:
 
 which is equivalent to ``import * as symbolName from "filename";``.
 
+이는 ``import * as symbolName from "filename";``과 같습니다.
+
 If there is a naming collision, you can rename symbols while importing. For example,
 the code below creates new global symbols ``alias`` and ``symbol2`` which reference
 ``symbol1`` and ``symbol2`` from inside ``"filename"``, respectively.
+
+이름 중복이 있다면, import 중에 심볼 이름을 바꿀 수 있습니다. 예를 들어.
+아래 코드가 새로운 전역 심볼 ``alias``와 ``symbol2``을 만들어내는데 이는 각각 ``"filename"``
+의 내부에서 ``symbol1``와 ``symbol2``를 지칭합니다.
 
 .. code-block:: solidity
 
@@ -320,6 +352,7 @@ the code below creates new global symbols ``alias`` and ``symbol2`` which refere
 .. index:: virtual filesystem, source unit name, import; path, filesystem path, import callback, Remix IDE
 
 Import Paths
+Paths 가져오기
 ------------
 
 In order to be able to support reproducible builds on all platforms, the Solidity compiler has to
@@ -329,6 +362,14 @@ Instead the compiler maintains an internal database (*virtual filesystem* or *VF
 each source unit is assigned a unique *source unit name* which is an opaque and unstructured identifier.
 The import path specified in an import statement is translated into a source unit name and used to
 find the corresponding source unit in this database.
+
+솔리디티 컴파일러가 모든 플랫폼에서 재현 가능한 빌드를 지원려면 소스 파일이 저장된
+파일 시스템의 세부 정보를 추상화해야 합니다. 이러한 이유로 paths를 가져오는 것은 호스트
+파일 시스템의 파일을 직접적으로 참조하지 않습니다. 대신 컴파일러는 
+각 소스 단위에 불투명하고 비구조화된 식별자인 고유한 *소스 단위 이름* 할당되는 내부 데이터베이스
+(*virtual filesystem* 또는 약자로 *VFS*)를 유지합니다.
+
+
 
 Using the :ref:`Standard JSON <compiler-api>` API it is possible to directly provide the names and
 content of all the source files as a part of the compiler input.
@@ -343,23 +384,45 @@ For example the `Remix IDE <https://remix.ethereum.org/>`_ provides one that
 lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry
 <https://remix-ide.readthedocs.io/en/latest/import.html>`_.
 
+:ref:`Standard JSON <compiler-api>` API를 사용함으로써 모든 소스파일의 이름과
+내용을 컴파일러 입력값의 일부로써 직접적으로 제공하는 것이 가능합니다.
+위의 경우 소스 단위 이름은 정말로 임의적입니다.
+그러나 만약 컴파일러가 자동적으로 소스를 찾고 VFS에 로드하는 것을 원한다면, 소스 단위 이름을
+:ref:`import callback<import-callback>`에서 찾을 수 있도록 구성해야 합니다.
+커맨드라인 컴파일러를 사용할 때 기본 가져오기 콜백은 호스트 파일시스템에서 소스코드를 로드하는
+기능만 지원하므로, 이는 소스 유닛 이름이 paths이어야 함을 의미합니다.
+몇몇 환경은 보다 다양한 사용자 정의 콜백을 제공합니다. 예를 들어, `Remix IDE 
+<https://remix.ethereum.org/>`_는 `HTTP, IPFS 및 Swarm URL에서 파일을 가져오거나 NPM 레지스트리의 패키지를 직접 참조할 수 있습니다
+<https://remix-ide.readthedocs.io/en/latest/import.html>`_.
+
 For a complete description of the virtual filesystem and the path resolution logic used by the
 compiler see :ref:`Path Resolution <path-resolution>`.
+
+컴파일러가 사용하는 가상 파일 시스템과 path resolution logic의 완벽한 정의를 알고 싶으면
+:ref:`Path Resolution <path-resolution>`를 참고하세요.
 
 .. index:: ! comment, natspec
 
 Comments
+주석
 ========
 
 Single-line comments (``//``) and multi-line comments (``/*...*/``) are possible.
+한줄 주석 (``//``)과 여러줄 주석 (``/*...*/``)이 사용가능합니다.
 
 .. code-block:: solidity
 
     // This is a single-line comment.
+    // 이것은 한줄 주석입니다.
 
     /*
     This is a
     multi-line comment.
+    */
+
+    /*
+    이것은 여러줄
+    주석입니다.
     */
 
 .. note::
@@ -368,7 +431,16 @@ Single-line comments (``//``) and multi-line comments (``/*...*/``) are possible
   the source code after the comment, so if it is not an ASCII symbol
   (these are NEL, LS and PS), it will lead to a parser error.
 
+  한줄 주석은 UTF-8 인코딩의 유니코드 라인 터미네이터(LF, VF, FF, CR, NEL, LS or PS)
+  에 의해 종료됩니다. 터미네이터는 주석 이후에 여전히 소스 코드의 한 부분이어서,
+  ASCII 기호가 아닌 경우(NEL, LS, PS) 파서 오류가 발생합니다.
+
 Additionally, there is another type of comment called a NatSpec comment,
 which is detailed in the :ref:`style guide<style_guide_natspec>`. They are written with a
 triple slash (``///``) or a double asterisk block (``/** ... */``) and
 they should be used directly above function declarations or statements.
+
+추가적으로 NatSpec comment 라고 불리는 다른 종류의 주석이 있는데, 이 주석은
+:ref:`style guide<style_guide_natspec>`에 자세히 나와 있습니다. 이 주석은 
+triple slash (``///``) 또는 double asterisk block (``/** ... */``)으로 작성되며
+함수 선언이나 문장 바로 위에 사용해야 합니다.
