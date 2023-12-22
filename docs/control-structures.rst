@@ -1,5 +1,6 @@
 ##################################
 Expressions and Control Structures
+표현식과 제어 구조
 ##################################
 
 .. index:: ! parameter, parameter;input, parameter;output, function parameter, parameter;function, return variable, variable;return, return
@@ -8,45 +9,63 @@ Expressions and Control Structures
 .. index:: if, else, while, do/while, for, break, continue, return, switch, goto
 
 Control Structures
+제어 구조
 ===================
 
 Most of the control structures known from curly-braces languages are available in Solidity:
+대부분의 중괄호 언어(해석 : 중괄호를 사용하는 언어. ex. C, JavaScript) 제어 구조는 솔리디티에서 사용가능합니다.
 
 There is: ``if``, ``else``, ``while``, ``do``, ``for``, ``break``, ``continue``, ``return``, with
 the usual semantics known from C or JavaScript.
+
+C언어나 JavaScript로부터 알려진 ``if``, ``else``, ``while``, ``do``, ``for``, ``break``, ``continue``, ``return`` 등의 일반적인 코드 등이 있습니다.
 
 Solidity also supports exception handling in the form of ``try``/``catch``-statements,
 but only for :ref:`external function calls <external-function-calls>` and
 contract creation calls. Errors can be created using the :ref:`revert statement <revert-statement>`.
 
+솔리디티는 또한  ``try`` / ``catch`` 구문의 형태로 예외 처리를 지원합니다만, 
+:ref:`external function calls <external-function-calls>` 과 컨트랙트 생성 호출을 위해서만 사용합니다.
+에러는 :ref:`revert statement <revert-statement>`를 사용하면서 생성될 수 있습니다.
+
 Parentheses can *not* be omitted for conditionals, but curly braces can be omitted
 around single-statement bodies.
+괄호는 조건문에서 생략될 수 *없지만*, 중괄호는 한줄로 된 코드문에 대해서는 생략할 수 있습니다.
 
 Note that there is no type conversion from non-boolean to boolean types as
 there is in C and JavaScript, so ``if (1) { ... }`` is *not* valid
 Solidity.
+
+솔리디티에는 C와 JavaScript처럼 불리언(boolean)자료형이 아닌 타입을 불리언 타입으로 바꾸는 기능이 없다는 걸 명심하세요.
+따라서  ``if (1) { ... }`` 는 솔리디티에서 *사용할 수 없는* 표현입니다.
 
 .. index:: ! function;call, function;internal, function;external
 
 .. _function-calls:
 
 Function Calls
+함수 호출
 ==============
 
 .. _internal-function-calls:
 
-Internal Function Calls
+Internal Function calls
+내부 함수 호출
 -----------------------
 
 Functions of the current contract can be called directly ("internally"), also recursively, as seen in
 this nonsensical example:
 
+현재 컨트랙트의 함수들은 아래 말도 안되는 예제에서 볼 수 있듯이 직접적으로 ("내부적으로"), 또는 재귀적으로 부를 수 있습니다.
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.4.22 <0.9.0;
 
     // This will report a warning
+    // 아래 코드는 경고를 보고합니다
     contract C {
         function g(uint a) public pure returns (uint ret) { return a + f(); }
         function f() internal pure returns (uint ret) { return g(7) + f(); }
@@ -56,13 +75,21 @@ These function calls are translated into simple jumps inside the EVM. This has
 the effect that the current memory is not cleared, i.e. passing memory references
 to internally-called functions is very efficient. Only functions of the same
 contract instance can be called internally.
+이러한 함수 호출들은 EVM 내부의 간단한 점프로 번역됩니다. 
+이는 현재 메모리가 지워지지 않는 효과를 가집니다. 즉 메모리 참조를 내부적으로 호출하는 
+함수에 전달하는 것은 매우 효과적입니다. 오직 같은 컨트랙트 인스턴트의 함수들만 내부적으로
+호출될 수 있습니다.
 
 You should still avoid excessive recursion, as every internal function call
 uses up at least one stack slot and there are only 1024 slots available.
 
+모든 내부 함수 호출이 적어도 하나의 스택 슬롯을 사용하고 1024개의 슬롯만을 사용
+할 수 있기 때문에, 과도한 재귀를 피해야 합니다
+
 .. _external-function-calls:
 
 External Function Calls
+외부 함수 호출
 -----------------------
 
 Functions can also be called using the ``this.g(8);`` and ``c.g(2);`` notation, where
@@ -72,12 +99,25 @@ message call and not directly via jumps.
 Please note that function calls on ``this`` cannot be used in the constructor,
 as the actual contract has not been created yet.
 
+함수는 ``this.g(8);`` 와 ``c.g(2);`` 등의 표기법을 사용하여 부를 수도 있는데, 여기서
+``c`` 는 컨트랙트 인스턴스이고 ``g``는 ``c``에 속한 함수입니다. 
+두 방법 중 어느쪽이든 ``g`` 를 호출하는 것은 점프를 직접 사용하지 않고 메세지 호출을 
+사용하여 외부적으로 호출하게 되는 결과를 낳습니다.
+``this`` 위의 함수 호출은 아직 실질적인 컨트랙트가 생성되지 않았기 때문에 
+생성자에서 사용할 수 없습니다.
+
 Functions of other contracts have to be called externally. For an external call,
 all function arguments have to be copied to memory.
+
+다른 컨트랙트들의 함수들은 외부적으로 호출되어야 합니다. 외부 호출에 대해,
+모든 함수의 매개변수들은 메모리로 복사되어야 합니다.
 
 .. note::
     A function call from one contract to another does not create its own transaction,
     it is a message call as part of the overall transaction.
+
+    컨트랙트에서 다른 컨트랙트로의 함수 호출은 자체적인 트랜잭션을 생성하지 않습니다.
+    이는 전체적인 트랜잭션의 한 부분으로써의 메세지 호출입니다.
 
 When calling functions of other contracts, you can specify the amount of Wei or
 gas sent with the call with the special options ``{value: 10, gas: 10000}``.
@@ -85,9 +125,15 @@ Note that it is discouraged to specify gas values explicitly, since the gas cost
 of opcodes can change in the future. Any Wei you send to the contract is added
 to the total balance of that contract:
 
+다른 컨트랙트의 함수를 호출할 때, 호출과 함께 보내지는 웨이(Wei) 또는 가스(gas)를  ``{value: 10, gas: 10000}``
+특별한 옵션을 통해 특정할 수 있습니다.
+가스비을 명시적으로 지정하는 것은 권장되지 않는데, 명령코드의 가스비가 미래에 바뀔 수도 있기 때문입니다.
+컨트랙트에 보내는 어떤 웨이든 그 컨트랙트의 총 잔고에 추가됩니다. 
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.6.2 <0.9.0;
 
     contract InfoFeed {
@@ -103,13 +149,21 @@ to the total balance of that contract:
 You need to use the modifier ``payable`` with the ``info`` function because
 otherwise, the ``value`` option would not be available.
 
-.. warning::
+ ``info`` 함수와 함께 ``payable``변경자를 사용할 필요가 있는데, 사용하지 않는다면 
+  ``value``옵션은 이용가능하지 않게 되기 때문입니다.
+
+.. 경고::
   Be careful that ``feed.info{value: 10, gas: 800}`` only locally sets the
   ``value`` and amount of ``gas`` sent with the function call, and the
   parentheses at the end perform the actual call. So
   ``feed.info{value: 10, gas: 800}`` does not call the function and
   the ``value`` and ``gas`` settings are lost, only
   ``feed.info{value: 10, gas: 800}()`` performs the function call.
+
+  ``feed.info{value: 10, gas: 800}``이 함수 호출과 함께 전송된 ``gas``비와 양을 로컬로
+  설정하고 끝에 있는 괄호가 실제 호출을 수행할 수 있도록 주의해야 합니다.
+  따라서 ``feed.info{value: 10, gas: 800}``은 함수를 호출하지 않고 ``value``와 ``gas`` 세팅이
+  손실되어, ``feed.info{value: 10, gas: 800}()`` 만 함수 호출을 수행합니다.
 
 Due to the fact that the EVM considers a call to a non-existing contract to
 always succeed, Solidity uses the ``extcodesize`` opcode to check that
@@ -118,8 +172,15 @@ and causes an exception if it does not. This check is skipped if the return
 data will be decoded after the call and thus the ABI decoder will catch the
 case of a non-existing contract.
 
+EVM이 항상 성공하기 위해 존재하지 않는 컨트랙트를 호출하는 것을 고려하는 사실 때문에,
+솔리디티는 호출되려고 하는 컨트랙트가 확실히 존재하는지(코드를 포함하는지) 확인하고
+그렇지 않으면 예외를 발생시키기 위해 ``extcodesize``명령 코드를 사용합니다.
+
 Note that this check is not performed in case of :ref:`low-level calls <address_related>` which
 operate on addresses rather than contract instances.
+
+컨트랙트 인스턴스보다 주소에서 작동하는 :ref:`low-level calls <address_related>`의 경우 
+이러한 확인이 수행되지 않는다는 것을 명심하세요.
 
 .. note::
     Be careful when using high-level calls to
@@ -127,10 +188,18 @@ operate on addresses rather than contract instances.
     since the compiler considers them non-existing according to the
     above logic even though they execute code and can return data.
 
+    :ref:`precompiled contracts <precompiledContracts>`에 높은 수준의 호출을 사용할 때는
+    코드를 실행하고 데이터를 반환할 수 있다고 해도 컴파일러가 위 논리에 따라 호출이 존재하지 
+    않는다고 여기기 때문에 주의하십시오.
+    
+
 Function calls also cause exceptions if the called contract itself
 throws an exception or goes out of gas.
 
-.. warning::
+함수 호출은 호출된 컨트랙트 자체에서 예외를 발생시키거나 가스가 다 떨어졌을 경우
+예외를 발생시키기도 합니다.
+
+.. 경고::
     Any interaction with another contract imposes a potential danger, especially
     if the source code of the contract is not known in advance. The
     current contract hands over control to the called contract and that may potentially
@@ -145,12 +214,27 @@ throws an exception or goes out of gas.
     external functions happen after any changes to state variables in your contract
     so your contract is not vulnerable to a reentrancy exploit.
 
+    다른 컨트랙트의 상호작용은 잠재적인 위험을 초래하는데, 특히 컨트랙의 소스코드를 미리 알수 없는 경우에
+    그렇습니다. 현재 컨트랙트는 호출된 컨트랙트의 통제권을 양도하고 잠재적으로 모든 것을 수행할 수 있습니다.
+    심지어 호출된 컨트랙트가 알려진 상위 컨트랙트로부터 상속받더라도, 상속 계약은 올바른 인터페이스만
+    갖추면 됩니다. 하지만 컨트랙트의 구현은 완전히 자의적일 수 있으며, 위험을 초래할 수 있습니다.
+    또한 시스템의 다른 컨트랙트를 호출하거나 첫 번째 호출이 리턴되기 전에 다시 호출 컨트랙트로 
+    돌아오는 경우를 대비해야 합니다. 이는
+    호출된 컨트랙트는 함수를 통해 호출하는 컨트랙트의 상태 변수를 바꿀 수 있다는 것을 의미합니다.
+    예를 들어, 컨트랙트의 상태 변수를 변경하여 컨트랙트가 재진입 악용에 취약하지 않게 한 후
+    외부 함수에 대한 호출이 발생하는 방식으로 함수를 작성하십시오. 
+
 .. note::
     Before Solidity 0.6.2, the recommended way to specify the value and gas was to
     use ``f.value(x).gas(g)()``. This was deprecated in Solidity 0.6.2 and is no
     longer possible since Solidity 0.7.0.
 
+    솔리디티 0.6.2 이전에는 변수값과 가스를 특정하는 추천되는 방식은 ``f.value(x).gas(g)()``
+    을 사용하는 것이었습니다. 이는 솔리디티 0.6.2에서 비난받았고 솔리디티 0.7.0 이후로 더 이상
+    사용되지 않습니다.
+
 Named Calls and Anonymous Function Parameters
+지정 호출과 익명 함수 매개변수
 ---------------------------------------------
 
 Function call arguments can be given by name, in any order,
