@@ -565,6 +565,7 @@ because only a reference and not a copy is passed.
 .. _default-value:
 
 Scoping and Declarations
+범위 지정(Scoping) 및 선언
 ========================
 
 A variable which is declared will have an initial default
@@ -579,27 +580,51 @@ to its type. For dynamically-sized arrays, ``bytes``
 and ``string``, the default value is an empty array or string.
 For the ``enum`` type, the default value is its first member.
 
+선언된 변수는 바이트 표현으로 모두 0인 초기 기본값을 가지게 될 것입니다.
+변수의 "기본값"은 어떤 형이든 일반적인 "0 상태"입니다.
+예를 들어, ``bool``의 기본값은 ``false``입니다. ``uint`` 또는 ``int``의 기본값은 ``0``입니다.
+정적 크기 배열과 ``bytes1`` ~ ``bytes32``의 경우, 각각의 독립된 요소들은 각 타입에 해당하는 기본값으로 초기화됩니다.
+``bytes``와 ``string``같은 동적 크기 배열의 경우, 기본값은 문자열의 빈 배열(empty array of string)입니다.
+``enum``타입의 기본값은 첫 멤버의 타입을 따라갑니다.
+
 Scoping in Solidity follows the widespread scoping rules of C99
 (and many other languages): Variables are visible from the point right after their declaration
 until the end of the smallest ``{ }``-block that contains the declaration.
 As an exception to this rule, variables declared in the
 initialization part of a for-loop are only visible until the end of the for-loop.
 
+솔리디티의 범위 지정은 C99(와 많은 다른 언어들)의 널리 퍼진 범위 지정 규칙을 따릅니다:
+변수는 선언 직후의 시점부터 선언문을 포함하는 가장 작은 ``{ }``-블록의 끝까지 사용할 수 있습니다.
+이 규칙에 대한 예외로 for-루프의 초기화 부분에서 선언된 변수는 for-루프가 끝날 때까지만 사용할 수 있습니다.
+
+
 Variables that are parameter-like (function parameters, modifier parameters,
 catch parameters, ...) are visible inside the code block that follows -
 the body of the function/modifier for a function and modifier parameter and the catch block
 for a catch parameter.
 
+파라미터와 비슷한 변수(함수 파라미터, 변경자 파라미터, 캐치 파라미터)는 
+다음과 같은 코드 블럭 내부에서 사용할 수 있습니다 - 함수, 변경자 파라미터에 대한 함수/변경자의 본문과
+캐치 파라미터에 대한 캐치 블록.
+
 Variables and other items declared outside of a code block, for example functions, contracts,
 user-defined types, etc., are visible even before they were declared. This means you can
 use state variables before they are declared and call functions recursively.
 
+코드 블럭 바깥, 예제 함수, 컨트랙트, 사용자 정의 타입 등등이 선언된 변수와 다른 아이템들은,
+선언되지 전에도 사용할 수 있습니다. 즉 상태 변수가 선언된 후 함수 호출이 재귀적으로 호출하기 전에
+상태 변수를 사용할 수 있습니다. 
+
 As a consequence, the following examples will compile without warnings, since
 the two variables have the same name but disjoint scopes.
+
+결과적으로, 다음 예제의 경우 두 변수가 같은 이름을 갖고 있음에도 다른 범위에 존재하므로
+경고 없이 컴파일될 것입니다.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
     contract C {
         function minimalScoping() pure public {
@@ -619,33 +644,43 @@ As a special example of the C99 scoping rules, note that in the following,
 the first assignment to ``x`` will actually assign the outer and not the inner variable.
 In any case, you will get a warning about the outer variable being shadowed.
 
+C99 범위 지정 규칙의 특별한 예로, 다음을 유의하십시오.
+``x``에 대한 첫번째 할당은 내부 변수가 아닌 외부 변수로의 할당입니다.
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
     // This will report a warning
+    // 이것은 경고를 보고할 것입니다.
     contract C {
         function f() pure public returns (uint) {
             uint x = 1;
             {
-                x = 2; // this will assign to the outer variable
+                x = 2; // 이것은 외부 변수에 할당됩니다.
                 uint x;
             }
-            return x; // x has value 2
+            return x; // x는 2의 값을 가집니다.
         }
     }
 
-.. warning::
+.. 경고::
     Before version 0.5.0 Solidity followed the same scoping rules as
     JavaScript, that is, a variable declared anywhere within a function would be in scope
     for the entire function, regardless where it was declared. The following example shows a code snippet that used
     to compile but leads to an error starting from version 0.5.0.
 
+    솔리디티 0.5.0 이전 버전은 JavaScript와 같은 범위 지정 규칙을 따라갔습니다.
+    즉 함수 내의 어디에서나 선언된 변수는 그것이 선언된 위치와 관계없이 전체 함수의 범위에 있었습니다.
+    다음 예제에서는 컴파일에 사용되었지만 0.5.0 로 시작하는 버전에서 오류가 발생하는 코드 스니팻펫을 보여줍니다.
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
-    // This will not compile
+    // 이 것은 컴파일되지 않습니다.
     contract C {
         function f() pure public returns (uint) {
             x = 2;
@@ -659,31 +694,46 @@ In any case, you will get a warning about the outer variable being shadowed.
 .. _unchecked:
 
 Checked or Unchecked Arithmetic
+확인되거나 확인되지않은 산술
 ===============================
 
 An overflow or underflow is the situation where the resulting value of an arithmetic operation,
 when executed on an unrestricted integer, falls outside the range of the result type.
 
+오버플로우 또는 언더플로우는 범위가 제한되지 않은 정수에서의 산술 연산의 결과값이 결과 유형의 범위를
+벗어나는 상황입니다.
+
 Prior to Solidity 0.8.0, arithmetic operations would always wrap in case of
 under- or overflow leading to widespread use of libraries that introduce
 additional checks.
 
+솔리디티 0.8.0 이전에는, 추가 확인을 도입하는 라이브러리의 광범위한 사용으로 이어지는
+언더프롤우 또는 오버플로우의 경우 산술 연산이 항상 랩핑되었습니다.
+
 Since Solidity 0.8.0, all arithmetic operations revert on over- and underflow by default,
 thus making the use of these libraries unnecessary.
 
+솔리디티 0.8.0부터, 모든 산술 연산은 기본적으로 오버풀로우나 언더플로우로 반한됩니다.
+따라서 이러한 라이브러리 사용이 불필요해졌습니다.
+
 To obtain the previous behaviour, an ``unchecked`` block can be used:
+
+이전 동작을 얻기 위해, ``unchecked``블록을 사용할 수 있습니다:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity ^0.8.0;
     contract C {
         function f(uint a, uint b) pure public returns (uint) {
             // This subtraction will wrap on underflow.
+            // 이 뺴기 연산은 언더플로우로 랩핑될 것입니다.
             unchecked { return a - b; }
         }
         function g(uint a, uint b) pure public returns (uint) {
             // This subtraction will revert on underflow.
+            // 이 빼기 연산은 언더플로우에서 반환될 것입니다.
             return a - b;
         }
     }
@@ -691,25 +741,39 @@ To obtain the previous behaviour, an ``unchecked`` block can be used:
 The call to ``f(2, 3)`` will return ``2**256-1``, while ``g(2, 3)`` will cause
 a failing assertion.
 
+``f(2, 3)``은 ``2**256-1``을 반환할 것이고, ``g(2, 3)``는 잘못된 값을 출력합니다.
+
 The ``unchecked`` block can be used everywhere inside a block, but not as a replacement
 for a block. It also cannot be nested.
+
+``unchecked`` 블록은 블록 내부의 모든 곳에서 사용될 수 있지만, 블록의 대체물로 사용할 수는 없습니다.
+또한 블록에 대해 중첩될 수 없습니다.
 
 The setting only affects the statements that are syntactically inside the block.
 Functions called from within an ``unchecked`` block do not inherit the property.
 
+설정은 블록 내부에 구문적으로 존재하는 코드에 대해서만 효과를 가집니다.
+``unchecked`` 내에서 호출된 함수는 특성을 상속하지 않습니다.
+
 .. note::
     To avoid ambiguity, you cannot use ``_;`` inside an ``unchecked`` block.
+    모호함을 피하기 위해, ``unchecked``블럭 내부에서 ``_;``를 사용할 수 없습니다.
 
 The following operators will cause a failing assertion on overflow or underflow
 and will wrap without an error if used inside an unchecked block:
 
-``++``, ``--``, ``+``, binary ``-``, unary ``-``, ``*``, ``/``, ``%``, ``**``
+다음의 연산자들은 언더플로우와 오버플로우로 인해 실패한 연산을 발생할 수 있으며 ``unchecked`` 블록
+내에서 사용되는 경우 오류 없이 랩핑합니다.
+
+``++``, ``--``, ``+``, 바이너리 ``-``, 단일 ``-``, ``*``, ``/``, ``%``, ``**``
 
 ``+=``, ``-=``, ``*=``, ``/=``, ``%=``
 
-.. warning::
+.. 경고::
     It is not possible to disable the check for division by zero
     or modulo by zero using the ``unchecked`` block.
+
+    ``unchecked`` 블럭을 사용하여 0으로 나누는 경우를 비활성화하는 것은 불가능합니다.
 
 .. note::
    Bitwise operators do not perform overflow or underflow checks.
@@ -717,24 +781,41 @@ and will wrap without an error if used inside an unchecked block:
    place of integer division and multiplication by a power of 2.
    For example ``type(uint256).max << 3`` does not revert even though ``type(uint256).max * 8`` would.
 
+   비트 단위 연산자는 오버플로우나 언더플로우를 확인하지 않습니다. 
+   이는 특히 2의 제곱연산에서 정수 나눗셈과 곱셈 대신 비트 시프트 연산 
+   (``<<``, ``>>``, ``<<=``, ``>>=``)을 사용할 때 잘 나타납니다.
+   예를 들어 ``type(uint256).max * 8``은 변환되는 반면 ``type(uint256).max << 3``은 변환되지 않습니다.
+
 .. note::
     The second statement in ``int x = type(int).min; -x;`` will result in an overflow
     because the negative range can hold one more value than the positive range.
 
+    ``int x = type(int).min; -x;``의 두 번쨰 문장은 음의 범위가 양의 범위보다 하나 더 많은 값을 가질 수 있기 때문에
+    오버플로우가 발생갑니다.
+
+
 Explicit type conversions will always truncate and never cause a failing assertion
 with the exception of a conversion from an integer to an enum type.
+
+명시적 타입 변환은 항상 생략하고, 정수에서 열거형으로 변환하지 않는 경우를 제외하고
+실패한 연산을 야기하지 않을 것입니다.
 
 .. index:: ! exception, ! throw, ! assert, ! require, ! revert, ! errors
 
 .. _assert-and-require:
 
 Error handling: Assert, Require, Revert and Exceptions
+에러 처리: 검증, 요구, 반환과 예외
 ======================================================
 
 Solidity uses state-reverting exceptions to handle errors.
 Such an exception undoes all changes made to the
 state in the current call (and all its sub-calls) and
 flags an error to the caller.
+
+솔리디티는 에러를 처리하기 위해 상태 반전 예외를 사용합니다.
+이러한 예외는 현재 호출(과 그것의 모든 하위 호출)에서 상태에 대한 모든 변경사항을 취소하고
+호출자에게 오류를 표시합니다.
 
 When exceptions happen in a sub-call, they "bubble up" (i.e.,
 exceptions are rethrown) automatically unless they are caught in
@@ -743,11 +824,19 @@ and the low-level functions ``call``, ``delegatecall`` and
 ``staticcall``: they return ``false`` as their first return value in case
 of an exception instead of "bubbling up".
 
-.. warning::
+하위 호출에서 예외가 발생했을 때, "버블 업" (즉, 예외가 다시 던져짐)은 ``try/catch`` 구문에
+잡히지 않는 한 자동으로 발생합니다. 이 규칙의 예외는 ``send``와 하위 레벨 함수 ``call``, ``delegatecall`` 그리고
+``staticcall``입니다 : 이들은 "버블 업" 대신  ``false``을 첫 번째 반환 값으로 반환합니다.
+
+.. 경고::
     The low-level functions ``call``, ``delegatecall`` and
     ``staticcall`` return ``true`` as their first return value
     if the account called is non-existent, as part of the design
     of the EVM. Account existence must be checked prior to calling if needed.
+
+    하위 레벨 함수 ``call``, ``delegatecall`` 그리고 ``staticcall``는 EVM 설게의 일환으로
+    호출된 계정이 존재하지 않는 경우 첫 번쨰 리턴값으로 ``true`` 를 리턴합니다.
+    계정의 존재는 함수 호출이 필요하다면 호출 이전에 무조건 확인되어야 합니다.
 
 Exceptions can contain error data that is passed back to the caller
 in the form of :ref:`error instances <errors>`.
@@ -755,14 +844,25 @@ The built-in errors ``Error(string)`` and ``Panic(uint256)`` are
 used by special functions, as explained below. ``Error`` is used for "regular" error conditions
 while ``Panic`` is used for errors that should not be present in bug-free code.
 
+예외는 호출자에게 다시 전달되는 에러 데이터를 :ref:`error instances <errors>`의 형태로
+포함할 수 있습니다.빌트인 에러인 ``Error(string)``와 ``Panic(uint256)``는 아래 설명과 같이 특수한 함수에
+의해 사용됩니다. ``Error``는 일반적인 오류 조건에 사용되는 반면 ``Panic``은 버그가 없는 코드에 존재해서는 안 되는 오류에서
+사용됩니다.
+
 Panic via ``assert`` and Error via ``require``
+``assert``를 통한 패닉(Panic)과 ``require``를 통한 에러(Error)
 ----------------------------------------------
 
 The convenience functions ``assert`` and ``require`` can be used to check for conditions and throw an exception
 if the condition is not met.
 
+편의 함수 ``assert``와 ``require``는 조건이 충족되지 않았다면 조건 확인과 예외 호출을 위해 사용될 수 있습니다.
+
 The ``assert`` function creates an error of type ``Panic(uint256)``.
 The same error is created by the compiler in certain situations as listed below.
+
+``assert``함수는 ``Panic(uint256)``타입의 에러를 생성합니다.
+위와 같은 에러는 컴파일러에 의해 아래의 특정한 상황들에 의해 생성됩니다.
 
 Assert should only be used to test for internal
 errors, and to check invariants. Properly functioning code should
@@ -772,19 +872,26 @@ is a bug in your contract which you should fix. Language analysis
 tools can evaluate your contract to identify the conditions and
 function calls which will cause a Panic.
 
+'Assert'는 내부 오류 테스트 및 불변성 검사에만 사용되어야 합니다. 제대로 작동하는 코드는
+잘못된 외부 입력에 대해서도 패닉을 생성해야 합니다. 이런 일이 발생하면, 계약에 수정
+해야하는 오류가 발생합니다. 언어 분석 도구는 계약을 평가하여 패닉을 발생시키는 조건과 함수 호출을 식별할 수 있습니다.
+
 A Panic exception is generated in the following situations.
 The error code supplied with the error data indicates the kind of panic.
 
-#. 0x00: Used for generic compiler inserted panics.
-#. 0x01: If you call ``assert`` with an argument that evaluates to false.
-#. 0x11: If an arithmetic operation results in underflow or overflow outside of an ``unchecked { ... }`` block.
-#. 0x12; If you divide or modulo by zero (e.g. ``5 / 0`` or ``23 % 0``).
-#. 0x21: If you convert a value that is too big or negative into an enum type.
-#. 0x22: If you access a storage byte array that is incorrectly encoded.
-#. 0x31: If you call ``.pop()`` on an empty array.
-#. 0x32: If you access an array, ``bytesN`` or an array slice at an out-of-bounds or negative index (i.e. ``x[i]`` where ``i >= x.length`` or ``i < 0``).
-#. 0x41: If you allocate too much memory or create an array that is too large.
-#. 0x51: If you call a zero-initialized variable of internal function type.
+패닉 예외는 다음과 같은 상황에서 발생됩니다.
+에러 데이터와 함꼐 제공된 에러 코드는 패닉의 한 종류를 나타냅니다.
+
+#. 0x00: 일반적인 컴파일러에 삽입된 패닉에 사용됩니다.
+#. 0x01: 거짓이라고 평가하는 인수로 'assert'를 호출할 때
+#. 0x11: 산술 연산으로 인해 ``unchecked { ... }``블록 외부에서 언더플로우 또는 오버플로우가 발생할 때
+#. 0x12; 0으로 나눌 때(예. ``5 / 0`` 또는 ``23 % 0``).
+#. 0x21: 너무 크거나 음수값을 열겨형으로 변환할 때
+#. 0x22: 잘못 인코딩된 저장소 바이트 배열에 접근할 때
+#. 0x31: 빈 배열에 ``.pop()``을 호출할 때
+#. 0x32: 배열에 접근할 때, ``bytesN`` 또는 범위를 벗어나는 인덱스 또는 음수 인덱스의 배열 슬라이스 사용(예. ``x[i]`` 인데 ``i >= x.length`` 또는 ``i < 0``).
+#. 0x41: 메모리를 너무 많이 할당하거나 너무 큰 배열을 생성할 때
+#. 0x51: 내부 함수 타입의 0-초기화 변수를 호출할 때
 
 The ``require`` function either creates an error without any data or
 an error of type ``Error(string)``. It
@@ -792,6 +899,11 @@ should be used to ensure valid conditions
 that cannot be detected until execution time.
 This includes conditions on inputs
 or return values from calls to external contracts.
+
+``require`` 함수는 데이터가 없는 에러를 만들거나 ``Error(string)`` 타입의 오류를 발생시킵니다.
+실행 시간까지 감지할 수 없는 유효한 조건을 보장하기 위해 사용해야 합니다.
+여기에는 입력 값 또는 외부 계약에서 호출까지의 리턴 값에 대한 조건이 포함됩니다.
+
 
 .. note::
 
