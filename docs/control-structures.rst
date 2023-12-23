@@ -1,5 +1,4 @@
 ##################################
-Expressions and Control Structures
 표현식과 제어 구조
 ##################################
 
@@ -8,33 +7,18 @@ Expressions and Control Structures
 
 .. index:: if, else, while, do/while, for, break, continue, return, switch, goto
 
-Control Structures
 제어 구조
 ===================
 
-Most of the control structures known from curly-braces languages are available in Solidity:
 대부분의 중괄호 언어(해석 : 중괄호를 사용하는 언어. ex. C, JavaScript) 제어 구조는 솔리디티에서 사용가능합니다.
 
-There is: ``if``, ``else``, ``while``, ``do``, ``for``, ``break``, ``continue``, ``return``, with
-the usual semantics known from C or JavaScript.
-
 C언어나 JavaScript로부터 알려진 ``if``, ``else``, ``while``, ``do``, ``for``, ``break``, ``continue``, ``return`` 등의 일반적인 코드 등이 있습니다.
-
-Solidity also supports exception handling in the form of ``try``/``catch``-statements,
-but only for :ref:`external function calls <external-function-calls>` and
-contract creation calls. Errors can be created using the :ref:`revert statement <revert-statement>`.
 
 솔리디티는 또한  ``try`` / ``catch`` 구문의 형태로 예외 처리를 지원합니다만, 
 :ref:`external function calls <external-function-calls>` 과 컨트랙트 생성 호출을 위해서만 사용합니다.
 에러는 :ref:`revert statement <revert-statement>`를 사용하면서 생성될 수 있습니다.
 
-Parentheses can *not* be omitted for conditionals, but curly braces can be omitted
-around single-statement bodies.
 괄호는 조건문에서 생략될 수 *없지만*, 중괄호는 한줄로 된 코드문에 대해서는 생략할 수 있습니다.
-
-Note that there is no type conversion from non-boolean to boolean types as
-there is in C and JavaScript, so ``if (1) { ... }`` is *not* valid
-Solidity.
 
 솔리디티에는 C와 JavaScript처럼 불리언(boolean)자료형이 아닌 타입을 불리언 타입으로 바꾸는 기능이 없다는 걸 명심하세요.
 따라서  ``if (1) { ... }`` 는 솔리디티에서 *사용할 수 없는* 표현입니다.
@@ -43,61 +27,39 @@ Solidity.
 
 .. _function-calls:
 
-Function Calls
 함수 호출
 ==============
 
 .. _internal-function-calls:
 
-Internal Function calls
 내부 함수 호출
 -----------------------
-
-Functions of the current contract can be called directly ("internally"), also recursively, as seen in
-this nonsensical example:
 
 현재 컨트랙트의 함수들은 아래 말도 안되는 예제에서 볼 수 있듯이 직접적으로 ("내부적으로"), 또는 재귀적으로 부를 수 있습니다.
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.4.22 <0.9.0;
 
-    // This will report a warning
     // 아래 코드는 경고를 보고합니다
     contract C {
         function g(uint a) public pure returns (uint ret) { return a + f(); }
         function f() internal pure returns (uint ret) { return g(7) + f(); }
     }
 
-These function calls are translated into simple jumps inside the EVM. This has
-the effect that the current memory is not cleared, i.e. passing memory references
-to internally-called functions is very efficient. Only functions of the same
-contract instance can be called internally.
 이러한 함수 호출들은 EVM 내부의 간단한 점프로 번역됩니다. 
 이는 현재 메모리가 지워지지 않는 효과를 가집니다. 즉 메모리 참조를 내부적으로 호출하는 
 함수에 전달하는 것은 매우 효과적입니다. 오직 같은 컨트랙트 인스턴트의 함수들만 내부적으로
 호출될 수 있습니다.
-
-You should still avoid excessive recursion, as every internal function call
-uses up at least one stack slot and there are only 1024 slots available.
 
 모든 내부 함수 호출이 적어도 하나의 스택 슬롯을 사용하고 1024개의 슬롯만을 사용
 할 수 있기 때문에, 과도한 재귀를 피해야 합니다
 
 .. _external-function-calls:
 
-External Function Calls
 외부 함수 호출
 -----------------------
-
-Functions can also be called using the ``this.g(8);`` and ``c.g(2);`` notation, where
-``c`` is a contract instance and ``g`` is a function belonging to ``c``.
-Calling the function ``g`` via either way results in it being called "externally", using a
-message call and not directly via jumps.
-Please note that function calls on ``this`` cannot be used in the constructor,
-as the actual contract has not been created yet.
 
 함수는 ``this.g(8);`` 와 ``c.g(2);`` 등의 표기법을 사용하여 부를 수도 있는데, 여기서
 ``c`` 는 컨트랙트 인스턴스이고 ``g``는 ``c``에 속한 함수입니다. 
@@ -106,24 +68,14 @@ as the actual contract has not been created yet.
 ``this`` 위의 함수 호출은 아직 실질적인 컨트랙트가 생성되지 않았기 때문에 
 생성자에서 사용할 수 없습니다.
 
-Functions of other contracts have to be called externally. For an external call,
-all function arguments have to be copied to memory.
-
 다른 컨트랙트들의 함수들은 외부적으로 호출되어야 합니다. 외부 호출에 대해,
 모든 함수의 매개변수들은 메모리로 복사되어야 합니다.
 
 .. note::
-    A function call from one contract to another does not create its own transaction,
-    it is a message call as part of the overall transaction.
 
     컨트랙트에서 다른 컨트랙트로의 함수 호출은 자체적인 트랜잭션을 생성하지 않습니다.
     이는 전체적인 트랜잭션의 한 부분으로써의 메세지 호출입니다.
 
-When calling functions of other contracts, you can specify the amount of Wei or
-gas sent with the call with the special options ``{value: 10, gas: 10000}``.
-Note that it is discouraged to specify gas values explicitly, since the gas costs
-of opcodes can change in the future. Any Wei you send to the contract is added
-to the total balance of that contract:
 
 다른 컨트랙트의 함수를 호출할 때, 호출과 함께 보내지는 웨이(Wei) 또는 가스(gas)를  ``{value: 10, gas: 10000}``
 특별한 옵션을 통해 특정할 수 있습니다.
@@ -132,7 +84,6 @@ to the total balance of that contract:
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.6.2 <0.9.0;
 
@@ -146,73 +97,37 @@ to the total balance of that contract:
         function callFeed() public { feed.info{value: 10, gas: 800}(); }
     }
 
-You need to use the modifier ``payable`` with the ``info`` function because
-otherwise, the ``value`` option would not be available.
 
- ``info`` 함수와 함께 ``payable``변경자를 사용할 필요가 있는데, 사용하지 않는다면 
-  ``value``옵션은 이용가능하지 않게 되기 때문입니다.
+``info`` 함수와 함께 ``payable``변경자를 사용할 필요가 있는데, 사용하지 않는다면 
+``value``옵션은 이용가능하지 않게 되기 때문입니다.
 
 .. 경고::
-  Be careful that ``feed.info{value: 10, gas: 800}`` only locally sets the
-  ``value`` and amount of ``gas`` sent with the function call, and the
-  parentheses at the end perform the actual call. So
-  ``feed.info{value: 10, gas: 800}`` does not call the function and
-  the ``value`` and ``gas`` settings are lost, only
-  ``feed.info{value: 10, gas: 800}()`` performs the function call.
 
   ``feed.info{value: 10, gas: 800}``이 함수 호출과 함께 전송된 ``gas``비와 양을 로컬로
   설정하고 끝에 있는 괄호가 실제 호출을 수행할 수 있도록 주의해야 합니다.
   따라서 ``feed.info{value: 10, gas: 800}``은 함수를 호출하지 않고 ``value``와 ``gas`` 세팅이
   손실되어, ``feed.info{value: 10, gas: 800}()`` 만 함수 호출을 수행합니다.
 
-Due to the fact that the EVM considers a call to a non-existing contract to
-always succeed, Solidity uses the ``extcodesize`` opcode to check that
-the contract that is about to be called actually exists (it contains code)
-and causes an exception if it does not. This check is skipped if the return
-data will be decoded after the call and thus the ABI decoder will catch the
-case of a non-existing contract.
 
 EVM이 항상 성공하기 위해 존재하지 않는 컨트랙트를 호출하는 것을 고려하는 사실 때문에,
 솔리디티는 호출되려고 하는 컨트랙트가 확실히 존재하는지(코드를 포함하는지) 확인하고
 그렇지 않으면 예외를 발생시키기 위해 ``extcodesize``명령 코드를 사용합니다.
 
-Note that this check is not performed in case of :ref:`low-level calls <address_related>` which
-operate on addresses rather than contract instances.
-
 컨트랙트 인스턴스보다 주소에서 작동하는 :ref:`low-level calls <address_related>`의 경우 
-이러한 확인이 수행되지 않는다는 것을 명심하세요.
+이러한 확인이 수행되지 않는다는 것을 명심하십시오.
 
 .. note::
-    Be careful when using high-level calls to
-    :ref:`precompiled contracts <precompiledContracts>`,
-    since the compiler considers them non-existing according to the
-    above logic even though they execute code and can return data.
 
     :ref:`precompiled contracts <precompiledContracts>`에 높은 수준의 호출을 사용할 때는
     코드를 실행하고 데이터를 반환할 수 있다고 해도 컴파일러가 위 논리에 따라 호출이 존재하지 
     않는다고 여기기 때문에 주의하십시오.
     
-
-Function calls also cause exceptions if the called contract itself
-throws an exception or goes out of gas.
+.
 
 함수 호출은 호출된 컨트랙트 자체에서 예외를 발생시키거나 가스가 다 떨어졌을 경우
 예외를 발생시키기도 합니다.
 
 .. 경고::
-    Any interaction with another contract imposes a potential danger, especially
-    if the source code of the contract is not known in advance. The
-    current contract hands over control to the called contract and that may potentially
-    do just about anything. Even if the called contract inherits from a known parent contract,
-    the inheriting contract is only required to have a correct interface. The
-    implementation of the contract, however, can be completely arbitrary and thus,
-    pose a danger. In addition, be prepared in case it calls into other contracts of
-    your system or even back into the calling contract before the first
-    call returns. This means
-    that the called contract can change state variables of the calling contract
-    via its functions. Write your functions in a way that, for example, calls to
-    external functions happen after any changes to state variables in your contract
-    so your contract is not vulnerable to a reentrancy exploit.
 
     다른 컨트랙트의 상호작용은 잠재적인 위험을 초래하는데, 특히 컨트랙의 소스코드를 미리 알수 없는 경우에
     그렇습니다. 현재 컨트랙트는 호출된 컨트랙트의 통제권을 양도하고 잠재적으로 모든 것을 수행할 수 있습니다.
@@ -225,28 +140,19 @@ throws an exception or goes out of gas.
     외부 함수에 대한 호출이 발생하는 방식으로 함수를 작성하십시오. 
 
 .. note::
-    Before Solidity 0.6.2, the recommended way to specify the value and gas was to
-    use ``f.value(x).gas(g)()``. This was deprecated in Solidity 0.6.2 and is no
-    longer possible since Solidity 0.7.0.
 
     솔리디티 0.6.2 이전에는 변수값과 가스를 특정하는 추천되는 방식은 ``f.value(x).gas(g)()``
     을 사용하는 것이었습니다. 이는 솔리디티 0.6.2에서 비난받았고 솔리디티 0.7.0 이후로 더 이상
     사용되지 않습니다.
 
-Named Calls and Anonymous Function Parameters
+
 지정 호출과 익명 함수 매개변수
 ---------------------------------------------
-
-Function call arguments can be given by name, in any order,
-if they are enclosed in ``{ }`` as can be seen in the following
-example. The argument list has to coincide by name with the list of
-parameters from the function declaration, but can be in arbitrary order.
 
 함수 호출 인수는 다음과 같이 ``{ }`` 로 둘러싸인 경우 순서가 어떻든 이름으로 지정할 수 있습니다. 
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.4.0 <0.9.0;
 
@@ -263,19 +169,15 @@ parameters from the function declaration, but can be in arbitrary order.
 
     }
 
-Omitted Function Parameter Names
 함수 매개변수명 생략
 --------------------------------
 
-The names of unused parameters (especially return parameters) can be omitted.
-Those parameters will still be present on the stack, but they are inaccessible.
 
 사용하지 않은 매개변수(특히 리턴 매개변수)의 이름은 생략할 수 있습니다.
 이러한 매개변수는 여전히 스택에 존재할 것이지만, 접근할 수 없습니다. 
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.4.22 <0.9.0;
 
@@ -291,20 +193,14 @@ Those parameters will still be present on the stack, but they are inaccessible.
 
 .. _creating-contracts:
 
-Creating Contracts via ``new``
 ``new``를 통해 컨트랙트 생성하기
 ==============================
-
-A contract can create other contracts using the ``new`` keyword. The full
-code of the contract being created has to be known when the creating contract
-is compiled so recursive creation-dependencies are not possible.
 
 컨트랙트는 다른 컨트랙트를 ``new``키워드를 통해 생성할 수 있습니다. 만들어진 컨트랙트의
 전체 코드는 생성하는 컨트랙트가 컴파일될 때 알려져야 하므로 재귀적 생성-의존성은 불가능합니다.
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
     contract D {
@@ -329,59 +225,31 @@ is compiled so recursive creation-dependencies are not possible.
         }
     }
 
-As seen in the example, it is possible to send Ether while creating
-an instance of ``D`` using the ``value`` option, but it is not possible
-to limit the amount of gas.
-If the creation fails (due to out-of-stack, not enough balance or other problems),
-an exception is thrown.
-
 위 예제에서 보았듯이, ``value``옵션을 사용하여  ``D``를 생성함과 동시에 이더를 보내는 것이
 가능합니다. 하지만 가스의 양을 제한하는 것은 불가능합니다. 만약 (out of stack, not enough balance 
 또는 다른 문제들로 인해) 생성에 실패하면 예외가 발생합니다.
 
-Salted contract creations / create2
 솔트 컨트랙트 생성 / create2
 -----------------------------------
-
-When creating a contract, the address of the contract is computed from
-the address of the creating contract and a counter that is increased with
-each contract creation.
 
 컨트랙트를 생성할 때, 컨트랙트의 주소는 생성하는 컨트랙트의 주소와 각 컨트랙트 생성과 함께
 증가하는 카운터로부터 계산됩니다.
 
-If you specify the option ``salt`` (a bytes32 value), then contract creation will
-use a different mechanism to come up with the address of the new contract:
-
 만약 (bytes32 값의) ``salt``옵션을 명시한다면, 컨트랙트 생성은 새로운 계약 주소를 마련하기 위해
 다른 매커니즘을 사용할 것입니다.
-
-It will compute the address from the address of the creating contract,
-the given salt value, the (creation) bytecode of the created contract and the constructor
-arguments.
 
 이는 생성하는 컨트랙트의 주소와, 주어진 salt값, 생성된 컨트랙트의 바이트코드, 그리고
 생성자 인수로부터 주소를 계산할 것입니다.
 
-In particular, the counter ("nonce") is not used. This allows for more flexibility
-in creating contracts: You are able to derive the address of the
-new contract before it is created. Furthermore, you can rely on this address
-also in case the creating
-contracts creates other contracts in the meantime.
-
 특히, 카운터 ("nonce")는 사용되지 않습니다. 이는 컨트랙트를 생성할 때 유연성을 더해 줍니다:
 새로운 컨트랙트가 생성되기 전에 컨트랙트의 주소를 도출할 수 있습니다.
 더 나아가, 생성하는 컨트랙트가 잠시 다른 컨트랙트를 생성하는 동안에도 이 주소를 사용할 수 있습니다.
-
-The main use-case here is contracts that act as judges for off-chain interactions,
-which only need to be created if there is a dispute.
 
 여기서 주요 활용 사례는 오프체인 상호작용의 판단자 역할을 하는 컨트랙트로, 분쟁이 있을 경우에만
 생성되면 됩니다.
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
     contract D {
@@ -393,9 +261,6 @@ which only need to be created if there is a dispute.
 
     contract C {
         function createDSalted(bytes32 salt, uint arg) public {
-            // This complicated expression just tells you how the address
-            // can be pre-computed. It is just there for illustration.
-            // You actually only need ``new D{salt: salt}(arg)``.
             // 이 복잡한 수식은 단지 어떻게 주소가 미리 계산될 수 있는지
             // 알려주는 것입니다. 이것은 단지 설명을 위해 있습니다.
             // 실제로는 ``new D{salt: salt}(arg)``만이 필요합니다.
@@ -415,13 +280,6 @@ which only need to be created if there is a dispute.
     }
 
 .. 경고::
-    There are some peculiarities in relation to salted creation. A contract can be
-    re-created at the same address after having been destroyed. Yet, it is possible
-    for that newly created contract to have a different deployed bytecode even
-    though the creation bytecode has been the same (which is a requirement because
-    otherwise the address would change). This is due to the fact that the constructor
-    can query external state that might have changed between the two creations
-    and incorporate that into the deployed bytecode before it is stored.
 
     솔트 생성과 관련하여 몇 가지 특이한 점이 있습니다. 컨트랙트는 컨트랙트가 파기된 이후에
     같은 주소에 재생성될 수 있습니다. 비록 생성된 바이트코드가 동일할지라도(이것은 필수사항입니다.
@@ -429,49 +287,30 @@ which only need to be created if there is a dispute.
     이는 생성자가 저장되기 전에 두 생성 간에 변경되었을 수 있는 외부 상태를 조회하여 배포된 바이트코드에
     통합할 수 있기 때문입니다.
 
-Order of Evaluation of Expressions
 수식 코드(Expressions) 실행의 순서
 ==================================
-
-The evaluation order of expressions is not specified (more formally, the order
-in which the children of one node in the expression tree are evaluated is not
-specified, but they are of course evaluated before the node itself). It is only
-guaranteed that statements are executed in order and short-circuiting for
-boolean expressions is done.
 
 수식의 실행 순서는 정해지지 않았습니다(정확하게는, 수식 코드 트리에서 한 노드의 자식이 평가되는 순서가
 정해지지 않았지만, 당연히 노드 자체보다 먼저 평가됩니다.). 
 코드(ststement)가 순서대로 실행되고 불리언 수식 코드에 대한 단락이 수행됨을 보장할 뿐입니다.
 .. index:: ! assignment
 
-Assignment
 할당
 ==========
 
 .. index:: ! assignment;destructuring
 
-Destructuring Assignments and Returning Multiple Values
 할당 파기 및 여러개 값 리턴하기
 -------------------------------------------------------
-
-Solidity internally allows tuple types, i.e. a list of objects
-of potentially different types whose number is a constant at
-compile-time. Those tuples can be used to return multiple values at the same time.
-These can then either be assigned to newly declared variables
-or to pre-existing variables (or LValues in general).
 
 솔리디티는 내부적으로 튜플 타입, 즉 컴파일 시점에서 숫자가 상수인 잠재적으로 다른
 유형의 객체 목록을 허용합니다. 이러한 튜플은 동시에 여러개 값을 리턴하는 데에 쓰일 수
 있습니다. 그런 다음 새로 선언된 변수나 기존에 존재하던 변수(또는 일반적인 LV값)에 할당할 수 있습니다.
 
-Tuples are not proper types in Solidity, they can only be used to form syntactic
-groupings of expressions.
-
 튜플은 솔리디티에서 적절한 타입은 아니고, 코드의 구문적 형태를 위해 사용될 뿐입니다.
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
 
@@ -483,63 +322,41 @@ groupings of expressions.
         }
 
         function g() public {
-            // Variables declared with type and assigned from the returned tuple,
-            // not all elements have to be specified (but the number must match).
             // 변수들은 타입과 함께 선언되고 리턴 튜플로부터 할당됩니다.
             // 모든 요소를 명시할 필요 없습니다(단, 숫자는 일치해야 합니다.)
             (uint x, , uint y) = f();
-            // Common trick to swap values -- does not work for non-value storage types.
             // 값 위치를 바꾸는 흔한 방법 -- non-value 저장 타입에는 적용이 안됩니다. 
             (x, y) = (y, x);
-            // Components can be left out (also for variable declarations).
             // 구성요소를 (변수 선언의 경우에도)제외할 수 있습니다.
             (index, , ) = f(); // 인덱스를 7로 지정합니다.
         }
     }
 
-It is not possible to mix variable declarations and non-declaration assignments,
-i.e. the following is not valid: ``(x, uint y) = (1, 2);``
-
 변수 선언과 선언이 아닌 할당을 혼합할 수 없습니다. 즉, ``(x, uint y) = (1, 2);``는
 유효하지 않습니다.
 
 .. note::
-    Prior to version 0.5.0 it was possible to assign to tuples of smaller size, either
-    filling up on the left or on the right side (which ever was empty). This is
-    now disallowed, so both sides have to have the same number of components.
 
     0.5.0 이전에는 튜플에 왼쪽부터 채우거나 오른쪽부터 채우는 등
     더 작은 사이즈로 할당하는 것이 가능했습니다(심지어 비었더라도). 지금은 허용되지 않으니,
     양측은 같은 구성요소 개수를 가져야 합니다.
 
 .. 경고::
-    Be careful when assigning to multiple variables at the same time when
-    reference types are involved, because it could lead to unexpected
-    copying behaviour.
 
     참조 유형이 포함된 경우 여러 번수에 동시에 할당할 때 예기치 않은 카피 동작을 
     유발할 수 있으므로 조심해 주십시오.
 
-Complications for Arrays and Structs
 배열과 구조체의 복잡성
 ------------------------------------
 
-The semantics of assignments are more complicated for non-value types like arrays and structs,
-including ``bytes`` and ``string``, see :ref:`Data location and assignment behaviour <data-location-assignment>` for details.
-
 할당은 ``bytes`` and ``string``를 포함하는 배열이나 구조와 같은 non-value 타입의 경우 더복잡합니다.
 자세한 내용은 :ref:`Data location and assignment behaviour <data-location-assignment>`을 참조하세요.
-
-In the example below the call to ``g(x)`` has no effect on ``x`` because it creates
-an independent copy of the storage value in memory. However, ``h(x)`` successfully modifies ``x``
-because only a reference and not a copy is passed.
 
 아레 예제에서 ``g(x)``에 대한 호출은 ``x``에 효과가 없습니다. 왜냐하면 메모리에 독립적인 저장값의 복사본을
 생성하기 때문입니다. 하지만, ``h(x)``는 복사본이 아닌 참조값만 전달되므로 성공적으로 변경합니다
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.4.22 <0.9.0;
 
@@ -564,21 +381,8 @@ because only a reference and not a copy is passed.
 
 .. _default-value:
 
-Scoping and Declarations
 범위 지정(Scoping) 및 선언
 ========================
-
-A variable which is declared will have an initial default
-value whose byte-representation is all zeros.
-The "default values" of variables are the typical "zero-state"
-of whatever the type is. For example, the default value for a ``bool``
-is ``false``. The default value for the ``uint`` or ``int``
-types is ``0``. For statically-sized arrays and ``bytes1`` to
-``bytes32``, each individual
-element will be initialized to the default value corresponding
-to its type. For dynamically-sized arrays, ``bytes``
-and ``string``, the default value is an empty array or string.
-For the ``enum`` type, the default value is its first member.
 
 선언된 변수는 바이트 표현으로 모두 0인 초기 기본값을 가지게 될 것입니다.
 변수의 "기본값"은 어떤 형이든 일반적인 "0 상태"입니다.
@@ -587,43 +391,23 @@ For the ``enum`` type, the default value is its first member.
 ``bytes``와 ``string``같은 동적 크기 배열의 경우, 기본값은 문자열의 빈 배열(empty array of string)입니다.
 ``enum``타입의 기본값은 첫 멤버의 타입을 따라갑니다.
 
-Scoping in Solidity follows the widespread scoping rules of C99
-(and many other languages): Variables are visible from the point right after their declaration
-until the end of the smallest ``{ }``-block that contains the declaration.
-As an exception to this rule, variables declared in the
-initialization part of a for-loop are only visible until the end of the for-loop.
-
 솔리디티의 범위 지정은 C99(와 많은 다른 언어들)의 널리 퍼진 범위 지정 규칙을 따릅니다:
 변수는 선언 직후의 시점부터 선언문을 포함하는 가장 작은 ``{ }``-블록의 끝까지 사용할 수 있습니다.
 이 규칙에 대한 예외로 for-루프의 초기화 부분에서 선언된 변수는 for-루프가 끝날 때까지만 사용할 수 있습니다.
-
-
-Variables that are parameter-like (function parameters, modifier parameters,
-catch parameters, ...) are visible inside the code block that follows -
-the body of the function/modifier for a function and modifier parameter and the catch block
-for a catch parameter.
 
 파라미터와 비슷한 변수(함수 파라미터, 변경자 파라미터, 캐치 파라미터)는 
 다음과 같은 코드 블럭 내부에서 사용할 수 있습니다 - 함수, 변경자 파라미터에 대한 함수/변경자의 본문과
 캐치 파라미터에 대한 캐치 블록.
 
-Variables and other items declared outside of a code block, for example functions, contracts,
-user-defined types, etc., are visible even before they were declared. This means you can
-use state variables before they are declared and call functions recursively.
-
 코드 블럭 바깥, 예제 함수, 컨트랙트, 사용자 정의 타입 등등이 선언된 변수와 다른 아이템들은,
 선언되지 전에도 사용할 수 있습니다. 즉 상태 변수가 선언된 후 함수 호출이 재귀적으로 호출하기 전에
 상태 변수를 사용할 수 있습니다. 
-
-As a consequence, the following examples will compile without warnings, since
-the two variables have the same name but disjoint scopes.
 
 결과적으로, 다음 예제의 경우 두 변수가 같은 이름을 갖고 있음에도 다른 범위에 존재하므로
 경고 없이 컴파일될 것입니다.
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
     contract C {
@@ -640,19 +424,13 @@ the two variables have the same name but disjoint scopes.
         }
     }
 
-As a special example of the C99 scoping rules, note that in the following,
-the first assignment to ``x`` will actually assign the outer and not the inner variable.
-In any case, you will get a warning about the outer variable being shadowed.
-
 C99 범위 지정 규칙의 특별한 예로, 다음을 유의하십시오.
 ``x``에 대한 첫번째 할당은 내부 변수가 아닌 외부 변수로의 할당입니다.
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
-    // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
-    // This will report a warning
     // 이것은 경고를 보고할 것입니다.
     contract C {
         function f() pure public returns (uint) {
@@ -666,10 +444,6 @@ C99 범위 지정 규칙의 특별한 예로, 다음을 유의하십시오.
     }
 
 .. 경고::
-    Before version 0.5.0 Solidity followed the same scoping rules as
-    JavaScript, that is, a variable declared anywhere within a function would be in scope
-    for the entire function, regardless where it was declared. The following example shows a code snippet that used
-    to compile but leads to an error starting from version 0.5.0.
 
     솔리디티 0.5.0 이전 버전은 JavaScript와 같은 범위 지정 규칙을 따라갔습니다.
     즉 함수 내의 어디에서나 선언된 변수는 그것이 선언된 위치와 관계없이 전체 함수의 범위에 있었습니다.
@@ -677,7 +451,6 @@ C99 범위 지정 규칙의 특별한 예로, 다음을 유의하십시오.
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
     // 이 것은 컴파일되지 않습니다.
@@ -693,74 +466,47 @@ C99 범위 지정 규칙의 특별한 예로, 다음을 유의하십시오.
 .. index:: ! safe math, safemath, checked, unchecked
 .. _unchecked:
 
-Checked or Unchecked Arithmetic
 확인되거나 확인되지않은 산술
 ===============================
 
-An overflow or underflow is the situation where the resulting value of an arithmetic operation,
-when executed on an unrestricted integer, falls outside the range of the result type.
 
 오버플로우 또는 언더플로우는 범위가 제한되지 않은 정수에서의 산술 연산의 결과값이 결과 유형의 범위를
 벗어나는 상황입니다.
 
-Prior to Solidity 0.8.0, arithmetic operations would always wrap in case of
-under- or overflow leading to widespread use of libraries that introduce
-additional checks.
-
 솔리디티 0.8.0 이전에는, 추가 확인을 도입하는 라이브러리의 광범위한 사용으로 이어지는
 언더프롤우 또는 오버플로우의 경우 산술 연산이 항상 랩핑되었습니다.
 
-Since Solidity 0.8.0, all arithmetic operations revert on over- and underflow by default,
-thus making the use of these libraries unnecessary.
-
-솔리디티 0.8.0부터, 모든 산술 연산은 기본적으로 오버풀로우나 언더플로우로 반한됩니다.
+솔리디티 0.8.0부터, 모든 산술 연산은 기본적으로 오버풀로우나 언더플로우로 되돌아갑니다.
 따라서 이러한 라이브러리 사용이 불필요해졌습니다.
-
-To obtain the previous behaviour, an ``unchecked`` block can be used:
 
 이전 동작을 얻기 위해, ``unchecked``블록을 사용할 수 있습니다:
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
     // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity ^0.8.0;
     contract C {
         function f(uint a, uint b) pure public returns (uint) {
-            // This subtraction will wrap on underflow.
             // 이 뺴기 연산은 언더플로우로 랩핑될 것입니다.
             unchecked { return a - b; }
         }
         function g(uint a, uint b) pure public returns (uint) {
-            // This subtraction will revert on underflow.
-            // 이 빼기 연산은 언더플로우에서 반환될 것입니다.
+            // 이 빼기 연산은 언더플로우에서 되돌아갈 것입니다.
             return a - b;
         }
     }
 
-The call to ``f(2, 3)`` will return ``2**256-1``, while ``g(2, 3)`` will cause
-a failing assertion.
-
 ``f(2, 3)``은 ``2**256-1``을 반환할 것이고, ``g(2, 3)``는 잘못된 값을 출력합니다.
-
-The ``unchecked`` block can be used everywhere inside a block, but not as a replacement
-for a block. It also cannot be nested.
 
 ``unchecked`` 블록은 블록 내부의 모든 곳에서 사용될 수 있지만, 블록의 대체물로 사용할 수는 없습니다.
 또한 블록에 대해 중첩될 수 없습니다.
-
-The setting only affects the statements that are syntactically inside the block.
-Functions called from within an ``unchecked`` block do not inherit the property.
 
 설정은 블록 내부에 구문적으로 존재하는 코드에 대해서만 효과를 가집니다.
 ``unchecked`` 내에서 호출된 함수는 특성을 상속하지 않습니다.
 
 .. note::
-    To avoid ambiguity, you cannot use ``_;`` inside an ``unchecked`` block.
+    
     모호함을 피하기 위해, ``unchecked``블럭 내부에서 ``_;``를 사용할 수 없습니다.
-
-The following operators will cause a failing assertion on overflow or underflow
-and will wrap without an error if used inside an unchecked block:
 
 다음의 연산자들은 언더플로우와 오버플로우로 인해 실패한 연산을 발생할 수 있으며 ``unchecked`` 블록
 내에서 사용되는 경우 오류 없이 랩핑합니다.
@@ -770,32 +516,21 @@ and will wrap without an error if used inside an unchecked block:
 ``+=``, ``-=``, ``*=``, ``/=``, ``%=``
 
 .. 경고::
-    It is not possible to disable the check for division by zero
-    or modulo by zero using the ``unchecked`` block.
 
     ``unchecked`` 블럭을 사용하여 0으로 나누는 경우를 비활성화하는 것은 불가능합니다.
 
 .. note::
-   Bitwise operators do not perform overflow or underflow checks.
-   This is particularly visible when using bitwise shifts (``<<``, ``>>``, ``<<=``, ``>>=``) in
-   place of integer division and multiplication by a power of 2.
-   For example ``type(uint256).max << 3`` does not revert even though ``type(uint256).max * 8`` would.
 
    비트 단위 연산자는 오버플로우나 언더플로우를 확인하지 않습니다. 
    이는 특히 2의 제곱연산에서 정수 나눗셈과 곱셈 대신 비트 시프트 연산 
    (``<<``, ``>>``, ``<<=``, ``>>=``)을 사용할 때 잘 나타납니다.
-   예를 들어 ``type(uint256).max * 8``은 변환되는 반면 ``type(uint256).max << 3``은 변환되지 않습니다.
+   예를 들어 ``type(uint256).max * 8``은 되돌아가는 반면 ``type(uint256).max << 3``은 되돌아가지 않습니다.
 
 .. note::
-    The second statement in ``int x = type(int).min; -x;`` will result in an overflow
-    because the negative range can hold one more value than the positive range.
 
     ``int x = type(int).min; -x;``의 두 번쨰 문장은 음의 범위가 양의 범위보다 하나 더 많은 값을 가질 수 있기 때문에
     오버플로우가 발생갑니다.
 
-
-Explicit type conversions will always truncate and never cause a failing assertion
-with the exception of a conversion from an integer to an enum type.
 
 명시적 타입 변환은 항상 생략하고, 정수에서 열거형으로 변환하지 않는 경우를 제외하고
 실패한 연산을 야기하지 않을 것입니다.
@@ -804,80 +539,39 @@ with the exception of a conversion from an integer to an enum type.
 
 .. _assert-and-require:
 
-Error handling: Assert, Require, Revert and Exceptions
-에러 처리: 검증, 요구, 반환과 예외
+에러 처리: 검증, 요구, 되돌리기과 예외
 ======================================================
 
-Solidity uses state-reverting exceptions to handle errors.
-Such an exception undoes all changes made to the
-state in the current call (and all its sub-calls) and
-flags an error to the caller.
-
-솔리디티는 에러를 처리하기 위해 상태 반전 예외를 사용합니다.
+솔리디티는 에러를 처리하기 위해 상태-되돌리기 예외를 사용합니다.
 이러한 예외는 현재 호출(과 그것의 모든 하위 호출)에서 상태에 대한 모든 변경사항을 취소하고
 호출자에게 오류를 표시합니다.
-
-When exceptions happen in a sub-call, they "bubble up" (i.e.,
-exceptions are rethrown) automatically unless they are caught in
-a ``try/catch`` statement. Exceptions to this rule are ``send``
-and the low-level functions ``call``, ``delegatecall`` and
-``staticcall``: they return ``false`` as their first return value in case
-of an exception instead of "bubbling up".
 
 하위 호출에서 예외가 발생했을 때, "버블 업" (즉, 예외가 다시 던져짐)은 ``try/catch`` 구문에
 잡히지 않는 한 자동으로 발생합니다. 이 규칙의 예외는 ``send``와 하위 레벨 함수 ``call``, ``delegatecall`` 그리고
 ``staticcall``입니다 : 이들은 "버블 업" 대신  ``false``을 첫 번째 반환 값으로 반환합니다.
 
 .. 경고::
-    The low-level functions ``call``, ``delegatecall`` and
-    ``staticcall`` return ``true`` as their first return value
-    if the account called is non-existent, as part of the design
-    of the EVM. Account existence must be checked prior to calling if needed.
 
     하위 레벨 함수 ``call``, ``delegatecall`` 그리고 ``staticcall``는 EVM 설게의 일환으로
     호출된 계정이 존재하지 않는 경우 첫 번쨰 리턴값으로 ``true`` 를 리턴합니다.
     계정의 존재는 함수 호출이 필요하다면 호출 이전에 무조건 확인되어야 합니다.
-
-Exceptions can contain error data that is passed back to the caller
-in the form of :ref:`error instances <errors>`.
-The built-in errors ``Error(string)`` and ``Panic(uint256)`` are
-used by special functions, as explained below. ``Error`` is used for "regular" error conditions
-while ``Panic`` is used for errors that should not be present in bug-free code.
 
 예외는 호출자에게 다시 전달되는 에러 데이터를 :ref:`error instances <errors>`의 형태로
 포함할 수 있습니다.빌트인 에러인 ``Error(string)``와 ``Panic(uint256)``는 아래 설명과 같이 특수한 함수에
 의해 사용됩니다. ``Error``는 일반적인 오류 조건에 사용되는 반면 ``Panic``은 버그가 없는 코드에 존재해서는 안 되는 오류에서
 사용됩니다.
 
-Panic via ``assert`` and Error via ``require``
 ``assert``를 통한 패닉(Panic)과 ``require``를 통한 에러(Error)
 ----------------------------------------------
 
-The convenience functions ``assert`` and ``require`` can be used to check for conditions and throw an exception
-if the condition is not met.
-
 편의 함수 ``assert``와 ``require``는 조건이 충족되지 않았다면 조건 확인과 예외 호출을 위해 사용될 수 있습니다.
-
-The ``assert`` function creates an error of type ``Panic(uint256)``.
-The same error is created by the compiler in certain situations as listed below.
 
 ``assert``함수는 ``Panic(uint256)``타입의 에러를 생성합니다.
 위와 같은 에러는 컴파일러에 의해 아래의 특정한 상황들에 의해 생성됩니다.
 
-Assert should only be used to test for internal
-errors, and to check invariants. Properly functioning code should
-never create a Panic, not even on invalid external input.
-If this happens, then there
-is a bug in your contract which you should fix. Language analysis
-tools can evaluate your contract to identify the conditions and
-function calls which will cause a Panic.
-
 'Assert'는 내부 오류 테스트 및 불변성 검사에만 사용되어야 합니다. 제대로 작동하는 코드는
 잘못된 외부 입력에 대해서도 패닉을 생성해야 합니다. 이런 일이 발생하면, 계약에 수정
 해야하는 오류가 발생합니다. 언어 분석 도구는 계약을 평가하여 패닉을 발생시키는 조건과 함수 호출을 식별할 수 있습니다.
-
-A Panic exception is generated in the following situations.
-The error code supplied with the error data indicates the kind of panic.
 
 패닉 예외는 다음과 같은 상황에서 발생됩니다.
 에러 데이터와 함꼐 제공된 에러 코드는 패닉의 한 종류를 나타냅니다.
@@ -893,13 +587,6 @@ The error code supplied with the error data indicates the kind of panic.
 #. 0x41: 메모리를 너무 많이 할당하거나 너무 큰 배열을 생성할 때
 #. 0x51: 내부 함수 타입의 0-초기화 변수를 호출할 때
 
-The ``require`` function either creates an error without any data or
-an error of type ``Error(string)``. It
-should be used to ensure valid conditions
-that cannot be detected until execution time.
-This includes conditions on inputs
-or return values from calls to external contracts.
-
 ``require`` 함수는 데이터가 없는 에러를 만들거나 ``Error(string)`` 타입의 오류를 발생시킵니다.
 실행 시간까지 감지할 수 없는 유효한 조건을 보장하기 위해 사용해야 합니다.
 여기에는 입력 값 또는 외부 계약에서 호출까지의 리턴 값에 대한 조건이 포함됩니다.
@@ -907,48 +594,45 @@ or return values from calls to external contracts.
 
 .. note::
 
-    It is currently not possible to use custom errors in combination
-    with ``require``. Please use ``if (!condition) revert CustomError();`` instead.
+    현재 사용자 지정 오류를 ``require``와 함께 사용할 수 없습니다. 
+    ``if (!condition) revert CustomError();``을 대신 사용해주세요.
 
-An ``Error(string)`` exception (or an exception without data) is generated
-by the compiler
-in the following situations:
 
-#. Calling ``require(x)`` where ``x`` evaluates to ``false``.
-#. If you use ``revert()`` or ``revert("description")``.
-#. If you perform an external function call targeting a contract that contains no code.
-#. If your contract receives Ether via a public function without
-   ``payable`` modifier (including the constructor and the fallback function).
-#. If your contract receives Ether via a public getter function.
+다음과 같은 상황에서 ``Error(string)`` 예외(또는 데이터가 없는 예외)가 
+컴파일러에 의해 발생합니다.
 
-For the following cases, the error data from the external call
-(if provided) is forwarded. This means that it can either cause
-an `Error` or a `Panic` (or whatever else was given):
 
-#. If a ``.transfer()`` fails.
-#. If you call a function via a message call but it does not finish
-   properly (i.e., it runs out of gas, has no matching function, or
-   throws an exception itself), except when a low level operation
-   ``call``, ``send``, ``delegatecall``, ``callcode`` or ``staticcall``
-   is used. The low level operations never throw exceptions but
-   indicate failures by returning ``false``.
-#. If you create a contract using the ``new`` keyword but the contract
-   creation :ref:`does not finish properly<creating-contracts>`.
+#. ``x``가 ``false``일 때 ``require(x)``를 호출하는 경우.
+#. ``revert()`` 또는 ``revert("description")``를 사용하는 경우.
+#. 코드가 포함되지 컨트랙트를 대상으로 외부 함수 호출을 수행하는 경우.
+#. 컨트랙트가 ``payable``변경자 (생성자와 폴백 함수 포함) 없이 퍼블릭 함수를 통해 이더를 받는 경우
+#. 컨트랙트가 공개 게터 함수를 통해 이더를 받는 경우.
 
-You can optionally provide a message string for ``require``, but not for ``assert``.
+다음의 경우, 외부 호출(제공된 경우) 에러 데이터가 전달됩니다.
+즉, `Error` 또는 `Panic`(또는 제공된 다른 어떤 것)이 유발될 수 있음을 의미합니다.
+
+#. ``.transfer()`` 가 실패한 경우.
+#. 낮은 레벨의 연산 ``call``, ``send``, ``delegatecall``, ``callcode`` 또는 ``staticcall``를 제외하고 
+   메세지 호출을 통해 함수를 호출했지만 정상적으로 종료되지 않은 경우
+   (예 : 가스가 부족하거나, 일치하는 함수가 없거나, 예외를 발생시키는 경우).
+   낮은 레벨의 연산은 예외를 던지지 않고  ``false``를 반환함으로써 실패를 표현합니다.
+#. 컨트랙트를 ``new``키워드를 사용하여 생성하였지만 컨트랙트 생성이 적절히 수행되지 않은 경우.
+   :ref:`does not finish properly<creating-contracts>`
+
+선택적으로 ``require``에는 메세지 문자열을 제공할 수 있지만, ``assert``에는 불가합니다.
 
 .. note::
-    If you do not provide a string argument to ``require``, it will revert
-    with empty error data, not even including the error selector.
+
+    문자열 인수를 ``require``에 제공하지 않으면, 에러 셀렉터마저 포함하지 않고 빈 에러 데이터로 되돌아갑니다
 
 
-The following example shows how you can use ``require`` to check conditions on inputs
-and ``assert`` for internal error checking.
+다음의 예제는 입력의 조건을 표현하기 위해 ``require``를 어떻게 쓰는지,
+내부 에러 확인을 확인하기 위해 ``assert``를 어떻게 쓰는지 보여줍니다. 
 
 .. code-block:: solidity
     :force:
 
-    // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
 
     contract Sharer {
@@ -956,63 +640,60 @@ and ``assert`` for internal error checking.
             require(msg.value % 2 == 0, "Even value required.");
             uint balanceBeforeTransfer = address(this).balance;
             addr.transfer(msg.value / 2);
-            // Since transfer throws an exception on failure and
-            // cannot call back here, there should be no way for us to
-            // still have half of the money.
+            // 전송이 실패에 대한 예외를 던지고 여기로 다시 콜백할 수 없기
+            // 때문에, 우리가 여전히 절반의 돈을 가질 수 있는 방법이 없습니다.
             assert(address(this).balance == balanceBeforeTransfer - msg.value / 2);
             return address(this).balance;
         }
     }
 
-Internally, Solidity performs a revert operation (instruction
-``0xfd``). This causes
-the EVM to revert all changes made to the state. The reason for reverting
-is that there is no safe way to continue execution, because an expected effect
-did not occur. Because we want to keep the atomicity of transactions, the
-safest action is to revert all changes and make the whole transaction
-(or at least call) without effect.
 
-In both cases, the caller can react on such failures using ``try``/``catch``, but
-the changes in the callee will always be reverted.
+내부적으로 솔리디티는 되돌리기 연산을 수행합니다(명령어 ``0xfd``). 이는
+EVM이 모든 변경사항을 상태로 되돌리는 것을 야기합니다. 되돌리는 이유는
+기대했던 효과가 일어나지 않았기 떄문에, 실행을 계속할 안전한 방법이 없기 때문입니다.
+거래의 원자성을 유지하고 싶기 때문에, 가장 안전한 행위는 모든 변경사항을 되돌리고 모든 거래 효과를(최소한 호출)
+제거하는 것입니다.
+
+두 경우 모두 호출자는 이러한 문제에 대해 ``try``/``catch``를 사용하여 대응할 수 있지만,
+피호출자의 변경사항은 항상 되돌아갈 것입니다.
 
 .. note::
 
-    Panic exceptions used to use the ``invalid`` opcode before Solidity 0.8.0,
-    which consumed all gas available to the call.
-    Exceptions that use ``require`` used to consume all gas until before the Metropolis release.
+    솔리디티 0.8.0 이전에 패닉 예외는 호출에 사용할 수 있는 모든 가스를 소비하는
+    ``invalid`` 명령 코드를 사용하곤 했습니다. ``require``를 사용하는 예외는 메트로폴리스가
+    나오기 전까지는 모든 가스를 소비했습니다. 
+
 
 .. _revert-statement:
 
 ``revert``
 ----------
 
-A direct revert can be triggered using the ``revert`` statement and the ``revert`` function.
+직접적인 되돌리기는  ``revert`` 구문과  ``revert``함수를 통해 실행될 수 있습니다.
 
-The ``revert`` statement takes a custom error as direct argument without parentheses:
+``revert``구문은 괄호 없이 사용자 정의 오류를 직접 인수로 사용합니다.
 
     revert CustomError(arg1, arg2);
 
-For backwards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
-and accepts a string:
+역호환성의 이유로, 괄호를 사용하여 문자열을 받아들이는 ``revert()`` 함수도 있습니다.
 
     revert();
     revert("description");
 
-The error data will be passed back to the caller and can be caught there.
-Using ``revert()`` causes a revert without any error data while ``revert("description")``
-will create an ``Error(string)`` error.
+에러 데이터는 호출자에게 재전달되어 그곳에 붙잡혀 있을 수 있습니다.
+``revert()``를 사용하는 것은 에러 데이터 없이 반환되는 반면 ``revert("description")``는
+``Error(string)``를 생성합니다.
 
-Using a custom error instance will usually be much cheaper than a string description,
-because you can use the name of the error to describe it, which is encoded in only
-four bytes. A longer description can be supplied via NatSpec which does not incur
-any costs.
+사용자 정의 에러 인스턴스를 사용하는 것은 일반적으로 문자열 설명보다 훨씬 저렴한데,
+오류를 설명하기 위해 이름을 사용할 수 있으며, 이는 오직 4바이트로 인코딩되기 때문입니다.
+더 긴 설명은 NatSpec을 통해 제공할 수 있으므로 비용을 유발하지 않습니다.
 
-The following example shows how to use an error string and a custom error instance
-together with ``revert`` and the equivalent ``require``:
+다음 예제는 에러 문자열과 사용자 정의 에러 인스턴스를 ``revert``및 이와 동등한
+``require``와 함께 사용하는 방법을 보여줍니다:
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity ^0.8.4;
 
     contract VendingMachine {
@@ -1021,12 +702,12 @@ together with ``revert`` and the equivalent ``require``:
         function buy(uint amount) public payable {
             if (amount > msg.value / 2 ether)
                 revert("Not enough Ether provided.");
-            // Alternative way to do it:
+            // 대체 방법
             require(
                 amount <= msg.value / 2 ether,
                 "Not enough Ether provided."
             );
-            // Perform the purchase.
+            // 구입을 수행합니다.
         }
         function withdraw() public {
             if (msg.sender != owner)
@@ -1036,31 +717,31 @@ together with ``revert`` and the equivalent ``require``:
         }
     }
 
-The two ways ``if (!condition) revert(...);`` and ``require(condition, ...);`` are
-equivalent as long as the arguments to ``revert`` and ``require`` do not have side-effects,
-for example if they are just strings.
+``if (!condition) revert(...);``와 ``require(condition, ...);`` 두 가지 방법은
+``revert`` 와 ``require`` 인수가 부작용이 없는 한 동등합니다.
+그들이 단지 문자열일 때를 예로 들 수 있습니다.
 
 .. note::
-    The ``require`` function is evaluated just as any other function.
-    This means that all arguments are evaluated before the function itself is executed.
-    In particular, in ``require(condition, f())`` the function ``f`` is executed even if
-    ``condition`` is true.
 
-The provided string is :ref:`abi-encoded <ABI>` as if it were a call to a function ``Error(string)``.
-In the above example, ``revert("Not enough Ether provided.");`` returns the following hexadecimal as error return data:
+    ``require`` 함수는 다른 어떤 함수와 마찬가지로 평가됩니다.
+    이는 함수 자체가 실행되기 전 모든 인수가 평가된다는 것을 의미합니다. 특히
+    ``require(condition, f())``에서 ``f``함수는 ``condition``이 ture일 때도 실행됩니다.
 
+제공된 문자열은 함수 ``Error(string)``에 대한 호출인 것처럼 :ref:`abi-encoded <ABI>`입니다.
+위의 예제에서 ``revert("Not enough Ether provided.");``는 다음 16진수를 에러 리턴 데이터로 리턴합니다.
 .. code::
 
-    0x08c379a0                                                         // Function selector for Error(string)
-    0x0000000000000000000000000000000000000000000000000000000000000020 // Data offset
-    0x000000000000000000000000000000000000000000000000000000000000001a // String length
-    0x4e6f7420656e6f7567682045746865722070726f76696465642e000000000000 // String data
+    0x08c379a0                                                         // Error(string)을 위한 함수 셀렉터
+    0x0000000000000000000000000000000000000000000000000000000000000020 // 데이터 오프셋
+    0x000000000000000000000000000000000000000000000000000000000000001a // 문자열 길이
+    0x4e6f7420656e6f7567682045746865722070726f76696465642e000000000000 // 문자열
 
-The provided message can be retrieved by the caller using ``try``/``catch`` as shown below.
+제공된 메세지는 아래에서 보여주듯 ``try``/``catch``를 사용하여 호출자에 의해 되찾아올 수 있습니다.
 
 .. note::
-    There used to be a keyword called ``throw`` with the same semantics as ``revert()`` which
-    was deprecated in version 0.4.13 and removed in version 0.5.0.
+
+    예전에는 0.4.13 버전에서 축소되고 0.5.0 버전에서 삭제된 ``revert()``와 같은 기능을 수행하는
+    ``throw``라고 불리는 키워드가 있었습니다. 
 
 
 .. _try-catch:
@@ -1068,11 +749,11 @@ The provided message can be retrieved by the caller using ``try``/``catch`` as s
 ``try``/``catch``
 -----------------
 
-A failure in an external call can be caught using a try/catch statement, as follows:
+외부 호출의 실패는 다음과 같이 try/catch 구문을 사용하여 잡을 수 있습니다:
 
 .. code-block:: solidity
 
-    // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.8.1;
 
     interface DataFeed { function getData(address token) external returns (uint value); }
@@ -1081,94 +762,82 @@ A failure in an external call can be caught using a try/catch statement, as foll
         DataFeed feed;
         uint errorCount;
         function rate(address token) public returns (uint value, bool success) {
-            // Permanently disable the mechanism if there are
-            // more than 10 errors.
+            // 10개 이상의 에러가 있는 경우
+            // 영원히 매커니즘을 비활성화합니다
             require(errorCount < 10);
             try feed.getData(token) returns (uint v) {
                 return (v, true);
             } catch Error(string memory /*reason*/) {
-                // This is executed in case
-                // revert was called inside getData
-                // and a reason string was provided.
+                // revert가 getData 내부에서 호출되고
+                // reason 문자열이 제공된 경우
+                // 실행됩니다.
                 errorCount++;
                 return (0, false);
             } catch Panic(uint /*errorCode*/) {
-                // This is executed in case of a panic,
-                // i.e. a serious error like division by zero
-                // or overflow. The error code can be used
-                // to determine the kind of error.
+                // 패닉, 즉 0으로 나눔 또는 오버플로우와 같은 
+                // 심각한 에러의 경우 실행됩니다. 에러 코드는
+                // 에러의 종류를 결정하기 위해 사용됩니다.
                 errorCount++;
                 return (0, false);
             } catch (bytes memory /*lowLevelData*/) {
-                // This is executed in case revert() was used.
+                // revert() 가 사용되는 경우 실행됩니다.
                 errorCount++;
                 return (0, false);
             }
         }
     }
 
-The ``try`` keyword has to be followed by an expression representing an external function call
-or a contract creation (``new ContractName()``).
-Errors inside the expression are not caught (for example if it is a complex expression
-that also involves internal function calls), only a revert happening inside the external
-call itself. The ``returns`` part (which is optional) that follows declares return variables
-matching the types returned by the external call. In case there was no error,
-these variables are assigned and the contract's execution continues inside the
-first success block. If the end of the success block is reached, execution continues after the ``catch`` blocks.
+``try``키워드는 외부 함수 호출 또는 컨트랙트 생성을 나타내는 (``new ContractName()``)가 뒤따라야 합니다.
+표현식 내부의 에러는 잡히지 않으며(예를 들어 내부 함수 호출 또한 포함하는 복잡한 표현식의 경우),
+오직 외부 함수 자체 내에서 발생하는 되돌리기만 발생합니다. 뒤에 오는 ``returns`` 부분(선택 사항)은
+외부 호출에 의해 리턴된 유형과 일치하는 리턴 변수를 선언합니다.
+오류가 없었을 경우, 이 변수들은 할당되고 컨트랙트의 실행은 첫 번째 성공 블럭 내부에서 진행됩니다.
+만약 성공 블록의 끝에 도달하면, ``catch``블록 후에 실행이 계속됩니다.
 
-Solidity supports different kinds of catch blocks depending on the
-type of error:
+솔리디티는 에러 타입에 대해 여러 종류의 캐치 블록을 지원합니다:
 
-- ``catch Error(string memory reason) { ... }``: This catch clause is executed if the error was caused by ``revert("reasonString")`` or
-  ``require(false, "reasonString")`` (or an internal error that causes such an
-  exception).
+- ``catch Error(string memory reason) { ... }``: 이 캐치 구문은 에러가 
+   ``revert("reasonString")`` 또는 ``require(false, "reasonString")``
+   (또는 이러한 예외를 발생시키는 내부 에러)로 인해 발생한 경우 실행됩니다.
 
-- ``catch Panic(uint errorCode) { ... }``: If the error was caused by a panic, i.e. by a failing ``assert``, division by zero,
-  invalid array access, arithmetic overflow and others, this catch clause will be run.
+- ``catch Panic(uint errorCode) { ... }``: 이 캐치 구문은 에러가 패닉, 즉 0으로 나눔, 유효하지
+  않은 배열 접근, 산술적 오버플로우 및 그 외로 인해 발생한 경우 실행됩니다.
 
-- ``catch (bytes memory lowLevelData) { ... }``: This clause is executed if the error signature
-  does not match any other clause, if there was an error while decoding the error
-  message, or
-  if no error data was provided with the exception.
-  The declared variable provides access to the low-level error data in that case.
+- ``catch (bytes memory lowLevelData) { ... }``: 이 구문은 에러 서명이 다른 구문과 일치하지 않는
+  경우, 에러를 디코딩하는 동안 에러가 발생하는 경우, 예외가 포함된 에러 데이터가 제공되지
+  않은 경우 실행됩니다. 이 경우 선언된 변수는 낮은 레벨의 데이터에 대한 접근을 제공합니다. 
 
-- ``catch { ... }``: If you are not interested in the error data, you can just use
-  ``catch { ... }`` (even as the only catch clause) instead of the previous clause.
+- ``catch { ... }``: 오류 데이터에 관심이 없는 경우, 이전 구문들 대신
+  ``catch { ... }`` 만(유일 캐치 구문으로) 사용하셔도 됩니다.
 
+향후 다른 타입의 에러 데이터를 지원할 예정입니다.
+``Error`` 와 ``Panic`` 문자열은 현재 그대로 parsed되며 식별자로 취급되지 않습니다.
 
-It is planned to support other types of error data in the future.
-The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as identifiers.
+모든 에러 케이스를 확인하기 위해, 최소한 ``catch { ...}`` 또는 
+``catch (bytes memory lowLevelData) { ... }`` 구문이 있어야 합니다.
 
-In order to catch all error cases, you have to have at least the clause
-``catch { ...}`` or the clause ``catch (bytes memory lowLevelData) { ... }``.
-
-The variables declared in the ``returns`` and the ``catch`` clause are only
-in scope in the block that follows.
+``returns``과 ``catch``구문에 선언된 변수는 따라오는 블록의 범위 내에 있습니다.
 
 .. note::
 
-    If an error happens during the decoding of the return data
-    inside a try/catch-statement, this causes an exception in the currently
-    executing contract and because of that, it is not caught in the catch clause.
-    If there is an error during decoding of ``catch Error(string memory reason)``
-    and there is a low-level catch clause, this error is caught there.
+    try/catch-statement 내부에서 리턴 데이터를 디코딩하는 동안 에러가 발생하면,
+    현재 실행 중인 계약에서 예외가 발생하고, 이 때문에 캐치 구문에 의해 잡히지 않습니다.
+    만약 ``catch Error(string memory reason)``의 디코딩 중에 에러가 발생하여 낮은 레벨의
+    캐치 구문이 있으면, 에러가 그 곳에 잡힙니다.
 
 .. note::
 
-    If execution reaches a catch-block, then the state-changing effects of
-    the external call have been reverted. If execution reaches
-    the success block, the effects were not reverted.
-    If the effects have been reverted, then execution either continues
-    in a catch block or the execution of the try/catch statement itself
-    reverts (for example due to decoding failures as noted above or
-    due to not providing a low-level catch clause).
+    실행이 캐치 블록에 도달하면, 외부 호출의 상태-변경 효과가 되돌려집니다.
+    실행이 성공 블럭에 도달하면, 효과는 되돌려지지 않습니다.
+    효과가 되돌려진 경우 실행은 캐치 블록에서 계속 실행되거나  try/catch 구문의
+    실행이 되돌려집니다(예를 들어 위에서 언급한 대로 디코딩 실패로 인해 또는 
+    낮은 레벨의 캐치 구문을 제공하지 않기 때문에).
 
 .. note::
-    The reason behind a failed call can be manifold. Do not assume that
-    the error message is coming directly from the called contract:
-    The error might have happened deeper down in the call chain and the
-    called contract just forwarded it. Also, it could be due to an
-    out-of-gas situation and not a deliberate error condition:
-    The caller always retains at least 1/64th of the gas in a call and thus
-    even if the called contract goes out of gas, the caller still
-    has some gas left.
+
+    호출 실패 이유는 다양할 수 있습니다. 에러 메세지가 호출된 컨트랙트에서 직접
+    전송된다고 가정하지 마십시오:
+    에러는 호출 체인 아래에서 더 깊이 발생했을 수 있으며, 호출 컨트랙트가 방금 전달되었을 수 있습니다.
+    또한, 이는 고의적인 에러 상황이 아닌 가스 부족 상황일 수도 있습니다:
+    호출자는 항상 호출 시 최소 1/64 만큼의 가스를 보유하고 있으므로 컨트랙트 호출에 가스가 빠져니기도
+    호출자는 여전히 약간의 가스가 남아있습니다.
