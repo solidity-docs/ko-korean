@@ -242,9 +242,12 @@ if they are enclosed in ``{ }`` as can be seen in the following
 example. The argument list has to coincide by name with the list of
 parameters from the function declaration, but can be in arbitrary order.
 
+함수 호출 인수는 다음과 같이 ``{ }`` 로 둘러싸인 경우 순서가 어떻든 이름으로 지정할 수 있습니다. 
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.4.0 <0.9.0;
 
     contract C {
@@ -261,14 +264,19 @@ parameters from the function declaration, but can be in arbitrary order.
     }
 
 Omitted Function Parameter Names
+함수 매개변수명 생략
 --------------------------------
 
 The names of unused parameters (especially return parameters) can be omitted.
 Those parameters will still be present on the stack, but they are inaccessible.
 
+사용하지 않은 매개변수(특히 리턴 매개변수)의 이름은 생략할 수 있습니다.
+이러한 매개변수는 여전히 스택에 존재할 것이지만, 접근할 수 없습니다. 
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.4.22 <0.9.0;
 
     contract C {
@@ -284,15 +292,20 @@ Those parameters will still be present on the stack, but they are inaccessible.
 .. _creating-contracts:
 
 Creating Contracts via ``new``
+``new``를 통해 컨트랙트 생성하기
 ==============================
 
 A contract can create other contracts using the ``new`` keyword. The full
 code of the contract being created has to be known when the creating contract
 is compiled so recursive creation-dependencies are not possible.
 
+컨트랙트는 다른 컨트랙트를 ``new``키워드를 통해 생성할 수 있습니다. 만들어진 컨트랙트의
+전체 코드는 생성하는 컨트랙트가 컴파일될 때 알려져야 하므로 재귀적 생성-의존성은 불가능합니다.
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
     contract D {
         uint public x;
@@ -302,7 +315,7 @@ is compiled so recursive creation-dependencies are not possible.
     }
 
     contract C {
-        D d = new D(4); // will be executed as part of C's constructor
+        D d = new D(4); // C의 생성자처럼 실행됩니다.
 
         function createD(uint arg) public {
             D newD = new D(arg);
@@ -310,7 +323,7 @@ is compiled so recursive creation-dependencies are not possible.
         }
 
         function createAndEndowD(uint arg, uint amount) public payable {
-            // Send ether along with the creation
+            // 생성과 함께 이더 보내기
             D newD = new D{value: amount}(arg);
             newD.x();
         }
@@ -322,19 +335,33 @@ to limit the amount of gas.
 If the creation fails (due to out-of-stack, not enough balance or other problems),
 an exception is thrown.
 
+위 예제에서 보았듯이, ``value``옵션을 사용하여  ``D``를 생성함과 동시에 이더를 보내는 것이
+가능합니다. 하지만 가스의 양을 제한하는 것은 불가능합니다. 만약 (out of stack, not enough balance 
+또는 다른 문제들로 인해) 생성에 실패하면 예외가 발생합니다.
+
 Salted contract creations / create2
+솔트 컨트랙트 생성 / create2
 -----------------------------------
 
 When creating a contract, the address of the contract is computed from
 the address of the creating contract and a counter that is increased with
 each contract creation.
 
+컨트랙트를 생성할 때, 컨트랙트의 주소는 생성하는 컨트랙트의 주소와 각 컨트랙트 생성과 함께
+증가하는 카운터로부터 계산됩니다.
+
 If you specify the option ``salt`` (a bytes32 value), then contract creation will
 use a different mechanism to come up with the address of the new contract:
+
+만약 (bytes32 값의) ``salt``옵션을 명시한다면, 컨트랙트 생성은 새로운 계약 주소를 마련하기 위해
+다른 매커니즘을 사용할 것입니다.
 
 It will compute the address from the address of the creating contract,
 the given salt value, the (creation) bytecode of the created contract and the constructor
 arguments.
+
+이는 생성하는 컨트랙트의 주소와, 주어진 salt값, 생성된 컨트랙트의 바이트코드, 그리고
+생성자 인수로부터 주소를 계산할 것입니다.
 
 In particular, the counter ("nonce") is not used. This allows for more flexibility
 in creating contracts: You are able to derive the address of the
@@ -342,12 +369,20 @@ new contract before it is created. Furthermore, you can rely on this address
 also in case the creating
 contracts creates other contracts in the meantime.
 
+특히, 카운터 ("nonce")는 사용되지 않습니다. 이는 컨트랙트를 생성할 때 유연성을 더해 줍니다:
+새로운 컨트랙트가 생성되기 전에 컨트랙트의 주소를 도출할 수 있습니다.
+더 나아가, 생성하는 컨트랙트가 잠시 다른 컨트랙트를 생성하는 동안에도 이 주소를 사용할 수 있습니다.
+
 The main use-case here is contracts that act as judges for off-chain interactions,
 which only need to be created if there is a dispute.
+
+여기서 주요 활용 사례는 오프체인 상호작용의 판단자 역할을 하는 컨트랙트로, 분쟁이 있을 경우에만
+생성되면 됩니다.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
     contract D {
         uint public x;
@@ -361,6 +396,9 @@ which only need to be created if there is a dispute.
             // This complicated expression just tells you how the address
             // can be pre-computed. It is just there for illustration.
             // You actually only need ``new D{salt: salt}(arg)``.
+            // 이 복잡한 수식은 단지 어떻게 주소가 미리 계산될 수 있는지
+            // 알려주는 것입니다. 이것은 단지 설명을 위해 있습니다.
+            // 실제로는 ``new D{salt: salt}(arg)``만이 필요합니다.
             address predictedAddress = address(uint160(uint(keccak256(abi.encodePacked(
                 bytes1(0xff),
                 address(this),
@@ -376,7 +414,7 @@ which only need to be created if there is a dispute.
         }
     }
 
-.. warning::
+.. 경고::
     There are some peculiarities in relation to salted creation. A contract can be
     re-created at the same address after having been destroyed. Yet, it is possible
     for that newly created contract to have a different deployed bytecode even
@@ -385,8 +423,14 @@ which only need to be created if there is a dispute.
     can query external state that might have changed between the two creations
     and incorporate that into the deployed bytecode before it is stored.
 
+    솔트 생성과 관련하여 몇 가지 특이한 점이 있습니다. 컨트랙트는 컨트랙트가 파기된 이후에
+    같은 주소에 재생성될 수 있습니다. 비록 생성된 바이트코드가 동일할지라도(이것은 필수사항입니다.
+    그렇지 않으면 주소가 변경될 것입니다), 새로 생성된 컨트랙트가 다른 배포된 바이트코드를 가지는 것은 가능합니다 
+    이는 생성자가 저장되기 전에 두 생성 간에 변경되었을 수 있는 외부 상태를 조회하여 배포된 바이트코드에
+    통합할 수 있기 때문입니다.
 
 Order of Evaluation of Expressions
+수식 코드(Expressions) 실행의 순서
 ==================================
 
 The evaluation order of expressions is not specified (more formally, the order
@@ -395,14 +439,19 @@ specified, but they are of course evaluated before the node itself). It is only
 guaranteed that statements are executed in order and short-circuiting for
 boolean expressions is done.
 
+수식의 실행 순서는 정해지지 않았습니다(정확하게는, 수식 코드 트리에서 한 노드의 자식이 평가되는 순서가
+정해지지 않았지만, 당연히 노드 자체보다 먼저 평가됩니다.). 
+코드(ststement)가 순서대로 실행되고 불리언 수식 코드에 대한 단락이 수행됨을 보장할 뿐입니다.
 .. index:: ! assignment
 
 Assignment
+할당
 ==========
 
 .. index:: ! assignment;destructuring
 
 Destructuring Assignments and Returning Multiple Values
+할당 파기 및 여러개 값 리턴하기
 -------------------------------------------------------
 
 Solidity internally allows tuple types, i.e. a list of objects
@@ -411,12 +460,19 @@ compile-time. Those tuples can be used to return multiple values at the same tim
 These can then either be assigned to newly declared variables
 or to pre-existing variables (or LValues in general).
 
+솔리디티는 내부적으로 튜플 타입, 즉 컴파일 시점에서 숫자가 상수인 잠재적으로 다른
+유형의 객체 목록을 허용합니다. 이러한 튜플은 동시에 여러개 값을 리턴하는 데에 쓰일 수
+있습니다. 그런 다음 새로 선언된 변수나 기존에 존재하던 변수(또는 일반적인 LV값)에 할당할 수 있습니다.
+
 Tuples are not proper types in Solidity, they can only be used to form syntactic
 groupings of expressions.
+
+튜플은 솔리디티에서 적절한 타입은 아니고, 코드의 구문적 형태를 위해 사용될 뿐입니다.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.5.0 <0.9.0;
 
     contract C {
@@ -429,40 +485,62 @@ groupings of expressions.
         function g() public {
             // Variables declared with type and assigned from the returned tuple,
             // not all elements have to be specified (but the number must match).
+            // 변수들은 타입과 함께 선언되고 리턴 튜플로부터 할당됩니다.
+            // 모든 요소를 명시할 필요 없습니다(단, 숫자는 일치해야 합니다.)
             (uint x, , uint y) = f();
             // Common trick to swap values -- does not work for non-value storage types.
+            // 값 위치를 바꾸는 흔한 방법 -- non-value 저장 타입에는 적용이 안됩니다. 
             (x, y) = (y, x);
             // Components can be left out (also for variable declarations).
-            (index, , ) = f(); // Sets the index to 7
+            // 구성요소를 (변수 선언의 경우에도)제외할 수 있습니다.
+            (index, , ) = f(); // 인덱스를 7로 지정합니다.
         }
     }
 
 It is not possible to mix variable declarations and non-declaration assignments,
 i.e. the following is not valid: ``(x, uint y) = (1, 2);``
 
+변수 선언과 선언이 아닌 할당을 혼합할 수 없습니다. 즉, ``(x, uint y) = (1, 2);``는
+유효하지 않습니다.
+
 .. note::
     Prior to version 0.5.0 it was possible to assign to tuples of smaller size, either
     filling up on the left or on the right side (which ever was empty). This is
     now disallowed, so both sides have to have the same number of components.
 
-.. warning::
+    0.5.0 이전에는 튜플에 왼쪽부터 채우거나 오른쪽부터 채우는 등
+    더 작은 사이즈로 할당하는 것이 가능했습니다(심지어 비었더라도). 지금은 허용되지 않으니,
+    양측은 같은 구성요소 개수를 가져야 합니다.
+
+.. 경고::
     Be careful when assigning to multiple variables at the same time when
     reference types are involved, because it could lead to unexpected
     copying behaviour.
 
+    참조 유형이 포함된 경우 여러 번수에 동시에 할당할 때 예기치 않은 카피 동작을 
+    유발할 수 있으므로 조심해 주십시오.
+
 Complications for Arrays and Structs
+배열과 구조체의 복잡성
 ------------------------------------
 
 The semantics of assignments are more complicated for non-value types like arrays and structs,
 including ``bytes`` and ``string``, see :ref:`Data location and assignment behaviour <data-location-assignment>` for details.
 
+할당은 ``bytes`` and ``string``를 포함하는 배열이나 구조와 같은 non-value 타입의 경우 더복잡합니다.
+자세한 내용은 :ref:`Data location and assignment behaviour <data-location-assignment>`을 참조하세요.
+
 In the example below the call to ``g(x)`` has no effect on ``x`` because it creates
 an independent copy of the storage value in memory. However, ``h(x)`` successfully modifies ``x``
 because only a reference and not a copy is passed.
 
+아레 예제에서 ``g(x)``에 대한 호출은 ``x``에 효과가 없습니다. 왜냐하면 메모리에 독립적인 저장값의 복사본을
+생성하기 때문입니다. 하지만, ``h(x)``는 복사본이 아닌 참조값만 전달되므로 성공적으로 변경합니다
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
+    // SPDX-라이센스-식별자: GPL-3.0
     pragma solidity >=0.4.22 <0.9.0;
 
     contract C {
