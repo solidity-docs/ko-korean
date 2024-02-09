@@ -8,8 +8,14 @@
 간단한 스마트 컨트랙트
 ***********************
 
+<<<<<<< HEAD
 변수값을 설정하고 이를 다른 컨트랙트에서 접근 가능하도록 노출시켜보는 간단한 예제를 만드는 것부터 시작해보겠습니다.
 지금 당장 이해가 안되더라도 걱정 마십시오. 앞으로 더 자세한 내용을 다룰 예정입니다.
+=======
+Let us begin with a basic example that sets the value of a variable and exposes
+it for other contracts to access. It is fine if you do not understand
+everything right now, we will go into more details later.
+>>>>>>> english/develop
 
 Storage 예제
 ===============
@@ -76,7 +82,7 @@ Subcurrency 예제
         // "public" 키워드는 변수를
         // 다른 컨트랙트로부터 접근 가능하게 하도록 해줍니다.
         address public minter;
-        mapping (address => uint) public balances;
+        mapping(address => uint) public balances;
 
         // Event는 클라이언트에게 여러분이 선언한
         // 특정 컨트랙트의 변화에 반응할 수 있도록 해줍니다.
@@ -133,8 +139,14 @@ Subcurrency 예제
 
 .. index:: mapping
 
+<<<<<<< HEAD
 다음 줄의 ``mapping (address => uint) public balances;`` 또한 public 상태 변수를 생성하지만 이번에는 더욱 복잡한 데이터 타입입니다.
 :ref:`mapping <mapping-types>` 타입은 :ref:`무부호 정수 <integers>` 로 주소를 매핑합니다.
+=======
+The next line, ``mapping(address => uint) public balances;`` also
+creates a public state variable, but it is a more complex datatype.
+The :ref:`mapping <mapping-types>` type maps addresses to :ref:`unsigned integers <integers>`.
+>>>>>>> english/develop
 
 매핑은 `해시 테이블 <https://en.wikipedia.org/wiki/Hash_table>`_ 과 같이 가상으로 초기화되어 더욱 많은 모든 키들이 시작부터 존재하며
 모두 0의 바이트로 표시된 값으로 매핑됩니다. 
@@ -146,8 +158,8 @@ Subcurrency 예제
 
 .. code-block:: solidity
 
-    function balances(address _account) external view returns (uint) {
-        return balances[_account];
+    function balances(address account) external view returns (uint) {
+        return balances[account];
     }
 
 해당 함수를 개인 계정에 남아 있는 잔액을 조회할 때 사용할 수 있습니다.
@@ -158,8 +170,16 @@ Subcurrency 예제
 이렇게 웹 어플리케이션과 같은 Ethereum 클라이언트는 큰 비용을 지불하지 않고도 블록체인 내부의 event들을 주시할 수 있습니다.
 event가 발생할 경우 listener는 트랜잭션을 추적할 수 있도록 도와주는 ``from``, ``to`` 그리고 ``amount`` 인수를 받게 됩니다.
 
+<<<<<<< HEAD
 event를 주시하기 위해 아래 ``Coin`` 컨트랙트 객체를 만들기 위해 사용되는 `web3.js <https://github.com/ethereum/web3.js/>`_ JavaScript 코드를 사용해보실 수도 있습니다.
 그리고 모든 유저 인터페이스는 위에서 자동적으로 생성된 ``balances`` 함수를 호출합니다. 
+=======
+To listen for this event, you could use the following
+JavaScript code, which uses `web3.js <https://github.com/web3/web3.js/>`_ to create the ``Coin`` contract object,
+and any user interface calls the automatically generated ``balances`` function from above:
+
+.. code-block:: javascript
+>>>>>>> english/develop
 
     Coin.Sent().watch({}, '', function(error, result) {
         if (!error) {
@@ -186,11 +206,21 @@ event를 주시하기 위해 아래 ``Coin`` 컨트랙트 객체를 만들기 �
 기본적인 :ref:`Checked arithmetic <unchecked>` 으로 인해, ``balances[receiver] += amount;`` 부분에서 overflow가 발생할 경우 
 (즉 ``balances[receiver] + amount`` 부분의 arbitrary precision arithmetic이 ``uint`` (``2**256 - 1``)의 최댓값보다 클 경우) 트랜잭션은 되돌아갑니다.
 
+<<<<<<< HEAD
 :ref:`Errors <errors>` 는 호출자에게 조건 혹은 처리 과정이 왜 실패했는지에 대한 정보를 제공해줍니다.
 Error는 :ref:`revert statement <revert-statement>` 와 함께 사용됩니다. 
 revert statement는 무조건적으로 종료하고 ``require`` 함수와 비슷하게 모든 변경 사항들을 원상복귀시킵니다. 
 다만, 동시에 호출자(궁극적으로는 프론트엔드 어플리케이션 혹은 블록 탐색자)에게 전달될 오류 이름과 추가적인 데이터를 제공하기도 합니다. 
 따라서 실패를 쉽게 디버깅하거나 조기에 발견할 수 있게 됩니다. 
+=======
+:ref:`Errors <errors>` allow you to provide more information to the caller about
+why a condition or operation failed. Errors are used together with the
+:ref:`revert statement <revert-statement>`. The ``revert`` statement unconditionally
+aborts and reverts all changes similar to the ``require`` function, but it also
+allows you to provide the name of an error and additional data which will be supplied to the caller
+(and eventually to the front-end application or block explorer) so that
+a failure can more easily be debugged or reacted upon.
+>>>>>>> english/develop
 
 ``send`` 함수는 (가지고 있는 코인을) 어느 누구에게든지 보내고자 하는 모든 사람들에 의해 사용될 수 있습니다. 
 만일 전송자가 전송하고자 하는 코인의 양이 충분치 않을 경우, ``if`` 조건은 참으로 판별하게 됩니다. 
@@ -228,9 +258,16 @@ Transactions
 한 계좌에서 다른 계좌로의 이체 요청이 발생하면, 데이터베이스의 기본적인 거래 성질에 따라 한 계좌에서 특정 양이 감소가 되면 다른 한 쪽은 항상 그마만큼 추가가 된다는 것을 의미합니다. 
 어떠한 이유든지 간에 만일 상대방 계좌 상에서 해당 양만큼 증가가 이루어지지 않는다면 이는 원래 계좌에서 또한 감소가 이루어지지 않게 됩니다. 
 
+<<<<<<< HEAD
 또한, 트랜잭션은 항상 전송자(생성자)에 의해 암호화된 서명을 받게 됩니다. 
 이렇게 함으로서 데이터베이스의 특정 변경에 대한 접근을 직접적으로 보호할 수 있게 됩니다. 
 전자 통화 예제에서 볼 수 있듯이, 계좌의 키를 가지고 있는 오직 한 사람만이 돈을 이체할 수 있습니다. 
+=======
+Furthermore, a transaction is always cryptographically signed by the sender (creator).
+This makes it straightforward to guard access to specific modifications of the
+database. In the example of the electronic currency, a simple check ensures that
+only the person holding the keys to the account can transfer some compensation, e.g. Ether, from it.
+>>>>>>> english/develop
 
 .. index:: ! block
 
@@ -245,8 +282,14 @@ Transactions
 트랜잭션은 "블록"이라는 것으로 묶여지며 참가하는 모든 노드에게 전파되고 실행됩니다. 
 만일 두 개의 서로 다른 트랜잭션이 충돌을 일으킬 경우, 두 번째로 오는 트랜잭션은 거절되며 블록의 한 부분이 되지 못합니다. 
 
+<<<<<<< HEAD
 이 블록들은 시간의 선형 시퀀스를 형성하며, 이것이 바로 "블록체인"이라는 용어가 탄생하게 된 계기입니다. 
 블록들은 일정한 간격으로 체인에 추가가되며, Ethereum의 경우 대략 매 17초가 걸립니다. 
+=======
+These blocks form a linear sequence in time, and that is where the word "blockchain" derives from.
+Blocks are added to the chain at regular intervals, although these intervals may be subject to change in the future.
+For the most up-to-date information, it is recommended to monitor the network, for example, on `Etherscan <https://etherscan.io/chart/blocktime>`_.
+>>>>>>> english/develop
 
 순서 선택 메카니즘("채굴"이라고도 부릅니다)의 한 부분으로써 블록들은 시간에 따라 회귀하지만 오직 체인의 끝부분에서만 일어납니다. 
 특정 블록의 상단에 블록들이 추가되면 될수록 회귀되는 확률은 적어집니다. 따라서, 여러분의 트랜잭션들이 회귀될 수 있으며 블록체인에서 제거된다 하더라도 더욱 오래 기다릴수록 그럴 확률이 적어지게 됩니다.
@@ -316,6 +359,7 @@ Ethereum에는 동일한 주소를 공유하고 있는 두 가지 종류의 계�
 가스
 ===
 
+<<<<<<< HEAD
 생성이 되고 난 후, 각 트랜잭션은 일정량의 **가스**를 지불하게 됩니다. 
 이는 트랜잭션을 실행하기 위해 필요한 작업량을 제한함과 동시에 작업을 수행하기 위하여 지불하기 위함입니다. 
 EVM이 트랜잭션을 실행하는 동안, 가스는 특정 규칙에 따라 점차적으로 고갈됩니다.
@@ -324,14 +368,41 @@ EVM이 트랜잭션을 실행하는 동안, 가스는 특정 규칙에 따라 �
 만일 실행 이후 약간의 가스가 남게 된다면, 그 가스는 똑같이 생성자에게 환불됩니다.
 
 만일 가스가 일정 수준까지 사용하게 될 경우 (즉 음수가 될 경우), out-of-gas 예외가 발생되며 현재 프레임의 상태에 맞춰 모든 변경 사항이 취소가 됩니다. 
+=======
+Upon creation, each transaction is charged with a certain amount of **gas**
+that has to be paid for by the originator of the transaction (``tx.origin``).
+While the EVM executes the
+transaction, the gas is gradually depleted according to specific rules.
+If the gas is used up at any point (i.e. it would be negative),
+an out-of-gas exception is triggered, which ends execution and reverts all modifications
+made to the state in the current call frame.
+>>>>>>> english/develop
+
+This mechanism incentivizes economical use of EVM execution time
+and also compensates EVM executors (i.e. miners / stakers) for their work.
+Since each block has a maximum amount of gas, it also limits the amount
+of work needed to validate a block.
+
+The **gas price** is a value set by the originator of the transaction, who
+has to pay ``gas_price * gas`` up front to the EVM executor.
+If some gas is left after execution, it is refunded to the transaction originator.
+In case of an exception that reverts changes, already used up gas is not refunded.
+
+Since EVM executors can choose to include a transaction or not,
+transaction senders cannot abuse the system by setting a low gas price.
 
 .. index:: ! storage, ! memory, ! stack
 
 스토리지, 메모리 및 스택
 =============================
 
+<<<<<<< HEAD
 Ethereum 가상 머신은 데이터를 저장할 수 있는 세 가지 공간이 있는데, 바로 스토리지, 메모리 그리고 스택입니다.
 다음 단락에서 바로 설명드리도록 하겠습니다.
+=======
+The Ethereum Virtual Machine has three areas where it can store data:
+storage, memory and the stack.
+>>>>>>> english/develop
 
 각 계정은 **스토리지**라는 데이터 공간이 있는데 함수의 호출과 트랜잭션 사이에서 지속적으로 존재합니다. 
 스토리지는 256 비트 단어를 256 비트의 단어로 매핑해주는 키-값 저장소입니다. 
@@ -385,14 +456,21 @@ call payload에 접근할 수 있게 되는데, 이는 **calldata**라 하는 �
 콜들은 1024만큼의 depth로 **한정되어 있는데**, 이는 더욱 복잡한 작업의 경우 재귀 호출보다는 루프가 더 선호된다는 의미입니다.
 또한, 63 혹은 64번째의 가스만 message call에 전달될 수 있으며 이는 실제론 1000보다 작은 depth limit이 걸리게 됩니다.
 
-.. index:: delegatecall, callcode, library
+.. index:: delegatecall, library
 
-Delegatecall / Callcode and Libraries
-=====================================
+Delegatecall and Libraries
+==========================
 
+<<<<<<< HEAD
 **deleegatecall**이라 하는 message call의 특수 변형 형태가 있습니다. 
 message call과 동일하지만 호출 중인 컨트랙트의 컨텍스트 내에서 실행되는 타겟 주소의 코드와 
 ``msg.sender`` 및 ``msg.value``가 그 값들을 변경하지 않는다는 점만 다릅니다. 
+=======
+There exists a special variant of a message call, named **delegatecall**
+which is identical to a message call apart from the fact that
+the code at the target address is executed in the context (i.e. at the address) of the calling
+contract and ``msg.sender`` and ``msg.value`` do not change their values.
+>>>>>>> english/develop
 
 이는 컨트랙트가 런타임에서 다른 주소로부터 코드를 동적으로 로드할 수 있음을 의미합니다. 
 스토리지, 현 주소 그리고 잔고는 여전히 호출 중인 컨트랙트를 참조하며 오직 코드만이 호출된 주소로부터 가져와집니다.
@@ -421,7 +499,7 @@ Create
 이렇게 **create call**과 일반 message call 간의 유일한 차이는 payload 데이터가 실행되고 코드로 결과가 저장되며 
 호출자 혹은 생성자가 스택 상에 새로운 컨트랙트의 주소를 받는다는 점입니다.
 
-.. index:: selfdestruct, self-destruct, deactivate
+.. index:: ! selfdestruct, deactivate
 
 Deactivate and Self-destruct
 ============================
@@ -431,10 +509,22 @@ Deactivate and Self-destruct
 이론적으로 봤을 때 컨트랙트를 제거하는 것은 좋은 아이디어처럼 들릴 수도 있지만, 누군가가 제거된 컨트랙트에 Ether를 전송하고 Ether가 영원히 없어질 수 있는
 것처럼 잠재적으로는 위험합니다.
 
+<<<<<<< HEAD
 .. 경고::
     ``selfdestruct`` 로 인해 컨트랙트가 제거가 되었어도 여전히 블록체인의 히스토리의 한 부분이며
     대부분의 Ethereum 노드에 의해 아마도 보유되고 있을 수 있습니다.
     따라서, ``selfdestruct`` 방식을 사용하는 것은 하드디스크에서 데이터를 지우는 것과는 다릅니다.
+=======
+.. warning::
+    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
+    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior
+    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+
+.. warning::
+    Even if a contract is removed by ``selfdestruct``, it is still part of the
+    history of the blockchain and probably retained by most Ethereum nodes.
+    So using ``selfdestruct`` is not the same as deleting data from a hard disk.
+>>>>>>> english/develop
 
 .. 참고::
     컨트랙트의 코드에서 ``selfdestruct`` 로의 호출 부분이 없다 하더라도 ``delegatecall`` 혹은 ``callcode`` 를 통해 해당 작업을 실행할 수 있습니다.
@@ -450,10 +540,19 @@ Deactivate and Self-destruct
 Precompiled Contracts
 =====================
 
+<<<<<<< HEAD
 "precompiled contracts"라 하는 특별한 작은 세트의 컨트랙트 주소가 있습니다.
 이 주소는 ``1`` 에서 ``8`` (포함)까지의 범위를 가지고 있으며 기타 컨트랙트처럼 호출될 수 있지만
 행동과 가스 소비는 특정 주소에 저장되는 EVM 코드에 의해 정의되지 않습니다 (코드를 포함하고 있지 않습니다).
 다만, EVM의 실행 환경 자체에서 시행될 뿐입니다.
+=======
+There is a small set of contract addresses that are special:
+The address range between ``1`` and (including) ``8`` contains
+"precompiled contracts" that can be called as any other contract
+but their behavior (and their gas consumption) is not defined
+by EVM code stored at that address (they do not contain code)
+but instead is implemented in the EVM execution environment itself.
+>>>>>>> english/develop
 
 다양한 EVM 호환적인 체인들은 다른 세트의 precompiled contract를 사용할 수 있습니다. 
 새 precompiled contracts가 미래에 Ethereum의 메인 체인에 추가될 수도 있지만 
