@@ -7,7 +7,7 @@ List of Known Bugs
 ##################
 
 Below, you can find a JSON-formatted list of some of the known security-relevant bugs in the
-Solidity compiler. The file itself is hosted in the `Github repository
+Solidity compiler. The file itself is hosted in the `GitHub repository
 <https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_.
 The list stretches back as far as version 0.3.0, bugs known to be present only
 in versions preceding that are not listed.
@@ -68,7 +68,7 @@ conditions
     If no conditions are given, assume that the bug is present.
 check
     This field contains different checks that report whether the smart contract
-    contains the bug or not. The first type of check are Javascript regular
+    contains the bug or not. The first type of check are JavaScript regular
     expressions that are to be matched against the source code ("source-regex")
     if the bug is present.  If there is no match, then the bug is very likely
     not present. If there is a match, the bug might be present.  For improved
